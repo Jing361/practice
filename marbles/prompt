@@ -1,0 +1,11 @@
+This prompt was found here:
+  https://codereview.stackexchange.com/questions/37521/marbles-game-with-classes
+
+The number of marbles in the initial pile will be random amount between 10 and 100.
+Each player must choose between 1 and half of the remaining pile of marbles to remove.
+The player stuck with the last marble loses the game.
+The computer will randomly be placed into simple or smart mode.
+The player who goes first will also be chosen at random.
+
+This problem is good for AI testing/creation and to create a framework similar to the AI roomba project.
+
