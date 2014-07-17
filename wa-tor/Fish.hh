@@ -7,7 +7,10 @@ class Fish:public Entity{
 public:
   Fish();
   Fish(int x, int y, int z);
-  Fish(vec pos);
+  Fish(const vec& pos);
+
+  char getSym();
+  void move();
 };
 
 #endif

@@ -6,5 +6,12 @@ Fish::Fish(int x, int y, int z):Entity(x, y, z){
   this->sym = '.';
 }
 
-Fish::Fish(vec pos):Fish(pos.x, pos.y, pos.z){  }
+Fish::Fish(const vec& pos):Fish(pos.x, pos.y, pos.z){  }
+
+char Fish::getSym(){
+  return this->sym;
+}
+
+void Fish::move(){
+}
 

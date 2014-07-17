@@ -11,6 +11,7 @@ public:
   Shark(int x, int y, int z);
   Shark(const vec& pos);
 
+  char getSym();
   void move();
 };
 

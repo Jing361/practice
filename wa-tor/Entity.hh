@@ -22,6 +22,7 @@ protected:
   vec position;
 public:
   Entity(int x, int y, int z):position(x, y, z){  }
+  virtual void move() = 0;
 };
 
 #endif

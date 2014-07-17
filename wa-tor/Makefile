@@ -11,15 +11,15 @@ wator:main.o WatorGame.o
 main.o:main.cc
 	$(CC) $(cflags) $(flags) main.cc
 
-Fish.o:Fish.cc
+Fish.o:Fish.cc Entity.hh Renderable.hh
 	$(CC) $(cflags) $(flags) Fish.cc
 
-Shark.o:Shark.cc
+Shark.o:Shark.cc Entity.hh Renderable.hh
 	$(CC) $(cflags) $(flags) Shark.cc
 
 WatorGame.o:Fish.o Shark.o WatorGame.cc
 	$(CC) $(cflags) $(flags) WatorGame.cc
 
 clean:
-	rm *.o core main
+	rm *.o core wator
 

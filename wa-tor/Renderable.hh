@@ -4,6 +4,8 @@
 class Renderable{
 protected:
   char sym;
+public:
+  virtual char getSym() = 0;
 };
 
 #endif
