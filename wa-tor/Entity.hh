@@ -17,12 +17,20 @@ public:
                 z(vect.z){  }
 };
 
+enum direction {North, South, East, West};
+
 class Entity:public Renderable{
 protected:
   vec position;
+  unsigned int age;
+  unsigned int breedAge;
 public:
-  Entity(int x, int y, int z):position(x, y, z){  }
-  virtual void move() = 0;
+  Entity(int x, int y, int z):position(x, y, z), age(0), breedAge(10){  }
+  virtual void tick() = 0;
+  virtual direction move(Entity** percepts) = 0;
+  unsigned int getAge(){ return this->age; }
+  virtual unsigned int tickAge(){ return ++this->age; }
+  virtual Entity* breed() = 0;
 };
 
 #endif

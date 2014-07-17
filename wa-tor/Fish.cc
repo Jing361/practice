@@ -12,6 +12,14 @@ char Fish::getSym(){
   return this->sym;
 }
 
-void Fish::move(){
+void Fish::tick(){
+}
+
+direction Fish::move(Entity** percepts){
+  return North;
+}
+
+Entity* Fish::breed(){
+  return new Fish;
 }
 

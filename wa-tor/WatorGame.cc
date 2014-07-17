@@ -58,8 +58,12 @@ void WatorGame::loop(){
 void WatorGame::tick(){
   for(unsigned int i = 0; i < this->height; ++i){
     for(unsigned int j = 0; i < this->width; ++j){
-      if(this->world[i][j] != 0){
-//        this->world[i][j]->move();
+      Entity* ent = this->world[i][j];
+      if(ent != 0){
+        //Generate percepts for entity
+        //Send percepts for entity to decide new movement
+//        ent->move();
+        ent->tickAge();
       }
     }
   }

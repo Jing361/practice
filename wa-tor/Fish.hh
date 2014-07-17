@@ -10,7 +10,9 @@ public:
   Fish(const vec& pos);
 
   char getSym();
-  void move();
+  void tick();
+  direction move(Entity** percepts);
+  Entity* breed();
 };
 
 #endif
