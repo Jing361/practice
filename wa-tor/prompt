@@ -1,0 +1,51 @@
+This prompt was found here:
+  http://www.reddit.com/r/ProgrammingPrompts/comments/26i7is/wator_population_dynamics_simulation/
+
+WA-TOR
+Alexander K. Dewdney and David Wiseman developed a simple population dynamics simulation that was published in the December 1984 issue of Scientific American.
+The introduction to Wa-Tor by Alexander K. Dewdney:
+Somewhere, in a dimension that can only be called recreational at a distance limited only by one's programming prowess, the planet Wa-Tor swims among the stars.
+It is shaped like a torus, or dougnut, and is entirely covered with water.
+The two dominant denizens of Wa-Tor are sharks and fish, so called because these are the terrestrial creatures they mist closely resemble.
+The sharks of Wa-Tor eat the fish and the fish of Wa-Tor seem always to be in plentiful supply.
+Wa-Tor is a time-discrete simulation.
+Each step is a "tick" in time. The program should calculate the next step and display it after the calculation is completed.
+For simplicity, the planet is shaped like a torus, or doughnut.
+Basically, it can be simulated by a two-dimensional matrix (or array) where the top and bottom ends, and also the left and right ends wrap around (Hint: modulo operation).
+
+References
+Wikipedia Article about Wa-Tor(http://en.wikipedia.org/wiki/Wa-Tor)
+Alexander K. Dewdney's original Article about Wa-Tor - This article contains additional information!(http://home.cc.gatech.edu/biocs1/uploads/2/wator_dewdney.pdf)
+
+The simulation needs a few parameters to initialize the original population:
+  Initial number of fish in the ocean
+  Initial number of sharks in the ocean
+  Age at which fish breed (Once a fish breeds, the age of the breeding fish and of the offspring are set to 0)
+  Age at which sharks breed (same rule as for fish)
+  Time after which a shark that hasn't found food dies of starvation
+
+There are a few rules for the fish and sharks:
+  At the beginning, the sharks and fish are randomly distributed across the grid.
+  The initial age of each shark and fish is randomly chosen between 0 and breeding age.
+  There can be only one animal (fish or shark) in single grid cell after each tick (during a tick it is possible that a shark and a fish are in the same cell because the shark eats the fish. After the tick, only the shark will be left in the cell)
+  Both, fish and sharks, move only in the cardinal directions (North, South, West, and East)
+  Fish swim in random directions at each tick
+  Sharks hunt - if there are fish in the surrounding cells sharks will pick a cell with a fish and eat it. If there are no fish surrounding the shark, the shark will move like a fish in a random direction.
+  If an animal reaches the breeding age, the animal first moves according to the movement rules, then a new animal of the same type is spawned in the cell from which the old animal moved, and the age of both, the parent and the offspring is reset to 0.
+  If a shark does not find any food before it reaches the starvation age, it dies and disappears from the grid. If it finds food, the starvation timer is reset to 0.
+
+Expected Output at the End of each Tick
+  Number of fish and difference between previous and current population
+  Number of sharks and difference between previous and current population
+  A simple graphical representation of the ocean (in the original program, a blank (space) was used for an empty grid position, a period (.) was used for a fish, and a zero (0) was used for a shark.
+
+Additional Info
+  There should be a way to select whether to manually advance the generations, or to automatically advance the generations (up to a certain limit) with a display interval (user configurable).
+  In the original program, the ocean was 32 cells wide and 14 cells high. For modern computers this setting is too small, so the ocean should be 80 cells wide and 40 cells high (or user configurable).
+
+Optional Extensions
+  Allow for diagonal movement for both, fish and sharks
+  Make fish more intelligent: let them sense sharks (with a configurable probability) in a configurable distance (up to 3 cells) and if the sense sharks, let them take evasive action
+    develop system or impose possibility of false positives
+  Let sharks detect fish in a configurable range (up to 3 cells)
+

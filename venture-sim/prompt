@@ -1,0 +1,42 @@
+This prompt was found here:
+  http://www.reddit.com/r/ProgrammingPrompts/comments/26a8eg/create_a_text_adventure_with_simulation/
+
+Interactive text-based stories, where the magic happens in the head - not new.
+But I haven't seen one with a simulated world in the background yet.
+This idea is for beginners and pros alike - just pick your level of complexity.
+Example:
+  "You are in a kitchen. You see a stove, a fridge, a ceiling lamp, a switch, and a sink. There is an open door to the north, a closed window to the west."
+  The objects in the room have properties, the room itself has an environmental situation (e.g. air pressure, smells, temperature), the player also has properties (e.g. when the light is low or the player is blind-folded, the data retrieved via the eyes is limited/removed, so the text is changed accordingly, all by procedure instead of manually typed!).
+  On every game turn, simulate(); is called on all existing objects in the game world.
+  So, when you return to room X, the fruits in the bowl on the table might have become a little less fresh.
+
+Some ideas:
+The game could either be turn-based, like the classic ones, or it could be in real-time in 1-second-steps, and as soon as the player starts typing, the game is paused until the input line is empty again.
+Alternatively, the whole input could happen via dropdown-menus: The moment a menu is opened, the game is paused. I attempted this a little, works very well - there was an "exits" menu, a "you" menu, and an "objects" menu.
+Simple "sound rendering": Sounds could be muffled or too silent to identify.
+One sound could be "drowned out" by another one, so that you e.g. have to turn off a washing machine to be able to hear/identify the person imprisoned behind the secret wall.
+One way to do this, for example, could be to describe the sounds a bit to the machine.
+http://en.wikipedia.org/wiki/Audio_frequency is an interesting resource for this.
+Based on it, one could describe with a boolean or double the significancy and volume of 4 or 5 frequency sections of the sound in question.
+This would allow to calculate how much a sound might be overridden by another one, to determine if it should be described to the player clearly, in a very coarse way that could be interpreted freely, or if the sound isn't described at all.
+Simple "light rendering" - or should I call it "em radiation rendering"? http://en.wikipedia.org/wiki/Electromagnetic_spectrum Nuclear terrorism, here we come! (Hi FBI.)
+Player and other beings could have rather complex and simulated stats, e.g. body temperature, hunger, weight, height, stance (Can you see the police car outside through the window while being bound on the floor?)
+Talking about police: NPCs could gather information (with some Garbage Collection to prevent data overkill), so if you drive your van to the city park and abduct someone, the police might be able to browse the tree of available options/objects to pick up an informational trace and ultimately get to you.
+I know, totally insane, but I believe it's not impossible.
+On the other hand, during your next game, you might play a cop yourself! An open self-experience system?
+Once you have a working system with rooms and some objects, start writing a world generator so that you have fun exploring your simulation while you're writing it. Tests will probably be pretty inspiring for the overall project.
+
+Suggestions:
+After a few attempts, I have figured out that the object model should use soft links, meaning that the objects should refer to each other via an ID number (e.g. 64 bit long), because ultimately you will face the beast that saving/loading is, and loading while related objects don't exist yet is a pain.
+Better just use soft links and look everything up in a manager class that also does the loading/saving.
+Every object (hence the master class from which all object classes inherit) should have an inventory.
+You could add flags and checks for/against the player/simulation using it, but it's good if it exists.
+E.g. put an object into your mouth. Or define buildings by "house contains floors which contain apartments which contain rooms" etc.
+Additionally, each object might have a variable list (in Java, it would probably be a HashMap<String, Object>), because that's again much easier to save/load than creating extra variables in each object and then having to deal with those.
+If you want to make a toilet (or whatever other kind of world object), my attempts have shown that it's best to create a separate class for every kind of object instead of trying to build the omni-object.
+Go crazy! E.g. in my realtime-attempt (Java) where input happened via dropdown menu, I made a toilet where you can lift/lower the lid and the seat (each pushing each other), you can flush, and you can abort the flushing which means that the next flush works right away but is shorter (the tank refills in realtime, the rest is logical - See the beauty of simulation versus just writing the story?).
+It's easy and fun to write world-objects like these, and they are easy to extend: Say, the toilet does not refill if the incoming water pipe is turned off.
+Of course you still have a free flush.
+Alternatively, you might be imprisoned and might need water.
+Hard choices have to be made, especially if you also simulate bowel movements.
+Again, go crazy: It's a text adventure system! Well, you can't just make up anything, because you have to give it some reality via simulation, but otherwise: Sky's the limit! Processing time is not an issue. Why shouldn't a turn take a few seconds? Do all the things you wished were in your favorite 3D action adventure game, but they didn't put it in because of development constraints, marketing, or simply because everything at once can't be done on today's PCs. But I double-dare you: DON'T fuck up the FoV!
