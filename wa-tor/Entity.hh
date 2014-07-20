@@ -26,8 +26,8 @@ protected:
   unsigned int breedAge;
 public:
   Entity(int x, int y, int z):position(x, y, z), age(0), breedAge(10){  }
-  virtual void tick() = 0;
-  virtual direction move(Entity** percepts) = 0;
+  virtual void tick(Entity** percepts[]) = 0;
+  virtual direction move(Entity** percepts[]) = 0;
   unsigned int getAge(){ return this->age; }
   virtual unsigned int tickAge(){ return ++this->age; }
   virtual Entity* breed() = 0;

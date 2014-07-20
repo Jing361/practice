@@ -12,10 +12,20 @@ char Fish::getSym(){
   return this->sym;
 }
 
-void Fish::tick(){
+void Fish::tick(Entity** percepts[]){
+  this->tickAge();
+  this->move(percepts);
 }
 
-direction Fish::move(Entity** percepts){
+unsigned int Fish::tickAge(){
+  unsigned int ag = (++this->age);
+  if(ag == this->breedAge){
+    this->breed();
+  }
+  return ag;
+}
+
+direction Fish::move(Entity** percepts[]){
   return North;
 }
 

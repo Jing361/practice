@@ -10,6 +10,7 @@
 using std::cout;
 using std::endl;
 
+//TODO:Update to MVC paradigm
 class WatorGame:public Game{
 protected:
   unsigned int entityCount;

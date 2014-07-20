@@ -17,8 +17,8 @@ public:
   virtual ~Shark();
 
   char getSym();
-  void tick();
-  direction move(Entity** percepts);
+  void tick(Entity** percepts[]);
+  direction move(Entity** percepts[]);
   unsigned int getRange();
   unsigned int tickAge();
   Entity* breed();

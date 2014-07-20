@@ -19,10 +19,12 @@ char Shark::getSym(){
   return this->sym;
 }
 
-void Shark::tick(){
+void Shark::tick(Entity** percepts[]){
+  this->tickAge();
+  this->move(percepts);
 }
 
-direction Shark::move(Entity** percepts){
+direction Shark::move(Entity** percepts[]){
   return North;
 }
 
@@ -43,8 +45,10 @@ unsigned int Shark::tickAge(){
 }
 
 Entity* Shark::breed(){
+  return 0;
 }
 
 void Shark::feed(Entity* food){
   delete food;
 }
+

@@ -61,9 +61,21 @@ void WatorGame::tick(){
       Entity* ent = this->world[i][j];
       if(ent != 0){
         //Generate percepts for entity
+        //I don't like this, do something more OO?
+        //TODO:convert world array into a class
+        Entity* temp[3][3];
+        Entity** percepts[3] = {temp[0],temp[1],temp[2]};
+        for(int k = -1; k < 2; ++k){
+          for(int l = -1; l < 2; ++l){
+            //loop control variable is a modifier to the central cell
+            //to generalize: center is half of percept range
+            //    modifier is negative half of percept range
+            //    up to positive half of percept range
+            percepts[1 + k][1 + l] = this->world[i][j];
+          }
+        }
         //Send percepts for entity to decide new movement
-//        ent->move();
-        ent->tickAge();
+        ent->tick(percepts);
       }
     }
   }
