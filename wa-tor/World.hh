@@ -5,6 +5,8 @@ template<class T>
 class World{
 protected:
   T** universe;
+  unsigned int height;
+  unsigned int width;
 public:
   virtual T get(unsigned int x, unsigned int y) = 0;
   virtual void set(unsigned int x, unsigned int y, T newT) = 0;
