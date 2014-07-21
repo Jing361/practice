@@ -7,6 +7,14 @@ WatorWorld::WatorWorld(unsigned int x, unsigned int y){
   }
 }
 
+WatorWorld::WatorWorld(unsigned int x, unsigned int y, Entity** world):WatorWorld(x, y){
+  for(int i = 0; i < x; ++i){
+    for(int j = 0; j < y; ++j){
+      this->universe[i][j] = world[i][j];
+    }
+  }
+}
+
 Entity* WatorWorld::get(unsigned int x, unsigned int y){
   return this->universe[x][y];
 }
