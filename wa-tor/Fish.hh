@@ -8,6 +8,7 @@ public:
   Fish();
   Fish(int x, int y, int z);
   Fish(const vec& pos);
+  virtual ~Fish();
 
   char getSym();
   void tick(Entity** percpets[]);

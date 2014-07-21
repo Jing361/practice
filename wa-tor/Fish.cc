@@ -12,6 +12,9 @@ char Fish::getSym(){
   return this->sym;
 }
 
+Fish::~Fish(){
+}
+
 void Fish::tick(Entity** percepts[]){
   this->tickAge();
   this->move(percepts);
