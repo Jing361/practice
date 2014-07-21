@@ -7,6 +7,7 @@
 #include"Game.hh"
 #include"Fish.hh"
 #include"Shark.hh"
+#include"WatorWorld.hh"
 using std::cout;
 using std::endl;
 
@@ -18,6 +19,7 @@ protected:
   double fishFract;
   unsigned int fishCount, sharkCount;
   Entity* world[64][64];
+//  WatorWorld world(64, 64);
 public:
   WatorGame();
   ~WatorGame();

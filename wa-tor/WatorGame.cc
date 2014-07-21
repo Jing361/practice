@@ -38,18 +38,8 @@ void WatorGame::initialize(){
   for(unsigned int i = 0; i < this->sharkCount; ++i){
     unsigned int h, w;
     do{
-      unsigned int ht = rand() % this->height;
-      unsigned int wt = rand() % this->width;
-      if(ht < 0){
-        h = this->height + ht;
-      } else {
-        h = ht;
-      }
-      if(wt < 0){
-        w = this->height + wt;
-      } else {
-        w = wt;
-      }
+      h = rand() % this->height;
+      w = rand() % this->width;
     } while(this->world[h][w] != 0);
     this->world[h][w] = new Shark(h, w, 0);
   }
@@ -77,11 +67,26 @@ void WatorGame::tick(){
         Entity** percepts[3] = {temp[0],temp[1],temp[2]};
         for(int k = -1; k < 2; ++k){
           for(int l = -1; l < 2; ++l){
+            unsigned int x;
+            unsigned int y;
+            unsigned int xt = (1 + k) % this->height;
+            unsigned int yt = (1 + l) % this->width;
+            //Account for negative world indexes
+            if(xt < 0){
+              x = this->height + xt;
+            } else {
+              x = xt;
+            }
+            if(yt < 0){
+              y = this->width + yt;
+            } else {
+              y = yt;
+            }
             //loop control variable is a modifier to the central cell
             //to generalize: center is half of percept range
             //    modifier is negative half of percept range
             //    up to positive half of percept range
-            percepts[1 + k][1 + l] = this->world[i][j];
+            percepts[x][y] = this->world[i][j];
           }
         }
         //Send percepts for entity to decide new movement

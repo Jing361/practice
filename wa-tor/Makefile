@@ -5,8 +5,8 @@ cflags:=-c
 
 default:wator
 
-wator:main.o WatorGame.o
-	$(CC) main.o WatorGame.o Fish.o Shark.o -o wator
+wator:main.o WatorGame.o WatorWorld.o
+	$(CC) main.o WatorWorld.o WatorGame.o Fish.o Shark.o -o wator
 
 main.o:main.cc
 	$(CC) $(cflags) $(flags) main.cc
@@ -19,6 +19,9 @@ Shark.o:Shark.cc Entity.hh Renderable.hh
 
 WatorGame.o:Fish.o Shark.o WatorGame.cc
 	$(CC) $(cflags) $(flags) WatorGame.cc
+
+WatorWorld.o:WatorWorld.cc World.hh
+	$(CC) $(cflags) $(flags) WatorWorld.cc
 
 clean:
 	rm *.o core wator
