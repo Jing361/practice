@@ -65,13 +65,13 @@ void WatorGame::tick(){
         //TODO:convert world array into a class
         Entity* temp[3][3];
         Entity** percepts[3] = {temp[0],temp[1],temp[2]};
-        for(int k = -1; k < 2; ++k){
-          for(int l = -1; l < 2; ++l){
-            unsigned int x;
-            unsigned int y;
-            unsigned int xt = (1 + k) % this->height;
-            unsigned int yt = (1 + l) % this->width;
-            //Account for negative world indexes
+        for(int k = 0; k < 3; ++k){
+          for(int l = 0; l < 3; ++l){
+            int x;
+            int y;
+            int xt = i - (k - 1) % this->height;
+            int yt = j - (l - 1) % this->width;
+            //if the xt or yt value is negative, then it can be added, not subtracted
             if(xt < 0){
               x = this->height + xt;
             } else {
@@ -82,11 +82,7 @@ void WatorGame::tick(){
             } else {
               y = yt;
             }
-            //loop control variable is a modifier to the central cell
-            //to generalize: center is half of percept range
-            //    modifier is negative half of percept range
-            //    up to positive half of percept range
-            percepts[x][y] = this->world[i][j];
+            percepts[k][l] = this->world[x][y];
           }
         }
         //Send percepts for entity to decide new movement
