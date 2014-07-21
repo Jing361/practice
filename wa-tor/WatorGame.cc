@@ -38,8 +38,18 @@ void WatorGame::initialize(){
   for(unsigned int i = 0; i < this->sharkCount; ++i){
     unsigned int h, w;
     do{
-      h = rand() % this->height;
-      w = rand() % this->width;
+      unsigned int ht = rand() % this->height;
+      unsigned int wt = rand() % this->width;
+      if(ht < 0){
+        h = this->height + ht;
+      } else {
+        h = ht;
+      }
+      if(wt < 0){
+        w = this->height + wt;
+      } else {
+        w = wt;
+      }
     } while(this->world[h][w] != 0);
     this->world[h][w] = new Shark(h, w, 0);
   }
