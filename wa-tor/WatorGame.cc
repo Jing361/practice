@@ -1,6 +1,18 @@
 #include"WatorGame.hh"
 
-WatorGame::WatorGame(){
+WatorGame::WatorGame():WatorGame(10, 10){  }
+
+WatorGame::WatorGame(unsigned int sX, unsigned int sY):WatorGame(sX, sY, .5){  }
+
+WatorGame::WatorGame(unsigned int sX, unsigned int sY, double fract){
+  this->running = true;
+  this->height = sX;
+  this->width = sY;
+  this->fishFract = fract;
+  this->entityCount = (this->height * this->width) / 2;
+  this->fishCount = this->entityCount * this->fishFract;
+  this->sharkCount = this->entityCount - this->fishCount;
+
   this->initialize();
 }
 
@@ -8,25 +20,7 @@ WatorGame::~WatorGame(){
   this->cleanup();
 }
 
-void WatorGame::run(){
-  this->loop();
-}
-
-void WatorGame::initialize(){
-  srand(time(NULL));
-  this->running = true;
-  this->height = 64;
-  this->width = 64;
-  this->fishFract = .5;
-  this->entityCount = (this->height * this->width) / 2;
-  this->fishCount = this->entityCount * this->fishFract;
-  this->sharkCount = this->entityCount - this->fishCount;
-
-  for(int i = 0; i < 64; ++i){
-    for(int j = 0; j < 64; ++j){
-      this->world[i][j] = 0;
-    }
-  }
+void WatorGame::populateWorld(){
   for(unsigned int i = 0; i < this->fishCount; ++i){
     unsigned int h, w;
     do{
@@ -45,7 +39,31 @@ void WatorGame::initialize(){
   }
 }
 
+void WatorGame::run(){
+  this->loop();
+}
+
+void WatorGame::initialize(){
+  srand(time(NULL));
+
+  this->world = new Entity**[this->height];
+  for(unsigned int i = 0; i < this->height; ++i){
+    this->world[i] = new Entity*[this->width];
+  }
+  for(unsigned int i = 0; i < this->height; ++i){
+    for(unsigned int j = 0; j < this->width; ++j){
+      this->world[i][j] = 0;
+    }
+  }
+
+  this->populateWorld();
+}
+
 void WatorGame::cleanup(){
+  for(unsigned int i = 0; i < this->height; ++i){
+    delete[] this->world[i];
+  }
+  delete[] this->world;
 }
 
 void WatorGame::loop(){
@@ -57,7 +75,7 @@ void WatorGame::loop(){
 
 void WatorGame::tick(){
   for(unsigned int i = 0; i < this->height; ++i){
-    for(unsigned int j = 0; i < this->width; ++j){
+    for(unsigned int j = 0; j < this->width; ++j){
       Entity* ent = this->world[i][j];
       if(ent != 0){
         //Generate percepts for entity

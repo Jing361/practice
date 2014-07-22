@@ -13,15 +13,20 @@ using std::endl;
 
 //TODO:Update to MVC paradigm
 class WatorGame:public Game{
+private:
+  void populateWorld();
 protected:
   unsigned int entityCount;
   unsigned int height, width;
   double fishFract;
   unsigned int fishCount, sharkCount;
-  Entity* world[64][64];
+//  Entity* world[64][64];
+  Entity*** world;
 //  WatorWorld world(64, 64);
 public:
   WatorGame();
+  WatorGame(unsigned int sX, unsigned int sY);
+  WatorGame(unsigned int sX, unsigned int sY, double fract);
   ~WatorGame();
   void run();
   void initialize();
