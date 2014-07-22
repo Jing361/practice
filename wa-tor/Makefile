@@ -1,7 +1,11 @@
 CC:=g++
 flags:=-Wall -std=c++11
 dflags:=-ggdb3
+gflags:=-O0 $(dflags)
 cflags:=-c
+files:=main Fish Shark WatorGame WatorWorld
+objects:=$(files:=.o)
+source:=$(files:=.cc)
 
 default:wator
 
