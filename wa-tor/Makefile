@@ -1,8 +1,10 @@
 CC:=g++
 flags:=-Wall -std=c++11
+#debug flags
 dflags:=-ggdb3
+#valgrind flags
 gflags:=-O0 $(dflags)
-cflags:=-c
+cflags:=-c $(dflags)
 files:=main Fish Shark WatorGame WatorWorld
 objects:=$(files:=.o)
 source:=$(files:=.cc)

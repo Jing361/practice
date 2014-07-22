@@ -6,7 +6,7 @@
 class Fish:public Entity{
 public:
   Fish();
-  Fish(int x, int y, int z);
+  Fish(int x, int y);
   Fish(const vec& pos);
   virtual ~Fish();
 

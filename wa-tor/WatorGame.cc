@@ -27,7 +27,7 @@ void WatorGame::populateWorld(){
       h = rand() % this->height;
       w = rand() % this->width;
     } while(this->world[h][w] != 0);
-    this->world[h][w] = new Fish(h, w, 0);
+    this->world[h][w] = new Fish(h, w);
   }
   for(unsigned int i = 0; i < this->sharkCount; ++i){
     unsigned int h, w;
@@ -35,7 +35,7 @@ void WatorGame::populateWorld(){
       h = rand() % this->height;
       w = rand() % this->width;
     } while(this->world[h][w] != 0);
-    this->world[h][w] = new Shark(h, w, 0);
+    this->world[h][w] = new Shark(h, w);
   }
 }
 

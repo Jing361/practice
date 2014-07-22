@@ -1,16 +1,16 @@
 #include"Shark.hh"
 
-Shark::Shark(int r = 1):Shark(0, 0, 0){
+Shark::Shark(int r = 1):Shark(0, 0){
   this->seekRange = r;
 }
 
-Shark::Shark(int x, int y, int z):Entity(x, y, z){
+Shark::Shark(int x, int y):Entity(x, y){
   this->sym = 'o';
   this->seekRange = 1;
   this->starveTime = 15;
 }
 
-Shark::Shark(const vec& pos):Shark(pos.x, pos.y, pos.z){  }
+Shark::Shark(const vec& pos):Shark(pos.x, pos.y){  }
 
 Shark::~Shark(){
 }
@@ -49,6 +49,7 @@ Entity* Shark::breed(){
 }
 
 void Shark::feed(Entity* food){
+  this->feedTime = 0;
   delete food;
 }
 

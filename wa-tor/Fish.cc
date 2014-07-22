@@ -1,12 +1,12 @@
 #include"Fish.hh"
 
-Fish::Fish():Fish(0, 0, 0){  }
+Fish::Fish():Fish(0, 0){  }
 
-Fish::Fish(int x, int y, int z):Entity(x, y, z){
+Fish::Fish(int x, int y):Entity(x, y){
   this->sym = '.';
 }
 
-Fish::Fish(const vec& pos):Fish(pos.x, pos.y, pos.z){  }
+Fish::Fish(const vec& pos):Fish(pos.x, pos.y){  }
 
 char Fish::getSym(){
   return this->sym;

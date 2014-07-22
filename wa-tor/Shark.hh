@@ -12,7 +12,7 @@ protected:
   unsigned int starveTime;
 public:
   Shark(int r);
-  Shark(int x, int y, int z);
+  Shark(int x, int y);
   Shark(const vec& pos);
   virtual ~Shark();
 
