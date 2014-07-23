@@ -61,6 +61,9 @@ void WatorGame::initialize(){
 
 void WatorGame::cleanup(){
   for(unsigned int i = 0; i < this->height; ++i){
+    for(unsigned int j = 0; j < this->width; ++j){
+      delete this->world[i][j];
+    }
     delete[] this->world[i];
   }
   delete[] this->world;
@@ -74,6 +77,8 @@ void WatorGame::loop(){
 }
 
 void WatorGame::tick(){
+  ++this->age;
+  cout << "game age:" << this->age << endl;
   for(unsigned int i = 0; i < this->height; ++i){
     for(unsigned int j = 0; j < this->width; ++j){
       Entity* ent = this->world[i][j];
@@ -105,6 +110,7 @@ void WatorGame::tick(){
         }
         //Send percepts for entity to decide new movement
         ent->tick(percepts);
+        //update entity's position information here
       }
     }
   }
