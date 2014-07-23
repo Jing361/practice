@@ -18,9 +18,9 @@ public:
 
   char getSym();
   void tick(Entity** percepts[]);
-  direction move(Entity** percepts[]);
+  void move(Entity** percepts[]);
   unsigned int getRange();
-  unsigned int tickAge();
+  void tickAge();
   Entity* breed();
   void feed(Entity* food);
 };

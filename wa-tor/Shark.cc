@@ -24,24 +24,22 @@ void Shark::tick(Entity** percepts[]){
   this->move(percepts);
 }
 
-direction Shark::move(Entity** percepts[]){
-  return North;
+//move by changing position information
+void Shark::move(Entity** percepts[]){
 }
 
 unsigned int Shark::getRange(){
   return this->seekRange;
 }
 
-unsigned int Shark::tickAge(){
-  unsigned int ag = (++this->age);
+void Shark::tickAge(){
   ++this->feedTime;
-  if(ag == this->breedAge){
+  if(++this->age == this->breedAge){
     this->breed();
   }
   if(this->feedTime == this->starveTime){
     delete this;
   }
-  return ag;
 }
 
 Entity* Shark::breed(){

@@ -4,6 +4,7 @@
 class Game{
 protected:
   bool running;
+  unsigned int age;
 public:
   virtual void run() = 0;
 };

@@ -20,16 +20,14 @@ void Fish::tick(Entity** percepts[]){
   this->move(percepts);
 }
 
-unsigned int Fish::tickAge(){
-  unsigned int ag = (++this->age);
-  if(ag == this->breedAge){
+void Fish::tickAge(){
+  if(++this->age == this->breedAge){
     this->breed();
   }
-  return ag;
 }
 
-direction Fish::move(Entity** percepts[]){
-  return North;
+//move by changing position information
+void Fish::move(Entity** percepts[]){
 }
 
 Entity* Fish::breed(){
