@@ -1,0 +1,12 @@
+Create a maze generator combined with maze solver.
+Bonus: create mazes of different shaps like circle and triangle.
+  Make different maze difficulties possible.
+Allow 3d mazes, or hyper dimensional mazes.
+  or other types as suggested in resource 2.
+
+Inspired from:
+http://en.wikipedia.org/wiki/Maze_generation_algorithm
+
+Resource:
+[1]http://www.mazeworks.com/mazegen/mazetut/
+[2]http://www.astrolog.org/labyrnth/algrithm.htm
