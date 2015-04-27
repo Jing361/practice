@@ -2,6 +2,7 @@
 #define __GENETIC_ALGORITHM_H__
 
 #include<random>
+#include<vector>
 
 class gene{
 private:
@@ -15,13 +16,12 @@ class geneticAlgorithm{
 private:
   unsigned int m_popSize = 30;
   unsigned int m_geneLength = 10;
-  double       m_mutationRate = 0.1;
-  double       m_recombinationRate = 0.5;
-  unsigned int m_nGenerations = 100;
+  unsigned int m_nGenerations = 1000;
   unsigned int m_sumTarget = 36;
   unsigned int m_prodTarget = 360;
-  double       m_euthRate = 0.2;
-  gene         m_genome[30];
+  double       m_mutationRate = 0.3;
+  double       m_recombinationRate = 0.1;
+  std::vector<gene>  m_genome;
   std::minstd_rand generator;
 
   void init_pop();

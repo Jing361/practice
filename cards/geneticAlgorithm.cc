@@ -11,7 +11,7 @@ bool comp(gene i, gene j){
 
 void geneticAlgorithm::init_pop(){
   for(unsigned int i = 0; i < m_popSize; ++i){
-    m_genome[i] = createGene();
+    m_genome.push_back(createGene());
   }
 }
 gene geneticAlgorithm::createGene(){
@@ -32,13 +32,26 @@ geneticAlgorithm::geneticAlgorithm(){
 }
 
 void geneticAlgorithm::run(){
+  typedef std::chrono::high_resolution_clock clock;
+  generator.seed(clock::now().time_since_epoch().count());
+  unsigned int threshold = (generator.min() + generator.max()) / 2;
+
   for(unsigned int j = 0; j < m_nGenerations; ++j){
-    for(unsigned int i = 0; i < m_popSize; ++i){
-      m_genome[i].fitness = evaluateGene(m_genome[i]);
+    double sumFitness = 0.0;
+    for(auto it = m_genome.begin(); it != m_genome.end(); ++it){
+      double fit = evaluateGene(*it);
+      (*it).fitness = fit;
+      sumFitness += fit;
     }
-    std::sort(m_genome, m_genome + m_popSize, comp);
-    for(unsigned int i = (1 - m_euthRate) * m_popSize; i < m_popSize; ++i){
-      m_genome[i] = createGene();
+    double avg = sumFitness / m_popSize;
+    for(auto it = m_genome.begin(); it != m_genome.end(); ++it){
+      if((*it).fitness <= avg){
+        m_genome.erase(it);
+      }
+    }
+    for(auto it = m_genome.begin(); it != m_genome.end(); ++it){
+      if((generator()/generator.max()) < m_recombinationRate){
+      }
     }
   }
 }
