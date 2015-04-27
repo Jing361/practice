@@ -1,7 +1,5 @@
 #include"geneticAlgorithm.hh"
 
-#include<random>
-#include<chrono>
 #include<iostream>
 
 int main(){
