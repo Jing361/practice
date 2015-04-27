@@ -36,7 +36,7 @@ void geneticAlgorithm::run(){
       m_genome[i].fitness = evaluateGene(m_genome[i]);
     }
     std::sort(m_genome, m_genome + m_popSize, comp);
-    for(unsigned int i = (1-m_euth) * m_popSize; i < m_popSize; ++i){
+    for(unsigned int i = (1 - m_euthRate) * m_popSize; i < m_popSize; ++i){
       m_genome[i] = createGene();
     }
   }
