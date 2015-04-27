@@ -1,5 +1,6 @@
 //#include<random>
 #include<chrono>
+#include<cmath>
 #include<algorithm>
 #include"geneticAlgorithm.hh"
 
@@ -42,7 +43,23 @@ void geneticAlgorithm::run(){
   }
 }
 
-unsigned int geneticAlgorithm::evaluateGene(gene gene_){
-  return 0;
+double geneticAlgorithm::evaluateGene(gene gene_){
+  int sum  = 0;
+  int prod = 1;
+  double scaledFitness;
+  double scaledSumFitness;
+  double scaledProdFitness;
+
+  for(unsigned int i = 0; i < m_geneLength; ++i){
+    if(gene_.m_genome[i]){
+      sum  += i + 1;
+    } else {
+      prod *= i + 1;
+    }
+  }
+  scaledSumFitness = (sum - m_sumTarget)/m_sumTarget;
+  scaledProdFitness = (prod - m_prodTarget)/m_prodTarget;
+  scaledFitness = std::abs(scaledSumFitness) + std::abs(scaledProdFitness);
+  return scaledFitness;
 }
 

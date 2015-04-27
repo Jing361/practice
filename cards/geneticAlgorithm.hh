@@ -8,7 +8,7 @@ private:
   unsigned int m_geneLength = 10;
 public:
   bool m_genome[10];
-  unsigned int fitness;
+  double fitness;
 };
 
 class geneticAlgorithm{
@@ -31,7 +31,7 @@ public:
   geneticAlgorithm();
 
   void run();
-  unsigned int evaluateGene(gene gene_);
+  double evaluateGene(gene gene_);
 };
 
 #endif
