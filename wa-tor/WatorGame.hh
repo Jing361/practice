@@ -12,6 +12,7 @@ using std::cout;
 using std::endl;
 
 //TODO:Update to MVC paradigm
+//TODO:Use an entity list to iterate instead of iterating whole world?
 class WatorGame:public Game{
 private:
   void populateWorld();
@@ -20,9 +21,8 @@ protected:
   unsigned int height, width;
   double fishFract;
   unsigned int fishCount, sharkCount;
-//  Entity* world[64][64];
-  Entity*** world;
-//  WatorWorld world(64, 64);
+//  Entity*** world;
+  WatorWorld* world;
 public:
   WatorGame();
   WatorGame(unsigned int sX, unsigned int sY);

@@ -3,9 +3,9 @@
 WatorWorld::WatorWorld(unsigned int x, unsigned int y){
   this->height = x;
   this->width = y;
-  this->universe = new Entity**[x];
-  for(unsigned int i = 0; i < x; ++i){
-    this->universe[i] = new Entity*[y];
+  this->universe = new Entity**[this->height];
+  for(unsigned int i = 0; i < this->height; ++i){
+    this->universe[i] = new Entity*[this->width];
   }
 }
 
@@ -15,6 +15,13 @@ WatorWorld::WatorWorld(unsigned int x, unsigned int y, Entity*** world):WatorWor
       this->universe[i][j] = world[i][j];
     }
   }
+}
+
+WatorWorld::~WatorWorld(){
+  for(unsigned int i = 0; i < this->height; ++i){
+    delete[] this->universe[i];
+  }
+  delete[] this->universe;
 }
 
 Entity* WatorWorld::get(unsigned int x, unsigned int y){

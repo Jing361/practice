@@ -11,14 +11,14 @@ protected:
   //Time when starvation occurs
   unsigned int starveTime;
 public:
-  Shark(int r);
+  Shark(int r = 1);
   Shark(int x, int y);
   Shark(const vec& pos);
   virtual ~Shark();
 
   char getSym();
-  void tick(Entity** percepts[]);
-  void move(Entity** percepts[]);
+  void tick(Entity*** percepts);
+  void move(Entity*** percepts);
   unsigned int getRange();
   void tickAge();
   Entity* breed();

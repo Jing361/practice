@@ -15,7 +15,7 @@ char Fish::getSym(){
 Fish::~Fish(){
 }
 
-void Fish::tick(Entity** percepts[]){
+void Fish::tick(Entity*** percepts){
   this->tickAge();
   this->move(percepts);
 }
@@ -27,7 +27,7 @@ void Fish::tickAge(){
 }
 
 //move by changing position information
-void Fish::move(Entity** percepts[]){
+void Fish::move(Entity*** percepts){
 }
 
 Entity* Fish::breed(){

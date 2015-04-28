@@ -7,10 +7,10 @@
 class WatorWorld:public World<Entity*>{
 public:
   //Specify world size
-  //Z dimension defaults to 0
-  //TODO:Make z-dimension work
+  //TODO:Implement z-dimension
   WatorWorld(unsigned int x, unsigned int y);
   WatorWorld(unsigned int x, unsigned int y, Entity*** world);
+  virtual ~WatorWorld();
 
   Entity* get(unsigned int x, unsigned int y);
   void set(unsigned int x, unsigned int y, Entity* newEnt);

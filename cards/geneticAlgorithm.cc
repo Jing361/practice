@@ -1,13 +1,7 @@
-//#include<random>
 #include<chrono>
 #include<cmath>
 #include<algorithm>
 #include"geneticAlgorithm.hh"
-
-bool comp(gene i, gene j){
-//return i<j
-  return i.fitness < j.fitness;
-}
 
 void geneticAlgorithm::init_pop(){
   for(unsigned int i = 0; i < m_popSize; ++i){
@@ -16,8 +10,6 @@ void geneticAlgorithm::init_pop(){
 }
 gene geneticAlgorithm::createGene(){
   gene ret;
-  typedef std::chrono::high_resolution_clock clock;
-  generator.seed(clock::now().time_since_epoch().count());
   unsigned int threshold = (generator.min() + generator.max()) / 2;
 
   for(unsigned int j = 0; j < m_geneLength; ++j){
@@ -28,12 +20,12 @@ gene geneticAlgorithm::createGene(){
 }
 
 geneticAlgorithm::geneticAlgorithm(){
+  typedef std::chrono::high_resolution_clock clock;
+  generator.seed(clock::now().time_since_epoch().count());
   init_pop();
 }
 
 void geneticAlgorithm::run(){
-  typedef std::chrono::high_resolution_clock clock;
-  generator.seed(clock::now().time_since_epoch().count());
   unsigned int threshold = (generator.min() + generator.max()) / 2;
 
   for(unsigned int j = 0; j < m_nGenerations; ++j){
@@ -44,11 +36,7 @@ void geneticAlgorithm::run(){
       sumFitness += fit;
     }
     double avg = sumFitness / m_popSize;
-    for(auto it = m_genome.begin(); it != m_genome.end(); ++it){
-      if((*it).fitness <= avg){
-        m_genome.erase(it);
-      }
-    }
+    std::remove_if(m_genome.begin(), m_genome.end(), [avg](gene gene_){ return gene_.fitness <= avg; });
     for(auto it = m_genome.begin(); it != m_genome.end(); ++it){
       if((generator()/generator.max()) < m_recombinationRate){
       }

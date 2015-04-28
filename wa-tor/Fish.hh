@@ -11,9 +11,9 @@ public:
   virtual ~Fish();
 
   char getSym();
-  void tick(Entity** percpets[]);
+  void tick(Entity*** percpets);
+  void move(Entity*** percepts);
   void tickAge();
-  void move(Entity** percepts[]);
   Entity* breed();
 };
 

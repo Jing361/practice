@@ -8,6 +8,7 @@ WatorGame::WatorGame(unsigned int sX, unsigned int sY, double fract){
   this->running = true;
   this->height = sX;
   this->width = sY;
+  this->world = new WatorWorld(this->height, this->width);
   this->fishFract = fract;
   this->entityCount = (this->height * this->width) / 2;
   this->fishCount = this->entityCount * this->fishFract;
@@ -20,22 +21,23 @@ WatorGame::~WatorGame(){
   this->cleanup();
 }
 
+//Possibly good idea to generate list of entities, and then register them with the game
 void WatorGame::populateWorld(){
   for(unsigned int i = 0; i < this->fishCount; ++i){
     unsigned int h, w;
     do{
       h = rand() % this->height;
       w = rand() % this->width;
-    } while(this->world[h][w] != 0);
-    this->world[h][w] = new Fish(h, w);
+    } while(this->world->get(h, w) != 0);
+    this->world->set(h, w, new Fish(h, w));
   }
   for(unsigned int i = 0; i < this->sharkCount; ++i){
     unsigned int h, w;
     do{
       h = rand() % this->height;
       w = rand() % this->width;
-    } while(this->world[h][w] != 0);
-    this->world[h][w] = new Shark(h, w);
+    } while(this->world->get(h, w) != 0);
+    this->world->set(h, w, new Shark(h, w));
   }
 }
 
@@ -46,27 +48,13 @@ void WatorGame::run(){
 void WatorGame::initialize(){
   srand(time(NULL));
 
-  this->world = new Entity**[this->height];
-  for(unsigned int i = 0; i < this->height; ++i){
-    this->world[i] = new Entity*[this->width];
-  }
-  for(unsigned int i = 0; i < this->height; ++i){
-    for(unsigned int j = 0; j < this->width; ++j){
-      this->world[i][j] = 0;
-    }
-  }
+  this->world = new WatorWorld(this->height, this->width);
 
   this->populateWorld();
 }
 
 void WatorGame::cleanup(){
-  for(unsigned int i = 0; i < this->height; ++i){
-    for(unsigned int j = 0; j < this->width; ++j){
-      delete this->world[i][j];
-    }
-    delete[] this->world[i];
-  }
-  delete[] this->world;
+  delete this->world;
 }
 
 void WatorGame::loop(){
@@ -81,33 +69,14 @@ void WatorGame::tick(){
   cout << "game age:" << this->age << endl;
   for(unsigned int i = 0; i < this->height; ++i){
     for(unsigned int j = 0; j < this->width; ++j){
-      Entity* ent = this->world[i][j];
+      Entity* ent = this->world->get(i, j);
       if(ent != 0){
         //Generate percepts for entity
         //I don't like this, do something more OO?
         //TODO:convert world array into a class
-        Entity* temp[3][3];
-        Entity** percepts[3] = {temp[0],temp[1],temp[2]};
-        for(int k = 0; k < 3; ++k){
-          for(int l = 0; l < 3; ++l){
-            int x;
-            int y;
-            int xt = i - (k - 1) % this->height;
-            int yt = j - (l - 1) % this->width;
-            //if the xt or yt value is negative, then it can be added, not subtracted
-            if(xt < 0){
-              x = this->height + xt;
-            } else {
-              x = xt;
-            }
-            if(yt < 0){
-              y = this->width + yt;
-            } else {
-              y = yt;
-            }
-            percepts[k][l] = this->world[x][y];
-          }
-        }
+        Entity*** percepts;
+
+        //percepts = this->world->getPercepts();
         //Send percepts for entity to decide new movement
         ent->tick(percepts);
         //update entity's position information here
@@ -119,10 +88,10 @@ void WatorGame::tick(){
 void WatorGame::render(){
   for(unsigned int i = 0; i < this->height; ++i){
     for(unsigned int j = 0; j < this->width; ++j){
-      if(this->world[i][j] == 0){
+      if(this->world->get(i, j) == 0){
         cout << " ";
       } else {
-        cout << this->world[i][j]->getSym();
+        cout << this->world->get(i, j)->getSym();
       }
     }
     cout << endl;

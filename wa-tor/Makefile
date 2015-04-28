@@ -11,7 +11,7 @@ source:=$(files:=.cc)
 
 default:wator
 
-wator:main.o WatorGame.o WatorWorld.o
+wator:main.o WatorGame.o WatorWorld.o Fish.o Shark.o
 	$(CC) main.o WatorWorld.o WatorGame.o Fish.o Shark.o -o wator
 
 main.o:main.cc
@@ -23,7 +23,7 @@ Fish.o:Fish.cc Entity.hh Renderable.hh
 Shark.o:Shark.cc Entity.hh Renderable.hh
 	$(CC) $(cflags) $(flags) Shark.cc
 
-WatorGame.o:Fish.o Shark.o WatorGame.cc
+WatorGame.o:WatorGame.cc
 	$(CC) $(cflags) $(flags) WatorGame.cc
 
 WatorWorld.o:WatorWorld.cc World.hh

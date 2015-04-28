@@ -1,6 +1,10 @@
 #include"Shark.hh"
+#include<iostream>
+using std::cout;
+using std::endl;
 
-Shark::Shark(int r = 1):Shark(0, 0){
+//Shark::Shark(int r = 1):Shark(0, 0)
+Shark::Shark(int r):Shark(0, 0){
   this->seekRange = r;
 }
 
@@ -19,13 +23,13 @@ char Shark::getSym(){
   return this->sym;
 }
 
-void Shark::tick(Entity** percepts[]){
+void Shark::tick(Entity*** percepts){
   this->tickAge();
   this->move(percepts);
 }
 
 //move by changing position information
-void Shark::move(Entity** percepts[]){
+void Shark::move(Entity*** percepts){
 }
 
 unsigned int Shark::getRange(){
