@@ -51,7 +51,7 @@ void geneticAlgorithm::run(){
     m_genome.erase(std::remove_if(m_genome.begin(), m_genome.end(), 
                     [avg](const gene& gene_)->bool{
                       return gene_.fitness <= avg;
-                    }));
+                    }), m_genome.end());
     for(auto it = m_genome.begin(); it != m_genome.end(); ++it){
       if((generator() / generator.max()) < m_recombinationRate){
         if(hasFirst){
