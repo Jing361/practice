@@ -3,13 +3,16 @@
 
 #include<random>
 #include<vector>
+#include<tuple>
 
 class gene{
 private:
-  unsigned int m_geneLength = 10;
+  //geneLength should be from template value
+  //  genes of different length are effectively 
+  //  different types as they cannot be bred together
 public:
   bool m_genome[10];
-  double fitness;
+  double fitness = 0;
 };
 
 class geneticAlgorithm{
@@ -26,6 +29,7 @@ private:
 
   void init_pop();
   gene createGene();
+  std::pair<gene, gene> breed(gene a, gene b);
 
 public:
   geneticAlgorithm();
