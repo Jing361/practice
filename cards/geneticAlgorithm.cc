@@ -36,6 +36,7 @@ geneticAlgorithm::geneticAlgorithm(){
 }
 
 void geneticAlgorithm::run(){
+  std::cout.precision(std::numeric_limits<double>::digits10);
   std::vector<gene> newGenes;
   bool hasFirst = false;
   gene first;
@@ -50,7 +51,7 @@ void geneticAlgorithm::run(){
     double avg = sumFitness / m_popSize;
     m_genome.erase(std::remove_if(m_genome.begin(), m_genome.end(), 
                     [avg](const gene& gene_)->bool{
-                      return gene_.fitness <= avg;
+                      return gene_.fitness >= avg;
                     }), m_genome.end());
     for(auto it = m_genome.begin(); it != m_genome.end(); ++it){
       if((generator() / generator.max()) < m_recombinationRate){
