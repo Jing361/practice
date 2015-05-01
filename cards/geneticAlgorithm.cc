@@ -43,7 +43,7 @@ void geneticAlgorithm::run(){
     purgePop();
     breedPop();
     mutatePop();
-    displayPop();
+    //displayPop();
   }
 }
 
@@ -93,7 +93,7 @@ void geneticAlgorithm::breedPop(){
   bool hasFirst = false;
   gene first;
   for(auto it = m_genome.begin(); it != m_genome.end(); ++it){
-    if((generator() / generator.max()) < m_recombinationRate){
+    if(((double)generator() / generator.max()) < m_recombinationRate){
       if(hasFirst){
         std::pair<gene, gene> tmp(breed(first, *it));
         newGenes.push_back(std::get<0>(tmp));
