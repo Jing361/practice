@@ -7,11 +7,19 @@
 
 std::pair<gene, gene> geneticAlgorithm::breed(gene a, gene b){
   unsigned int cross = generator() % m_geneLength;
+
   for(unsigned int i = cross; i < m_geneLength; ++i){
     bool swap = a.m_genome[i];
     a.m_genome[i] = b.m_genome[i];
     b.m_genome[i] = swap;
   }
+
+  unsigned int spot;
+  spot = generator() % 10;
+  a.m_genome[spot] = !a.m_genome[spot];
+  spot = generator() % 10;
+  b.m_genome[spot] = !b.m_genome[spot];
+
   return std::pair<gene, gene>(a, b);
 }
 
@@ -20,6 +28,7 @@ void geneticAlgorithm::init_pop(){
     m_genome.push_back(createGene());
   }
 }
+
 gene geneticAlgorithm::createGene(){
   gene ret;
   unsigned int threshold = (generator.min() + generator.max()) / 2;
@@ -106,8 +115,6 @@ void geneticAlgorithm::breedPop(){
         hasFirst = true;
       }
     }
-    unsigned int spot = generator() % 10;
-    (*it).m_genome[spot] = !(*it).m_genome[spot];
   }
   for(auto it = newGenes.begin(); it != newGenes.end(); ++it){
     m_genome.push_back(*it);
