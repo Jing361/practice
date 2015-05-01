@@ -1,6 +1,7 @@
 #include<chrono>
 #include<cmath>
 #include<algorithm>
+#include<iostream>
 #include"geneticAlgorithm.hh"
 
 std::pair<gene, gene> geneticAlgorithm::breed(gene a, gene b){
@@ -36,43 +37,17 @@ geneticAlgorithm::geneticAlgorithm(){
 }
 
 void geneticAlgorithm::run(){
-  std::cout.precision(std::numeric_limits<double>::digits10);
-  std::vector<gene> newGenes;
-  bool hasFirst = false;
-  gene first;
 
   for(unsigned int j = 0; j < m_nGenerations; ++j){
-    double sumFitness = 0.0;
-    for(auto it = m_genome.begin(); it != m_genome.end(); ++it){
-      double fit = evaluateGene(*it);
-      (*it).fitness = fit;
-      sumFitness += fit;
-    }
-    double avg = sumFitness / m_popSize;
-    m_genome.erase(std::remove_if(m_genome.begin(), m_genome.end(), 
-                    [avg](const gene& gene_)->bool{
-                      return gene_.fitness >= avg;
-                    }), m_genome.end());
-    for(auto it = m_genome.begin(); it != m_genome.end(); ++it){
-      if((generator() / generator.max()) < m_recombinationRate){
-        if(hasFirst){
-          std::pair<gene, gene> tmp(breed(first, *it));
-          newGenes.push_back(std::get<0>(tmp));
-          newGenes.push_back(std::get<1>(tmp));
-          hasFirst = false;
-        } else {
-          first = *it;
-          hasFirst = true;
-        }
-      }
-    }
-    for(auto it = newGenes.begin(); it != newGenes.end(); ++it){
-      m_genome.push_back(*it);
-    }
+    evaluatePop();
+    purgePop();
+    breedPop();
+    mutatePop();
+    displayPop();
   }
 }
 
-double geneticAlgorithm::evaluateGene(gene gene_){
+void geneticAlgorithm::evaluateGene(gene& gene_){
   int sum  = 0;
   int prod = 1;
   double scaledFitness;
@@ -86,9 +61,65 @@ double geneticAlgorithm::evaluateGene(gene gene_){
       prod *= i + 1;
     }
   }
+  gene_.m_sum = sum;
+  gene_.m_prod = prod;
+
   scaledSumFitness = (sum - m_sumTarget)/m_sumTarget;
   scaledProdFitness = (prod - m_prodTarget)/m_prodTarget;
   scaledFitness = std::abs(scaledSumFitness) + std::abs(scaledProdFitness);
-  return scaledFitness;
+
+  gene_.m_fitness = scaledFitness;
+}
+
+void geneticAlgorithm::evaluatePop(){
+  double sumFitness = 0.0;
+  for(auto it = m_genome.begin(); it != m_genome.end(); ++it){
+    evaluateGene(*it);
+    sumFitness += (*it).m_fitness;
+  }
+  m_avgFitness = sumFitness / m_popSize;
+}
+
+void geneticAlgorithm::purgePop(){
+  double avg = m_avgFitness;
+  m_genome.erase(std::remove_if(m_genome.begin(), m_genome.end(), 
+                  [avg](const gene& gene_)->bool{
+                    return gene_.m_fitness >= avg;
+                  }), m_genome.end());
+}
+
+void geneticAlgorithm::breedPop(){
+  std::vector<gene> newGenes;
+  bool hasFirst = false;
+  gene first;
+  for(auto it = m_genome.begin(); it != m_genome.end(); ++it){
+    if((generator() / generator.max()) < m_recombinationRate){
+      if(hasFirst){
+        std::pair<gene, gene> tmp(breed(first, *it));
+        newGenes.push_back(std::get<0>(tmp));
+        newGenes.push_back(std::get<1>(tmp));
+        hasFirst = false;
+      } else {
+        first = *it;
+        hasFirst = true;
+      }
+    }
+  }
+  for(auto it = newGenes.begin(); it != newGenes.end(); ++it){
+    m_genome.push_back(*it);
+  }
+}
+
+void geneticAlgorithm::mutatePop(){
+}
+
+void geneticAlgorithm::displayPop(){
+  for(auto it = m_genome.begin(); it != m_genome.end(); ++it){
+    for(unsigned int i = 0; i < 10; ++i){
+      std::cout << (*it).m_genome[i];
+    }
+    std::cout << "\t" << (*it).m_fitness << std::endl;
+    std::cout << "sum:\t" << (*it).m_sum << " prod:\t" << (*it).m_prod << std::endl;
+  }
 }
 

@@ -12,18 +12,21 @@ private:
   //  different types as they cannot be bred together
 public:
   bool m_genome[10];
-  double fitness = 0;
+  double m_fitness = 0;
+  unsigned int m_sum;
+  unsigned int m_prod;
 };
 
 class geneticAlgorithm{
 private:
   unsigned int m_popSize = 30;
   unsigned int m_geneLength = 10;
-  unsigned int m_nGenerations = 1000;
+  unsigned int m_nGenerations = 10;
   unsigned int m_sumTarget = 36;
   unsigned int m_prodTarget = 360;
   double       m_mutationRate = 0.3;
   double       m_recombinationRate = 0.1;
+  double       m_avgFitness;
   std::vector<gene>  m_genome;
   std::minstd_rand generator;
 
@@ -35,7 +38,12 @@ public:
   geneticAlgorithm();
 
   void run();
-  double evaluateGene(gene gene_);
+  void evaluateGene(gene& gene_);
+  void evaluatePop();
+  void purgePop();
+  void breedPop();
+  void mutatePop();
+  void displayPop();
 };
 
 #endif
