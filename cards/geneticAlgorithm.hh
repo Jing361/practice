@@ -21,7 +21,7 @@ class geneticAlgorithm{
 private:
   unsigned int m_popSize = 30;
   unsigned int m_geneLength = 10;
-  unsigned int m_nGenerations = 10;
+  unsigned int m_nGenerations = 1000;
   unsigned int m_sumTarget = 36;
   unsigned int m_prodTarget = 360;
   double       m_mutationRate = 0.3;

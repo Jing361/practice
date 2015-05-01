@@ -2,6 +2,7 @@
 #include<cmath>
 #include<algorithm>
 #include<iostream>
+#include<limits>
 #include"geneticAlgorithm.hh"
 
 std::pair<gene, gene> geneticAlgorithm::breed(gene a, gene b){
@@ -37,14 +38,15 @@ geneticAlgorithm::geneticAlgorithm(){
 }
 
 void geneticAlgorithm::run(){
-
   for(unsigned int j = 0; j < m_nGenerations; ++j){
     evaluatePop();
     purgePop();
     breedPop();
     mutatePop();
-    //displayPop();
   }
+  evaluatePop();
+  std::sort(m_genome.begin(), m_genome.end(), [](gene x, gene y){ return x.m_fitness < y.m_fitness; });
+  displayPop();
 }
 
 void geneticAlgorithm::evaluateGene(gene& gene_){
@@ -104,6 +106,8 @@ void geneticAlgorithm::breedPop(){
         hasFirst = true;
       }
     }
+    unsigned int spot = generator() % 10;
+    (*it).m_genome[spot] = !(*it).m_genome[spot];
   }
   for(auto it = newGenes.begin(); it != newGenes.end(); ++it){
     m_genome.push_back(*it);
@@ -111,9 +115,13 @@ void geneticAlgorithm::breedPop(){
 }
 
 void geneticAlgorithm::mutatePop(){
+  for(unsigned int i = 0; i < 10; ++i){
+    m_genome.push_back(createGene());
+  }
 }
 
 void geneticAlgorithm::displayPop(){
+  std::cout.precision(std::numeric_limits<double>::digits10);
   for(auto it = m_genome.begin(); it != m_genome.end(); ++it){
     for(unsigned int i = 0; i < 10; ++i){
       std::cout << (*it).m_genome[i];
