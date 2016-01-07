@@ -33,14 +33,13 @@ private:
 
 public:
   buffer(){
-/*    for(auto it:m_buffer){
-      for(auto jt:it){
-        jt = ' ';
-      }
-    }*/
-    for(unsigned int i = 0; i < X; ++i){
-      for(unsigned int j = 0; j < Y; ++j){
-        m_buffer[i][j] = ' ';
+    clear();
+  }
+
+  void clear(){
+    for(auto it = m_buffer.begin(); it < m_buffer.end(); ++it){
+      for(auto jt = (*it).begin(); jt < (*it).end(); ++jt){
+        *jt = ' ';
       }
     }
   }
@@ -58,13 +57,19 @@ public:
   void render(image img, coord c){
     int x = c.first;
     int y = c.second;
+    int i = 0;
+    int j = 0;
 
-    while(y > 0 && y < Y){
-      while(x > 0 && x < X){
-        m_buffer[x][y] = img.data()[x][y];
+    while(y >= 0 && y < Y && j < img.data().size()){
+      while(x >= 0 && x < X && i < img.data()[j].size()){
+        m_buffer[y][x] = img.data()[j][i];
         ++x;
+        ++i;
       }
       ++y;
+      ++j;
+      x = c.first;
+      i = 0;
     }
   }
 };
@@ -76,8 +81,11 @@ int main(){
                   "CCC\n");
   image img(str);
 
-  frame.render(img, coord(0, 0));
-  frame.display();
+  for(unsigned int i = 0; i < 5; ++i){
+    frame.clear();
+    frame.render(img, coord(10 + i, 10));
+    frame.display();
+  }
   return 0;
 }
 
