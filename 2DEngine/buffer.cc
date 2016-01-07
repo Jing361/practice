@@ -34,7 +34,9 @@ void buffer<X, Y>::render(image img, coord c){
 
   while(y >= 0 && y < Y && j < img.data().size()){
     while(x >= 0 && x < X && i < img.data()[j].size()){
-      m_buffer[y][x] = img.data()[j][i];
+      if(img.data()[j][i] != ' '){
+        m_buffer[y][x] = img.data()[j][i];
+      }
       ++x;
       ++i;
     }
