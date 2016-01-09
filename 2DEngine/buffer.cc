@@ -12,7 +12,7 @@ void buffer<X, Y>::drawFlatLine(int y, int x1, int x2, char c){
 }
 
 template<unsigned int X, unsigned int Y>
-void buffer<X, Y>::drawFlatTopTri(coord v1, coord v2, coord v3){
+void buffer<X, Y>::drawFlatTopTri(coord v1, coord v2, coord v3, char c){
   std::vector<coord> vec{ v1, v2, v3 };
   auto lowIt = std::min_element(vec.begin(), vec.end(), [](coord a, coord b)->bool{
     return a.second < b.second;
@@ -26,14 +26,14 @@ void buffer<X, Y>::drawFlatTopTri(coord v1, coord v2, coord v3){
   double xl = low.first;
 
   for(unsigned int i = low.second; i < vec[0].second; ++i){
-    drawFlatLine(i, xl, xr, '#');
+    drawFlatLine(i, xl, xr, c);
     xl += liSlope;
     xr += riSlope;
   }
 }
 
 template<unsigned int X, unsigned int Y>
-void buffer<X, Y>::drawFlatBotTri(coord v1, coord v2, coord v3){
+void buffer<X, Y>::drawFlatBotTri(coord v1, coord v2, coord v3, char c){
   std::vector<coord> vec{ v1, v2, v3 };
   auto hiIt = std::max_element(vec.begin(), vec.end(), [](coord a, coord b)->bool{
     return a.second < b.second;
@@ -47,7 +47,7 @@ void buffer<X, Y>::drawFlatBotTri(coord v1, coord v2, coord v3){
   double xl = hi.first;
 
   for(unsigned int i = hi.second; i > vec[0].second; --i){
-    drawFlatLine(i, xl, xr, '#');
+    drawFlatLine(i, xl, xr, c);
     xl += liSlope;
     xr += riSlope;
   }
@@ -97,6 +97,25 @@ void buffer<X, Y>::draw(image img, coord c){
     ++j;
     x = c.first;
     i = 0;
+  }
+}
+
+template<unsigned int X, unsigned int Y>
+void buffer<X, Y>::drawTri(coord v1, coord v2, coord v3, char c){
+  std::vector<coord> vec{ v1, v2, v3 };
+  std::sort(vec.begin(), vec.end(), [](coord a, coord b){
+    return a.second < b.second;
+  });
+  
+  if(vec[1].second == vec[2].second){
+    drawFlatBotTri(v1, v2, v3, c);
+  } else if(vec[0].second == vec[1].second){
+    drawFlatTopTri(v1, v2, v3, c);
+  } else {
+    coord v4 = coord((int)(vec[0].first + ((double)(vec[1].second - vec[0].second) / (double)(vec[2].second - vec[0].second)) * (vec[2].first - vec[0].first)), vec[2].second);
+    
+    drawFlatBotTri(vec[0], vec[1], v4, c);
+    drawFlatTopTri(vec[1], v4, vec[2], c);
   }
 }
 
