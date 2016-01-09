@@ -8,7 +8,7 @@ default:main
 main:main.o image.o
 	$(CC) main.o image.o -o main
 
-main.o:main.cc
+main.o:main.cc buffer.cc
 	$(CC) $(cflags) $(flags) main.cc
 
 image.o:image.cc
