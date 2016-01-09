@@ -12,12 +12,17 @@ class buffer{
 private:
   std::array<std::array<char, X>, Y> m_buffer;
 
+  void drawFlatLine(int y, int x1, int x2, char c);
+
 public:
   buffer();
 
   void clear();
   void display();
-  void render(image img, coord c);
+  void draw(image img, coord c);
+
+  void drawFlatTopTri(coord v1, coord v2, coord v3);
+  void drawFlatBotTri(coord v1, coord v2, coord v3);
 };
 
 #include"buffer.cc"
