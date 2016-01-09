@@ -15,8 +15,6 @@ private:
   void drawFlatLine(int y, int x1, int x2, char c);
   void drawFlatTopTri(coord v1, coord v2, coord v3, char c = '#');
   void drawFlatBotTri(coord v1, coord v2, coord v3, char c = '#');
-  bool checkFlatTop(coord v1, coord v2, coord v3);
-  bool checkFlatBot(coord v1, coord v2, coord v3);
 
 public:
   buffer();

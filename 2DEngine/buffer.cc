@@ -18,8 +18,8 @@ void buffer<X, Y>::drawFlatTopTri(coord v1, coord v2, coord v3, char c){
     return a.second < b.second;
   });
 
-  vec.erase(lowIt);
   coord low = *lowIt;
+  vec.erase(lowIt);
   double liSlope = (double)(vec[0].first - low.first) / (double)(vec[0].second - low.second);
   double riSlope = (double)(vec[1].first - low.first) / (double)(vec[1].second - low.second);
   double xr = low.first;
@@ -39,8 +39,8 @@ void buffer<X, Y>::drawFlatBotTri(coord v1, coord v2, coord v3, char c){
     return a.second < b.second;
   });
 
-  vec.erase(hiIt);
   coord hi = *hiIt;
+  vec.erase(hiIt);
   double liSlope = (double)(vec[0].first - hi.first) / (double)(vec[0].second - hi.second);
   double riSlope = (double)(vec[1].first - hi.first) / (double)(vec[1].second - hi.second);
   double xr = hi.first;
@@ -48,8 +48,8 @@ void buffer<X, Y>::drawFlatBotTri(coord v1, coord v2, coord v3, char c){
 
   for(unsigned int i = hi.second; i > vec[0].second; --i){
     drawFlatLine(i, xl, xr, c);
-    xl += liSlope;
-    xr += riSlope;
+    xl -= liSlope;
+    xr -= riSlope;
   }
 }
 
@@ -69,12 +69,26 @@ void buffer<X, Y>::clear(){
 
 template<unsigned int X, unsigned int Y>
 void buffer<X, Y>::display(){
+  std::cout << '+';
+  for(unsigned int i = 0; i < X; ++i){
+    std::cout << '-';
+  }
+  std::cout << "+\n";
+
   for(auto it:m_buffer){
+    std::cout << '|';
     for(auto jt:it){
       std::cout << jt;
     }
-    std::cout << "\n";
+    std::cout << "|\n";
   }
+
+  std::cout << '+';
+  for(unsigned int i = 0; i < X; ++i){
+    std::cout << '-';
+  }
+  std::cout << "+\n";
+
   std::cout << std::flush;
 }
 
@@ -112,10 +126,10 @@ void buffer<X, Y>::drawTri(coord v1, coord v2, coord v3, char c){
   } else if(vec[0].second == vec[1].second){
     drawFlatTopTri(v1, v2, v3, c);
   } else {
-    coord v4 = coord((int)(vec[0].first + ((double)(vec[1].second - vec[0].second) / (double)(vec[2].second - vec[0].second)) * (vec[2].first - vec[0].first)), vec[2].second);
+  coord v4 = coord(((vec[1].second - vec[0].second) / ((vec[0].second - vec[2].second) / (vec[0].first - vec[2].first))) + vec[0].first, vec[1].second);
     
-    drawFlatBotTri(vec[0], vec[1], v4, c);
-    drawFlatTopTri(vec[1], v4, vec[2], c);
+    drawFlatTopTri(vec[0], vec[1], v4, c);
+    drawFlatBotTri(vec[1], v4, vec[2], c);
   }
 }
 
