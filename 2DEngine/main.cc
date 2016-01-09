@@ -9,7 +9,7 @@ int main(){
                   "CCC\n");
   image img(str);
   coord v1(1, 5);
-  coord v2(6, 5);
+  coord v2(8, 5);
   coord v3(3, 1);
 
 //  for(unsigned int i = 0; i < 5; ++i){

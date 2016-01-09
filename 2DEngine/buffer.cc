@@ -6,7 +6,7 @@ template<unsigned int X, unsigned int Y>
 void buffer<X, Y>::drawFlatLine(int y, int x1, int x2, char c){
   int start = std::min(x1, x2);
   int end = std::max(x1, x2);
-  for(; start < end; ++start){
+  for(; start <= end; ++start){
     m_buffer[y][start] = c;
   }
 }
@@ -20,15 +20,15 @@ void buffer<X, Y>::drawFlatTopTri(coord v1, coord v2, coord v3){
 
   vec.erase(lowIt);
   coord low = *lowIt;
-  double liSlope = (vec[0].first - low.first) / (vec[0].second - low.second);
-  double riSlope = (vec[1].first - low.first) / (vec[1].second - low.second);
+  double liSlope = (double)(vec[0].first - low.first) / (double)(vec[0].second - low.second);
+  double riSlope = (double)(vec[1].first - low.first) / (double)(vec[1].second - low.second);
   double xr = low.first;
   double xl = low.first;
 
-  for(unsigned int i = low.second; i < (*lowIt).second; ++i){
+  for(unsigned int i = low.second; i < vec[0].second; ++i){
     drawFlatLine(i, xl, xr, '#');
-    xl = liSlope * i;
-    xr = riSlope * i;
+    xl += liSlope;
+    xr += riSlope;
   }
 }
 
@@ -41,15 +41,15 @@ void buffer<X, Y>::drawFlatBotTri(coord v1, coord v2, coord v3){
 
   vec.erase(hiIt);
   coord hi = *hiIt;
-  double liSlope = (vec[0].first - hi.first) / (vec[0].second - hi.second);
-  double riSlope = (vec[1].first - hi.first) / (vec[1].second - hi.second);
+  double liSlope = (double)(vec[0].first - hi.first) / (double)(vec[0].second - hi.second);
+  double riSlope = (double)(vec[1].first - hi.first) / (double)(vec[1].second - hi.second);
   double xr = hi.first;
   double xl = hi.first;
 
-  for(unsigned int i = hi.second; i > (*hiIt).second; --i){
+  for(unsigned int i = hi.second; i > vec[0].second; --i){
     drawFlatLine(i, xl, xr, '#');
-    xl = liSlope * i;
-    xr = riSlope * i;
+    xl += liSlope;
+    xr += riSlope;
   }
 }
 
