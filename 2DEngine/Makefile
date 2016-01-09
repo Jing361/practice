@@ -6,7 +6,7 @@ cflags:=-c
 default:main
 
 main:main.o image.o
-	$(CC) main.o image.o -o main
+	$(CC) main.o image.o -lpthread -o main
 
 main.o:main.cc buffer.cc
 	$(CC) $(cflags) $(flags) main.cc
