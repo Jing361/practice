@@ -5,14 +5,17 @@ cflags:=-c
 
 default:main
 
-main:main.o image.o
-	$(CC) main.o image.o -lpthread -o main
+main:main.o image.o engine.o
+	$(CC) main.o image.o engine.o -lpthread -o main
 
 main.o:main.cc buffer.cc
 	$(CC) $(cflags) $(flags) main.cc
 
 image.o:image.cc
 	$(CC) $(cflags) $(flags) image.cc
+
+engine.o:engine.cc
+	$(CC) $(cflags) $(flags) engine.cc
 
 clean:
 	rm *.o core main
