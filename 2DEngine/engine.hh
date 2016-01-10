@@ -10,6 +10,10 @@ private:
   bool m_isBuffer = true;
 
 public:
+  virtual ~bufferedIO(){
+    turnOff();
+  }
+
   void turnOn(){
     struct termios t;
     //get the current terminal I/O structure
