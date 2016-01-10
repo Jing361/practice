@@ -1,4 +1,5 @@
 #include"engine.hh"
+#include<iostream>
 
 engine::engine():
   m_wait(&engine::killThread, this){

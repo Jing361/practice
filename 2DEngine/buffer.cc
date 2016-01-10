@@ -115,8 +115,12 @@ void buffer<X, Y>::draw(image img, coord c){
 }
 
 template<unsigned int X, unsigned int Y>
-void buffer<X, Y>::drawTri(coord v1, coord v2, coord v3, char c){
+void buffer<X, Y>::drawTri(coord v1, coord v2, coord v3, coord loc, char c){
   std::vector<coord> vec{ v1, v2, v3 };
+  for(coord& it:vec){
+    it.first += loc.first;
+    it.second += loc.second;
+  }
   std::sort(vec.begin(), vec.end(), [](coord a, coord b){
     return a.second < b.second;
   });
@@ -131,5 +135,10 @@ void buffer<X, Y>::drawTri(coord v1, coord v2, coord v3, char c){
     drawFlatTopTri(vec[0], vec[1], v4, c);
     drawFlatBotTri(vec[1], v4, vec[2], c);
   }
+}
+
+template<unsigned int X, unsigned int Y>
+void buffer<X, Y>::draw(tri tr, coord loc, char c){
+  drawTri(std::get<0>(tr), std::get<1>(tr), std::get<2>(tr), loc, c);
 }
 

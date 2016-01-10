@@ -4,8 +4,7 @@
 #include<utility>
 #include<array>
 #include"image.hh"
-
-typedef std::pair<int, int> coord;
+#include"sharedTypes.hh"
 
 template<unsigned int X, unsigned int Y>
 class buffer{
@@ -22,7 +21,8 @@ public:
   void clear();
   void display();
   void draw(image img, coord c);
-  void drawTri(coord v1, coord v2, coord v3, char c = '#');
+  void drawTri(coord v1, coord v2, coord v3, coord loc, char c = '#');
+  void draw(tri tr, coord loc, char c = '#');
 };
 
 #include"buffer.cc"
