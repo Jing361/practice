@@ -21,8 +21,9 @@ public:
   void clear();
   void display();
   void draw(image img, coord c);
-  void drawTri(coord v1, coord v2, coord v3, coord loc, char c = '#');
   void draw(tri tr, coord loc, char c = '#');
+  void draw(entity ent);
+  void drawTri(coord v1, coord v2, coord v3, coord loc, char c = '#');
 };
 
 #include"buffer.cc"
