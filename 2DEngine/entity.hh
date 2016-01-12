@@ -15,7 +15,8 @@ public:
   coord m_coord;
 
   void addElement(T t, coord cor = coord(0, 0));
-  void draw(buffer& frame);
+  template<unsigned int X, unsigned int Y>
+  void draw(buffer<X, Y>& frame);
   template<class U>
   void collide(entity<U>);
   std::pair<coord, coord> getBoundingBox();

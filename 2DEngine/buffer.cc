@@ -142,3 +142,9 @@ void buffer<X, Y>::draw(tri tr, coord loc, char c){
   drawTri(std::get<0>(tr), std::get<1>(tr), std::get<2>(tr), loc, c);
 }
 
+template<unsigned int X, unsigned int Y>
+template<class T>
+void buffer<X, Y>::draw(entity<T> ent){
+  ent.draw(*this);
+}
+

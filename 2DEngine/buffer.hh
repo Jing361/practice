@@ -6,6 +6,9 @@
 #include"image.hh"
 #include"sharedTypes.hh"
 
+template<class T>
+class entity;
+
 template<unsigned int X, unsigned int Y>
 class buffer{
 private:
@@ -22,7 +25,8 @@ public:
   void display();
   void draw(image img, coord c);
   void draw(tri tr, coord loc, char c = '#');
-  void draw(entity ent);
+  template<class T>
+  void draw(entity<T> ent);
   void drawTri(coord v1, coord v2, coord v3, coord loc, char c = '#');
 };
 
