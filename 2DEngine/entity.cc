@@ -23,3 +23,11 @@ std::pair<coord, coord> entity::getBoundingBox(){
   return std::pair<coord, coord>(m_box.first + m_coord.first, m_box.second + m_coord.second);
 }
 
+void entity::setBoundingBox(std::pair<coord, coord> box){
+  m_box = std::pair<coord, coord>
+             (coord(std::max(box.first.first, box.second.first),
+                    std::max(box.first.second, box.second.second)),
+              coord(std::min(box.first.first, box.second.first),
+                    std::min(box.first.second, box.second.second)));
+}
+

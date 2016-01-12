@@ -19,6 +19,7 @@ public:
   template<class U>
   void collide(entity<U>);
   std::pair<coord, coord> getBoundingBox();
+  void setBoundingBox(std::pair<coord, coord> box);
 };
 
 #endif
