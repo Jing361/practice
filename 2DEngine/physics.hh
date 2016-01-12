@@ -3,12 +3,13 @@
 
 #include"entity.hh"
 
+template<class T>
 class physics{
 private:
-  std::vector<entity&> m_entity;
+  std::vector<entity<T>*> m_entity;
 
 public:
-  void addEntity(entity& ent);
+  void addEntity(entity<T>& ent);
   void checkCollisions();
 };
 

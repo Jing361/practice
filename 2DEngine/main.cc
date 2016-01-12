@@ -12,7 +12,7 @@ int main(){
   buffer<40, 20> frame;
   image img(std::fstream("letterTri.txmg"));
   engine eng;
-  physics phys;
+  physics<image> phys;
   tri tr(coord(1, 5), coord(8, 8), coord(3, 1));
 
   while(!eng.shouldQuit()){
