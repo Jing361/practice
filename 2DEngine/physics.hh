@@ -9,9 +9,11 @@ private:
   std::vector<entity<T>*> m_entity;
 
 public:
-  void addEntity(entity<T>& ent);
+  void addEntity(entity<T>* ent);
   void checkCollisions();
 };
+
+#include"physics.cc"
 
 #endif
 

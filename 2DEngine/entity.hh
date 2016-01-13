@@ -18,10 +18,12 @@ public:
   template<unsigned int X, unsigned int Y>
   void draw(buffer<X, Y>& frame);
   template<class U>
-  void collide(entity<U>);
+  void collide(entity<U> ent);
   std::pair<coord, coord> getBoundingBox();
   void setBoundingBox(std::pair<coord, coord> box);
 };
+
+#include"entity.cc"
 
 #endif
 
