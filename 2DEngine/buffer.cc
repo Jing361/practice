@@ -46,7 +46,7 @@ void buffer<X, Y>::drawFlatBotTri(coord v1, coord v2, coord v3, char c){
   double xr = hi.first;
   double xl = hi.first;
 
-  for(unsigned int i = hi.second; i > vec[0].second; --i){
+  for(unsigned int i = hi.second; i > vec[0].second - 1; --i){
     drawFlatLine(i, xl, xr, c);
     xl -= liSlope;
     xr -= riSlope;
@@ -130,7 +130,10 @@ void buffer<X, Y>::drawTri(coord v1, coord v2, coord v3, coord loc, char c){
   } else if(vec[0].second == vec[1].second){
     drawFlatTopTri(v1, v2, v3, c);
   } else {
-  coord v4 = coord(((vec[1].second - vec[0].second) / ((vec[0].second - vec[2].second) / (vec[0].first - vec[2].first))) + vec[0].first, vec[1].second);
+  coord v4 = coord(((vec[1].second - vec[0].second) / 
+                   ((vec[0].second - vec[2].second) / 
+                    (vec[0].first  - vec[2].first ))) + 
+                     vec[0].first, vec[1].second);
     
     drawFlatTopTri(vec[0], vec[1], v4, c);
     drawFlatBotTri(vec[1], v4, vec[2], c);

@@ -8,7 +8,7 @@ default:main
 main:main.o image.o engine.o
 	$(CC) main.o image.o engine.o -lpthread -o main
 
-main.o:main.cc buffer.cc
+main.o:main.cc buffer.cc physics.cc entity.cc
 	$(CC) $(cflags) $(flags) main.cc
 
 image.o:image.cc

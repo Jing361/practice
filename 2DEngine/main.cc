@@ -13,7 +13,7 @@ int main(){
   image img(std::fstream("letterTri.txmg"));
   engine eng;
   physics<image> phys;
-  tri tr(coord(1, 5), coord(8, 8), coord(3, 1));
+  tri tr(coord(13, 5), coord(10, 8), coord(3, 1));
 
   while(!eng.shouldQuit()){
     frame.clear();
