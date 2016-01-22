@@ -1,3 +1,4 @@
+#include<set>
 #include"physics.hh"
 
 template<class T>
@@ -7,6 +8,8 @@ void physics<T>::addEntity(std::string name, entity<T>* ent){
 
 template<class T>
 void physics<T>::checkCollisions(){
+  typedef std::pair<std::string, std::string> names;
+  std::set<names> colls;
   //TODO:Prevent redundant collision signals.
   for(auto it:m_entity){
     for(auto jt:m_entity){
@@ -20,8 +23,11 @@ void physics<T>::checkCollisions(){
         int d2y = it.second->getBoundingBox().second.second - 
                   jt.second->getBoundingBox().first.second;
         if(!(d1x > 0 || d1y > 0 || d2x > 0 || d2y > 0)){
-          it.second->collide(*(jt.second));
-          jt.second->collide(*(it.second));
+          if(!colls.count(names(it.first, jt.first))){
+            it.second->collide(*(jt.second));
+            jt.second->collide(*(it.second));
+            colls.insert(names(jt.first, it.first));
+          }
         }
       }
     }
