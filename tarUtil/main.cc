@@ -13,7 +13,7 @@ int main(int argc, char** argv){
   file.seekg(0);
   file.read(mem, tarSize);
 
-  for(int j = 0; j < 2; ++j){
+  while(idx < tarSize){
     std::string fileName(&mem[idx], 100);
     std::ofstream out(fileName);
     std::string sizeStr(&mem[idx + 124], 12);
