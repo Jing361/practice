@@ -4,6 +4,7 @@
 int main(int argc, char** argv){
   if(argc != 2){
     std::cout << "Incorrect number of arguments.\nCall as " << argv[0] << " tarfile." << std::endl;
+    return 1;
   }
   std::ifstream file(argv[1], std::ios::binary | std::ios::ate);
   int tarSize = file.tellg();
@@ -17,6 +18,7 @@ int main(int argc, char** argv){
     std::string fileName(&mem[idx], 100);
     std::ofstream out(fileName);
     std::string sizeStr(&mem[idx + 124], 12);
+    if(sizeStr[10] == '\0') break;
     int fileSize = stoi(sizeStr, 0, 8);
     idx += 512;
 

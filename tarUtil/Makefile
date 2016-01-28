@@ -5,13 +5,15 @@ cflags:=-c $(dflags)
 
 default:main
 
-main:main.o
+main:main.o archive.tar
 	$(CC) main.o -o main
-	tar -cf archive.tar files/one.txt files/two.txt
 
 main.o:main.cc
 	$(CC) $(cflags) $(flags) main.cc
 
+archive.tar:files/one.txt files/two.txt
+	cd files && tar -cf archive.tar one.txt two.txt && mv archive.tar ..
+
 clean:
-	rm *.o core main
+	rm *.o core main archive.tar one.txt two.txt
 
