@@ -11,6 +11,7 @@ private:
   std::map<std::string, entity<T>*> m_entity;
 
 public:
+  bool checkCollision(const std::pair<coord, coord>& box1, const std::pair<coord, coord>& box2);
   void addEntity(std::string name, entity<T>* ent);
   void checkCollisions();
 };
