@@ -1,6 +1,13 @@
 #include"entity.hh"
 
 template<class T>
+entity<T>::entity(vec2 pos, vec2 vel, vec2 acc):
+  m_pos(pos),
+  m_vel(vel),
+  m_acc(acc){
+}
+
+template<class T>
 void entity<T>::addElement(T t, coord cor){
   m_image.push_back(std::pair<T, coord>(t, cor));
 }
@@ -34,7 +41,7 @@ void entity<T>::setBoundingBox(std::pair<coord, coord> box){
 }
 
 template<class T>
-vec2& entite<T>::getCoord(){
+vec2& entity<T>::getPosition(){
   return m_pos;
 }
 
@@ -46,5 +53,11 @@ vec2& entity<T>::getVelocity(){
 template<class T>
 vec2& entity<T>::getAcceleration(){
   return m_acc;
+}
+
+template<class T>
+void entity<T>::tick(double diff){
+  m_pos += m_vel * diff;
+  m_vel += m_acc * diff;
 }
 

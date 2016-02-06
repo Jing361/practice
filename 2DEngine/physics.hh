@@ -14,6 +14,7 @@ public:
   bool checkCollision(const std::pair<coord, coord>& box1, const std::pair<coord, coord>& box2);
   void addEntity(std::string name, entity<T>* ent);
   void checkCollisions();
+  void tick(double diff);
 };
 
 #include"physics.cc"
