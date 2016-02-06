@@ -22,8 +22,8 @@ int main(){
   ent2.setBoundingBox(std::pair<coord, coord>(coord(0, 0), coord(3, 3)));
   ent1.addElement(img1);
   ent2.addElement(img2);
-  ent1.m_coord = coord(10, 10);
-  ent2.m_coord = coord(5, 5);
+  ent1.getPosition() = coord(10, 10);
+  ent2.getPosition() = coord(5, 5);
   phys.addEntity("one", &ent1);
   phys.addEntity("two", &ent2);
 
