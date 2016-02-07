@@ -14,7 +14,8 @@ class buffer{
 private:
   std::array<std::array<char, X>, Y> m_buffer;
 
-  void drawFlatLine(int y, int x1, int x2, char c);
+  void drawLine(coord v1, coord v2, char c = '#');
+  void drawFlatLine(int y, int x1, int x2, char c = '#');
   void drawFlatTopTri(coord v1, coord v2, coord v3, char c = '#');
   void drawFlatBotTri(coord v1, coord v2, coord v3, char c = '#');
 
