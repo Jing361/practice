@@ -4,6 +4,8 @@
 #include<termios.h>
 #include<unistd.h>
 #include<thread>
+#include<map>
+#include<functional>
 
 class bufferedIO{
 private:
@@ -11,7 +13,7 @@ private:
 
 public:
   virtual ~bufferedIO(){
-    turnOff();
+    turnOn();
   }
 
   void turnOn(){
@@ -46,17 +48,23 @@ public:
 };
 
 class engine{
+public:
+  typedef std::function<void()> callback;
+
 private:
   bool m_end = false;
   std::thread m_wait;
+  char m_killChar;
+  std::map<char, callback> m_callbacks;
 
 public:
-  engine();
+  engine(char kill = 'q');
 
   virtual ~engine();
 
   void killThread();
   bool shouldQuit();
+  void registerCallback(char c, callback cb);
 };
 
 #endif

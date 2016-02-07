@@ -2,6 +2,7 @@
 #define __SHARED_HH__
 
 #include<tuple>
+#include<cmath>
 
 typedef std::pair<double, double> vec2;
 typedef std::pair<int, int> coord;
@@ -36,7 +37,7 @@ vec2 operator+=(vec2& a, const vec2& b){
 }*/
 
 coord operator+(const coord& a, const vec2& b){
-  return coord(a.first + (int)b.first, a.second + (int)b.second);
+  return coord(a.first + floor(b.first), a.second + floor(b.second));
 }
 
 #endif

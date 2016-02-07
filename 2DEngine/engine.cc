@@ -1,8 +1,9 @@
 #include"engine.hh"
 #include<iostream>
 
-engine::engine():
-  m_wait(&engine::killThread, this){
+engine::engine(char kill):
+  m_wait(&engine::killThread, this),
+  m_killChar(kill){
 }
 
 engine::~engine(){
@@ -12,9 +13,15 @@ engine::~engine(){
 void engine::killThread(){
   bufferedIO b;
   b.turnOff();
-  char c = ' ';
-  while(c != 'q'){
+  char c;
+  while(c != m_killChar){
     c = getchar();
+    try{
+      auto cb = m_callbacks.at(c);
+      cb();
+    } catch(std::out_of_range& e){
+      //nothing to be done
+    }
   }
   m_end = true;
   b.turnOn();
@@ -22,5 +29,9 @@ void engine::killThread(){
 
 bool engine::shouldQuit(){
   return m_end;
+}
+
+void engine::registerCallback(char c, callback cb){
+  m_callbacks[c] = cb;
 }
 

@@ -69,7 +69,7 @@ void physics<T>::checkCollisions(){
 template<class T>
 void physics<T>::tick(double diff){
   for(auto it:m_entity){
-    it.second->tick(diff / CLOCKS_PER_SEC);
+    it.second->tick(diff / (CLOCKS_PER_SEC * 10));
   }
 }
 
