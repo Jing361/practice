@@ -15,7 +15,7 @@ private:
   vec2 m_acc;
 
 public:
-  entity(vec2 pos = { 0, 0}, vec2 vel = { 0, 0}, vec2 acc = { 0, 0});
+  entity(vec2 pos = { 0, 0 }, vec2 vel = { 0, 0 }, vec2 acc = { 0, 0 });
 
   void addElement(T t, coord cor = coord(0, 0));
   template<unsigned int X, unsigned int Y>

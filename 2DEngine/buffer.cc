@@ -3,7 +3,7 @@
 #include<vector>
 
 template<unsigned int X, unsigned int Y>
-void buffer<X, Y>::drawLine(coord v1, coord v2, char c = '#'){
+void buffer<X, Y>::drawLine(coord v1, coord v2, char c){
   int start = std::min(v1.first, v2.first);
   int end = std::max(v1.first, v2.first);
   double slope = (v2.second - v1.second) / (v2.first - v1.first);

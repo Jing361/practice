@@ -1,6 +1,17 @@
 #include<sstream>
 #include"image.hh"
 
+image::image(){
+}
+
+image::image(std::string str){
+  readString(str);
+}
+
+image::image(std::fstream&& file){
+  readFile(std::move(file));
+}
+
 void image::readString(std::string str){
   std::stringstream ss(str);
   std::string line;
@@ -10,11 +21,7 @@ void image::readString(std::string str){
   }
 }
 
-image::image(std::string str){
-  readString(str);
-}
-
-image::image(std::fstream&& file){
+void image::readFile(std::fstream&& file){
   std::string str;
 
   file.seekg(0, std::ios::end);
