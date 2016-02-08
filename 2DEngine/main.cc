@@ -16,6 +16,9 @@ int main(){
   buffer<40, 20> frame;
   physics<image> phys;
   engine eng;
+  std::map<std::string, image> images;
+  std::map<std::string, entity<image>> entities;
+  std::map<std::string, tri> triangles;
 
   std::fstream config("map.wld");
   std::string line;
@@ -24,9 +27,6 @@ int main(){
     std::stringstream ss(line);
     std::string word;
     std::string name;
-    std::map<std::string, image> images;
-    std::map<std::string, entity<image>> entities;
-    std::map<std::string, tri> triangles;
 
     ss >> word;
     ss >> name;
@@ -91,35 +91,24 @@ int main(){
       ss >> x;
       ss >> y;
       entities[name].getAcceleration() = vec2(stod(x), stod(y));
+    } else if(word == "phys"){
+      std::string alias;
+
+      ss >> alias;
+      phys.addEntity(alias, &entities[name]);
     }
   }
 
-  image img1(std::fstream("letterTri.txmg"));
-  image img2(std::fstream("letterRect.txmg"));
-  tri tr(coord(13, 5), coord(10, 8), coord(3, 1));
-  entity<image> ent1;
-  entity<image> ent2;
-  std::clock_t last;
-
-  ent1.setBoundingBox(std::pair<coord, coord>(coord(0, 0), coord(3, 3)));
-  ent2.setBoundingBox(std::pair<coord, coord>(coord(0, 0), coord(3, 3)));
-  ent1.addElement(img1);
-  ent2.addElement(img2);
-  ent1.getPosition() = vec2(10, 10);
-  ent2.getPosition() = vec2(5, 5);
-  ent2.getVelocity() += vec2(1, 1);
-  phys.addEntity("one", &ent1);
-  phys.addEntity("two", &ent2);
-  last = clock();
+  std::clock_t last = clock();
 
   while(!eng.shouldQuit()){
     std::clock_t diff = clock() - last;
     phys.checkCollisions();
     frame.clear();
-    frame.draw(ent1);
-    frame.draw(ent2);
+    for(auto it:entities){
+      frame.draw(it.second);
+    }
     phys.tick(diff);
-    //frame.draw(tr, coord(1, 1), '#');
     frame.display();
   }
   return 0;
