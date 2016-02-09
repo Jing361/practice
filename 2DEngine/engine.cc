@@ -14,7 +14,7 @@ void engine::killThread(){
   bufferedIO b;
   b.turnOff();
   char c;
-  while(c != m_killChar){
+  while(c != m_killChar && !m_end){
     c = getchar();
     try{
       auto cb = m_callbacks.at(c);
@@ -27,7 +27,7 @@ void engine::killThread(){
   b.turnOn();
 }
 
-bool engine::shouldQuit(){
+bool& engine::shouldQuit(){
   return m_end;
 }
 

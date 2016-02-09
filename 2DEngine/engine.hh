@@ -63,7 +63,7 @@ public:
   virtual ~engine();
 
   void killThread();
-  bool shouldQuit();
+  bool& shouldQuit();
   void registerCallback(char c, callback cb);
 };
 
