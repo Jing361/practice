@@ -1,15 +1,23 @@
 img i1 letterTri.txmg
 img i2 letterRect.txmg
+img i3 voyager.txmg
 tri tr 13 5 10 8 3 1
 ent e1 i1
 ent e2 i2
+ent e3 i3
 
-stbb e1 0 0 3 3
-stbb e2 0 0 3 3
+stbb e1 0 0  3  3
+stbb e2 0 0  3  3
+stbb e3 0 0 10 13
 
 stp e1 10 10
 stp e2  5  5
+stp e3  0  7
 stv e2  1  1
+stv e3  1  0
+sta e3  1  0
+stm e3 10
 
 phys e1 one
 phys e2 two
+phys e3 three

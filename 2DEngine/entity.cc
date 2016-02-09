@@ -2,6 +2,7 @@
 
 template<class T>
 entity<T>::entity(vec2 pos, vec2 vel, vec2 acc):
+  m_mass(0.0),
   m_pos(pos),
   m_vel(vel),
   m_acc(acc){
@@ -53,6 +54,11 @@ vec2& entity<T>::getVelocity(){
 template<class T>
 vec2& entity<T>::getAcceleration(){
   return m_acc;
+}
+
+template<class T>
+double& entity<T>::getMass(){
+  return m_mass;
 }
 
 template<class T>

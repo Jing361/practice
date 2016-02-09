@@ -10,6 +10,7 @@ class entity{
 private:
   std::vector<std::pair<T, coord>> m_image;
   std::pair<coord, coord> m_box;
+  double m_mass;
   vec2 m_pos;
   vec2 m_vel;
   vec2 m_acc;
@@ -27,6 +28,7 @@ public:
   vec2& getPosition();
   vec2& getVelocity();
   vec2& getAcceleration();
+  double& getMass();
   void tick(double diff);
 };
 

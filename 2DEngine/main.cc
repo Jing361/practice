@@ -39,13 +39,13 @@ int main(){
       std::array<coord, 3> arr;
 
       for(int i = 0; i < 3; ++i){
-        std::string x;
-        std::string y;
+        int x;
+        int y;
 
         ss >> x;
         ss >> y;
-        arr[i].first = stoi(x);
-        arr[i].second = stoi(y);
+        arr[i].first = x;
+        arr[i].second = y;
       }
 
       tri tr(coord(arr[0].first, arr[0].second), coord(arr[0].first, arr[0].second), coord(arr[0].first, arr[0].second));
@@ -61,36 +61,41 @@ int main(){
       std::array<coord, 2> arr;
 
       for(int i = 0; i < 2; ++i){
-        std::string x;
-        std::string y;
+        int x;
+        int y;
 
         ss >> x;
         ss >> y;
-        arr[i].first = stoi(x);
-        arr[i].second = stoi(y);
+        arr[i].first = x;
+        arr[i].second = y;
       }
       entities[name].setBoundingBox(std::pair<coord, coord>(arr[0], arr[1]));
     } else if(word == "stp"){
-      std::string x;
-      std::string y;
+      double x;
+      double y;
 
       ss >> x;
       ss >> y;
-      entities[name].getPosition() = vec2(stod(x), stod(y));
+      entities[name].getPosition() = vec2(x, y);
     } else if(word == "stv"){
-      std::string x;
-      std::string y;
+      double x;
+      double y;
 
       ss >> x;
       ss >> y;
-      entities[name].getVelocity() = vec2(stod(x), stod(y));
+      entities[name].getVelocity() = vec2(x, y);
     } else if(word == "sta"){
-      std::string x;
-      std::string y;
+      double x;
+      double y;
 
       ss >> x;
       ss >> y;
-      entities[name].getAcceleration() = vec2(stod(x), stod(y));
+      entities[name].getAcceleration() = vec2(x, y);
+    } else if(word == "stm"){
+      double val;
+
+      ss >> val;
+      entities[name].getMass() = val;
     } else if(word == "phys"){
       std::string alias;
 
