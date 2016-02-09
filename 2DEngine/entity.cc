@@ -47,16 +47,11 @@ void entity<T>::draw(buffer<X, Y>& frame){
 template<class T>
 template<class U>
 void entity<T>::collide(entity<U> b){
-  std::cout << m_vel.first << '\t' << m_vel.second << '\n';
-
   double pix = ((m_mass * m_vel.first) + (b.getMass() * b.getVelocity().first));
   m_vel.first = (pix + b.getMass() * (b.getVelocity().first - m_vel.first)) / (m_mass + b.getMass());
 
   double piy = ((m_mass * m_vel.second) + (b.getMass() * b.getVelocity().second));
   m_vel.second = (piy + b.getMass() * (b.getVelocity().second - m_vel.second)) / (m_mass + b.getMass());
-
-  std::cout << m_vel.first << '\t' << m_vel.second << '\n';
-  std::cout << std::flush;
 }
 
 template<class T>
