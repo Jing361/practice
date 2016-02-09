@@ -56,8 +56,9 @@ void physics<T>::checkCollisions(){
         if(checkCollision(iBox, jBox)){
         //if(!(d1x > 0 || d1y > 0 || d2x > 0 || d2y > 0)){
           if(!colls.count(names(it.first, jt.first))){
+            entity<T> tmp(*it.second);
             it.second->collide(*(jt.second));
-            jt.second->collide(*(it.second));
+            jt.second->collide(tmp);
             colls.insert(names(jt.first, it.first));
           }
         }

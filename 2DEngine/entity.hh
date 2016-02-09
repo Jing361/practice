@@ -16,9 +16,13 @@ private:
   vec2 m_acc;
 
 public:
+  template<class U>
+  entity(const entity<U>& other);
   entity(vec2 pos = { 0, 0 }, vec2 vel = { 0, 0 }, vec2 acc = { 0, 0 });
 
   void addElement(T t, coord cor = coord(0, 0));
+  typename std::vector<std::pair<T, coord>>::iterator elementBegin();
+  typename std::vector<std::pair<T, coord>>::iterator elementEnd();
   template<unsigned int X, unsigned int Y>
   void draw(buffer<X, Y>& frame);
   template<class U>
