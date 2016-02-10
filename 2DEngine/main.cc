@@ -12,7 +12,11 @@
 #include"sharedTypes.hh"
 #include"physics.hh"
 
-int main(){
+int main(int argc, char** argv){
+  if(argc != 2){
+    return 1;
+  }
+
   buffer<40, 20> frame;
   physics<image> phys;
   engine eng;
@@ -20,7 +24,7 @@ int main(){
   std::map<std::string, entity<image>> entities;
   std::map<std::string, tri> triangles;
 
-  std::fstream config("map.wld");
+  std::fstream config(argv[1]);
   std::string line;
   while(std::getline(config, line)){
     if(line[0] == '#' || line.size() == 0) continue;
