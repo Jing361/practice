@@ -17,6 +17,21 @@ image.o:image.cc
 engine.o:engine.cc
 	$(CC) $(cflags) $(flags) engine.cc
 
+tarSplit.o:tarSplit.cc
+	$(CC) $(cflags) $(flags) tarSplit.cc
+
+libTarSplit.a:tarSplit.o
+	ar -cvq libTarSplit.a tarSplit.o
+
+map.tar:data/map.adv data/libMap.so
+	cd data && tar -cf map.tar libMap.so map.wld && mv map.tar ..
+
+data/map.o:data/map.cc
+	$(CC) $(cflags) $(flags) -fPIC -o data/map.o data/map.cc
+
+data/libMap.so:data/map.o
+	$(CC) -shared -o data/libMap.so data/map.o
+
 clean:
 	rm *.o core main
 
