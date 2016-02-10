@@ -1,3 +1,4 @@
+#include<dlfcn.h>
 #include<sstream>
 #include<iostream>
 #include<string>
@@ -23,6 +24,8 @@ int main(int argc, char** argv){
   std::map<std::string, image> images;
   std::map<std::string, entity<image>> entities;
   std::map<std::string, tri> triangles;
+  std::vector<void*> libs;
+  void* handle;
 
   std::fstream config(argv[1]);
   std::string line;
@@ -105,6 +108,18 @@ int main(int argc, char** argv){
 
       ss >> alias;
       phys.addEntity(alias, &entities[name]);
+    } else if(word == "lib"){
+      handle = dlopen(name.data(), RTLD_LAZY);
+      libs.push_back(handle);
+    } else if(word == "cbk"){
+      std::string fn;
+      char key;
+
+      ss >> key;
+      ss >> fn;
+      auto tmp = (void(*)(entity<image>&))dlsym(handle, fn.data());
+      auto callback = std::bind(tmp, std::ref(entities[name]));
+      eng.registerCallback(key, callback);
     }
   }
 
@@ -120,6 +135,11 @@ int main(int argc, char** argv){
     phys.tick(diff);
     frame.display();
   }
+
+  for(auto it:libs){
+    dlclose(it);
+  }
+
   return 0;
 }
 

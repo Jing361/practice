@@ -5,8 +5,8 @@ cflags:=-c
 
 default:main
 
-main:main.o image.o engine.o
-	$(CC) main.o image.o engine.o -lpthread -o main
+main:main.o image.o engine.o libMap.so
+	$(CC) main.o image.o engine.o -lpthread -ldl -o main
 
 main.o:main.cc buffer.cc physics.cc entity.cc
 	$(CC) $(cflags) $(flags) main.cc
@@ -29,8 +29,8 @@ map.tar:data/map.adv data/libMap.so
 data/map.o:data/map.cc
 	$(CC) $(cflags) $(flags) -fPIC -o data/map.o data/map.cc
 
-data/libMap.so:data/map.o
-	$(CC) -shared -o data/libMap.so data/map.o
+libMap.so:data/map.o
+	$(CC) -shared -o libMap.so data/map.o
 
 clean:
 	rm *.o core main

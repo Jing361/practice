@@ -1,3 +1,5 @@
+lib libMoon.so
+
 img i1 letterTri.txmg
 img i2 letterRect.txmg
 img i3 voyager.txmg
@@ -17,6 +19,8 @@ stv e2  1  1
 stv e3  1  0
 sta e3  1  0
 stm e3 10
+
+cbk e3 j e3Callback
 
 phys e1 one
 phys e2 two
