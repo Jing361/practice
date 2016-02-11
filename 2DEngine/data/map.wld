@@ -1,4 +1,4 @@
-lib libMoon.so
+lib ./libMap.so
 
 img i1 letterTri.txmg
 img i2 letterRect.txmg

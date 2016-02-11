@@ -33,5 +33,5 @@ libMap.so:data/map.o
 	$(CC) -shared -o libMap.so data/map.o
 
 clean:
-	rm *.o core main
+	rm *.o core main *.so
 
