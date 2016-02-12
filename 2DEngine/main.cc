@@ -18,7 +18,7 @@ int main(int argc, char** argv){
     return 1;
   }
 
-  buffer<40, 20> frame;
+  buffer<80, 80> frame;
   physics<image> phys;
   engine eng;
   std::map<std::string, image> images;

@@ -15,12 +15,12 @@ stbb e3 0 0 10 13
 stp e1 10 10
 stp e2  5  5
 stp e3  0  7
-stv e2  1  1
-stv e3  1  0
-sta e3  1  0
 stm e3 10
 
-cbk e3 j e3Callback
+cbk e3 e e3eCallback
+cbk e3 a e3aCallback
+cbk e3 , e3commaCallback
+cbk e3 o e3oCallback
 
 phys e1 one
 phys e2 two
