@@ -79,6 +79,7 @@ void physics<T>::tick(double diff){
     ent->applyForce(m_dampingForce * -ent->getVelocity());
     ent->tick(diff / (CLOCKS_PER_SEC * 10));
     ent->getNetForce() = { 0, 0 };
+    ent->getAcceleration() = { 0, 0 };
   }
 }
 

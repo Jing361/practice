@@ -127,7 +127,9 @@ int main(int argc, char** argv){
   std::clock_t last = clock();
 
   while(!eng.shouldQuit()){
-    std::clock_t diff = clock() - last;
+    std::clock_t now = clock();
+    std::clock_t diff = now - last;
+    last = now;
     phys.checkCollisions();
     frame.clear();
     for(auto it:entities){
