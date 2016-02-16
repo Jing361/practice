@@ -18,7 +18,7 @@ int main(int argc, char** argv){
     return 1;
   }
 
-  buffer<80, 80> frame;
+  buffer<80, 40> frame;
   physics<image> phys;
   engine eng;
   std::map<std::string, image> images;
@@ -26,6 +26,7 @@ int main(int argc, char** argv){
   std::map<std::string, tri> triangles;
   std::vector<void*> libs;
   void* handle;
+  phys.setDamping(.9);
 
   std::fstream config(argv[1]);
   std::string line;

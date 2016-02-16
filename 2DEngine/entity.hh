@@ -11,6 +11,7 @@ private:
   std::vector<std::pair<T, coord>> m_image;
   std::pair<coord, coord> m_box;
   double m_mass;
+  vec2 m_netForce;
   vec2 m_pos;
   vec2 m_vel;
   vec2 m_acc;
@@ -33,6 +34,8 @@ public:
   vec2& getVelocity();
   vec2& getAcceleration();
   double& getMass();
+  vec2& getNetForce();
+  void applyForce(vec2 f);
   void tick(double diff);
 };
 

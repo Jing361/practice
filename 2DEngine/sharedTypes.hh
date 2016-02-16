@@ -16,6 +16,10 @@ vec2 operator*(const vec2& a, const double& b){
   return vec2(a.first * b, a.second * b);
 }
 
+vec2 operator/(const vec2& a, const double& b){
+  return vec2(a.first / b, a.second / b);
+}
+
 /*vec2 operator*(const vec2& a, const vec2& b){
   return 
 }*/
@@ -26,6 +30,10 @@ vec2 operator*(const double& a, const vec2& b){
 
 vec2 operator+(const vec2& a, const vec2& b){
   return vec2(a.first + b.first, a.second + b.second);
+}
+
+vec2 operator-(const vec2& a){
+  return vec2(-a.first, -a.second);
 }
 
 vec2 operator+=(vec2& a, const vec2& b){

@@ -68,9 +68,17 @@ void physics<T>::checkCollisions(){
 }
 
 template<class T>
+void physics<T>::setDamping(double f){
+  m_dampingForce = f;
+}
+
+template<class T>
 void physics<T>::tick(double diff){
   for(auto it:m_entity){
-    it.second->tick(diff / (CLOCKS_PER_SEC * 10));
+    auto ent = it.second;
+    ent->applyForce(m_dampingForce * -ent->getVelocity());
+    ent->tick(diff / (CLOCKS_PER_SEC * 10));
+    ent->getNetForce() = { 0, 0 };
   }
 }
 

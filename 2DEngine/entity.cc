@@ -15,7 +15,8 @@ entity<T>::entity(const entity<U>& other):
 
 template<class T>
 entity<T>::entity(vec2 pos, vec2 vel, vec2 acc):
-  m_mass(0.0),
+  m_mass(1.0),
+  m_netForce(0, 0),
   m_pos(pos),
   m_vel(vel),
   m_acc(acc){
@@ -89,8 +90,19 @@ double& entity<T>::getMass(){
 }
 
 template<class T>
+vec2& entity<T>::getNetForce(){
+  return m_netForce;
+}
+
+template<class T>
+void entity<T>::applyForce(vec2 f){
+  m_netForce += f;
+}
+
+template<class T>
 void entity<T>::tick(double diff){
   m_pos += m_vel * diff;
   m_vel += m_acc * diff;
+  m_acc = m_netForce / m_mass;
 }
 
