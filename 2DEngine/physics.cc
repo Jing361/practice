@@ -77,7 +77,7 @@ void physics<T>::tick(double diff){
   for(auto it:m_entity){
     auto ent = it.second;
     ent->applyForce(m_dampingForce * -ent->getVelocity());
-    ent->tick(diff / (CLOCKS_PER_SEC * 10));
+    ent->tick(diff / (CLOCKS_PER_SEC));
     ent->getNetForce() = { 0, 0 };
     ent->getAcceleration() = { 0, 0 };
   }

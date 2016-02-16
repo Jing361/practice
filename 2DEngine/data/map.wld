@@ -12,8 +12,8 @@ stbb e1 0 0  3  3
 stbb e2 0 0  3  3
 stbb e3 0 0 10 13
 
-stp e1 10 10
-stp e2  5  5
+stp e1 12 10
+stp e2  5  3
 stp e3  0  7
 stm e3 10
 
