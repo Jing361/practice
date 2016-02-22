@@ -25,6 +25,20 @@ public:
   }
 };
 
+class badLibFuncReferenceException:std::exception{
+private:
+  std::string m_msg;
+
+public:
+  badLibFuncReferenceException(std::string word){
+    m_msg = "Unrecognized symbol " + word + ".";
+  }
+
+  const char* what(){
+    return m_msg.data();
+  }
+};
+
 template<unsigned int X, unsigned int Y>
 class graphics{
 private:

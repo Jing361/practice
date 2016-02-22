@@ -107,8 +107,7 @@ void graphics<X, Y>::loadConfig(std::string configFile){
       ss >> fn;
       auto tmp = (void(*)(entity<image>&))dlsym(handle, fn.data());
       if((error = dlerror()) != 0){
-        std::cout << "no symbol" << '\n';
-        std::cout << error << std::endl;
+        throw badLibFuncReferenceException(fn);
       }
       auto callback = std::bind(tmp, std::ref(m_entities[name]));
       m_eng.registerCallback(key, callback);
@@ -127,7 +126,7 @@ void graphics<X, Y>::tick(double diff){
   for(auto it:m_entities){
     m_frame.draw(it.second);
   }
-  //m_frame.display();
+  m_frame.display();
   m_tickCallback(diff);
 }
 
@@ -135,7 +134,7 @@ template<unsigned int X, unsigned int Y>
 void graphics<X, Y>::run(){
   std::clock_t last = clock();
 
-  while(m_eng.shouldQuit()){
+  while(!m_eng.shouldQuit()){
     std::clock_t now = clock();
     std::clock_t diff = now - last;
     last = now;
