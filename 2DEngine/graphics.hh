@@ -39,6 +39,20 @@ public:
   }
 };
 
+class libraryNotFoundException:std::exception{
+private:
+  std::string m_msg;
+
+public:
+  libraryNotFoundException(std::string word){
+    m_msg = "Library not found " + word + ".";
+  }
+
+  const char* what(){
+    return m_msg.data();
+  }
+};
+
 template<unsigned int X, unsigned int Y>
 class graphics{
 private:

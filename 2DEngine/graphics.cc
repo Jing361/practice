@@ -94,8 +94,7 @@ void graphics<X, Y>::loadConfig(std::string configFile){
     } else if(word == "lib"){
       handle = dlopen(name.data(), RTLD_LAZY);
       if(!handle){
-        std::cout << "no lib" << '\n';
-        std::cout << dlerror() << std::endl;
+        throw libraryNotFoundException(name);
       }
       m_libs.push_back(handle);
     } else if(word == "cbk"){
