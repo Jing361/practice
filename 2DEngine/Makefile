@@ -8,7 +8,7 @@ default:main
 main:main.o image.o engine.o libMap.so
 	$(CC) main.o image.o engine.o -lpthread -ldl -o main
 
-main.o:main.cc buffer.cc physics.cc entity.cc
+main.o:main.cc buffer.cc physics.cc entity.cc graphics.cc
 	$(CC) $(cflags) $(flags) main.cc
 
 image.o:image.cc
