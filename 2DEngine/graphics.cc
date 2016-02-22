@@ -1,7 +1,6 @@
 #include<dlfcn.h>
 #include<sstream>
 #include<fstream>
-#include<exception>
 #include"graphics.hh"
 #include"sharedTypes.hh"
 
@@ -96,7 +95,7 @@ void graphics<X, Y>::loadConfig(std::string configFile){
       handle = dlopen(name.data(), RTLD_LAZY);
       if(!handle){
         std::cout << "no lib" << '\n';
-        std::cout << dlerror() << '\n';
+        std::cout << dlerror() << std::endl;
       }
       m_libs.push_back(handle);
     } else if(word == "cbk"){
@@ -116,8 +115,8 @@ void graphics<X, Y>::loadConfig(std::string configFile){
     } else {
       try{
         m_configCallbacks.at(word)(name, line, m_images, m_entities, m_triangles);
-      } catch(std::exception e){
-        //nothing to be done
+      } catch(std::out_of_range& e){
+        throw unrecognizedKeywordException(word, configFile);
       }
     }
   }

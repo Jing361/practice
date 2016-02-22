@@ -17,9 +17,9 @@ int main(int argc, char** argv){
   physics<image> phys;
   graphics<80, 40> gfx;
   gfx.m_configCallbacks["phys"] = [&](std::string name, std::string line,
-                                      std::map<std::string, image> images, 
-                                      std::map<std::string, entity<image>> entities, 
-                                      std::map<std::string, tri> tris){
+                                      std::map<std::string, image>& images,
+                                      std::map<std::string, entity<image>>& entities,
+                                      std::map<std::string, tri>& tris){
     std::stringstream ss(line);
     std::string alias;
 
@@ -27,7 +27,7 @@ int main(int argc, char** argv){
     ss >> alias;
     ss >> alias;
 
-    phys.addEntity(alias, &gfx.m_entities[name]);
+    phys.addEntity(alias, &entities[name]);
   };
   gfx.loadConfig(argv[1]);
 
