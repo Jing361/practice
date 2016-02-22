@@ -33,10 +33,10 @@ int main(int argc, char** argv){
 
 
   phys.setDamping(.9);
-  gfx.m_tickCallback = [&](double diff){
+  gfx.m_tickCallbacks.push_back([&](double diff){
     phys.checkCollisions();
     phys.tick(diff);
-  };
+  });
 
   gfx.run();
 

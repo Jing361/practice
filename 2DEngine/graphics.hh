@@ -68,7 +68,7 @@ public:
                              std::map<std::string, entity<image>>&,
                              std::map<std::string, tri>&
                             )> configCallback;
-  std::function<void(double)> m_tickCallback;
+  std::vector<std::function<void(double)>> m_tickCallbacks;
   std::vector<void*> m_libs;
   std::map<std::string, configCallback> m_configCallbacks;
 

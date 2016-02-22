@@ -126,7 +126,9 @@ void graphics<X, Y>::tick(double diff){
     m_frame.draw(it.second);
   }
   m_frame.display();
-  m_tickCallback(diff);
+  for(auto it:m_tickCallbacks){
+    it(diff);
+  }
 }
 
 template<unsigned int X, unsigned int Y>
