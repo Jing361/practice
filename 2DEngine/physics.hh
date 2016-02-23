@@ -9,7 +9,7 @@ template<class T>
 class physics{
 private:
   std::map<std::string, entity<T>*> m_entity;
-  double m_dampingForce = 0.0;
+  double m_dampingScale = 0.0;
 
 public:
   bool checkCollision(const std::pair<coord, coord>& box1, const std::pair<coord, coord>& box2);

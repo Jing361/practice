@@ -32,7 +32,7 @@ int main(int argc, char** argv){
   gfx.loadConfig(argv[1]);
 
 
-  phys.setDamping(.9);
+  phys.setDamping(.6);
   gfx.m_tickCallbacks.push_back([&](double diff){
     phys.checkCollisions();
     phys.tick(diff);

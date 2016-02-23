@@ -40,6 +40,14 @@ vec2 operator+=(vec2& a, const vec2& b){
   return a = a + b;
 }
 
+vec2 normalize(const vec2& x){
+  if(x.first == 0 && x.second == 0){
+    return { 0, 0 };
+  } else {
+    return x / sqrt((x.first * x.first) + (x.second * x.second));
+  }
+}
+
 /*vec2 operator*=(vec2& a, const vec2& b){
   return a = a * b;
 }*/
