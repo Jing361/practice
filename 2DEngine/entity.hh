@@ -34,6 +34,7 @@ public:
   void collide(entity<U> ent);
   std::pair<coord, coord> getBoundingBox();
   void setBoundingBox(std::pair<coord, coord> box);
+  std::pair<coord, coord> getTotalBoundingBox();
   vec2& getPosition();
   vec2& getVelocity();
   vec2& getAcceleration();

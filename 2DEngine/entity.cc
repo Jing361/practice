@@ -63,11 +63,14 @@ void entity<T>::draw(buffer<X, Y>& frame){
 template<class T>
 template<class U>
 void entity<T>::collide(entity<U> b){
-  double pix = ((m_mass * m_vel.first) + (b.getMass() * b.getVelocity().first));
-  m_vel.first = (pix + b.getMass() * (b.getVelocity().first - m_vel.first)) / (m_mass + b.getMass());
+  double amass = getTotalMass();
+  double bmass = b.getTotalMass();
 
-  double piy = ((m_mass * m_vel.second) + (b.getMass() * b.getVelocity().second));
-  m_vel.second = (piy + b.getMass() * (b.getVelocity().second - m_vel.second)) / (m_mass + b.getMass());
+  double pix = ((amass * m_vel.first) + (bmass * b.getVelocity().first));
+  m_vel.first = (pix + bmass * (b.getVelocity().first - m_vel.first)) / (amass + bmass);
+
+  double piy = ((amass * m_vel.second) + (bmass * b.getVelocity().second));
+  m_vel.second = (piy + bmass * (b.getVelocity().second - m_vel.second)) / (amass + bmass);
 }
 
 template<class T>
@@ -82,6 +85,20 @@ void entity<T>::setBoundingBox(std::pair<coord, coord> box){
                     std::max(box.first.second, box.second.second)),
               coord(std::min(box.first.first, box.second.first),
                     std::min(box.first.second, box.second.second)));
+}
+
+template<class T>
+std::pair<coord, coord> entity<T>::getTotalBoundingBox(){
+  std::pair<coord, coord> max = getBoundingBox();
+  for_each(m_parts.begin(), m_parts.end(), [&](const std::pair<entity<T>, coord>& a){
+    auto total = a.first.getTotalBoundingBox();
+    max = std::pair<coord, coord>
+            (coord(std::max(total.first.first, max.first.first),
+                   std::max(total.first.second, max.first.second)),
+             coord(std::min(total.second.first, max.second.first),
+                   std::min(total.second.second, max.second.second)));
+  });
+  return max;
 }
 
 template<class T>
@@ -108,8 +125,9 @@ template<class T>
 double entity<T>::getTotalMass(){
   double mass = m_mass;
   for(auto it:m_parts){
-    mass += it.getMass();
+    mass += it.first.getMass();
   }
+  return mass;
 }
 
 template<class T>
