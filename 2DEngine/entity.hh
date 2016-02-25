@@ -9,6 +9,7 @@ template<class T>
 class entity{
 private:
   std::vector<std::pair<T, coord>> m_image;
+  std::vector<std::pair<entity<T>, coord>> m_parts;
   std::pair<coord, coord> m_box;
   double m_mass;
   vec2 m_netForce;
@@ -24,6 +25,9 @@ public:
   void addElement(T t, coord cor = coord(0, 0));
   typename std::vector<std::pair<T, coord>>::iterator elementBegin();
   typename std::vector<std::pair<T, coord>>::iterator elementEnd();
+  void addPart(entity<T> ent, coord cor = coord(0, 0));
+  typename std::vector<std::pair<entity<T>, coord>>::iterator partBegin();
+  typename std::vector<std::pair<entity<T>, coord>>::iterator partEnd();
   template<unsigned int X, unsigned int Y>
   void draw(buffer<X, Y>& frame);
   template<class U>
@@ -34,6 +38,7 @@ public:
   vec2& getVelocity();
   vec2& getAcceleration();
   double& getMass();
+  double getTotalMass();
   vec2& getNetForce();
   void applyForce(vec2 f);
   void tick(double diff);

@@ -38,6 +38,21 @@ typename std::vector<std::pair<T, coord>>::iterator entity<T>::elementEnd(){
 }
 
 template<class T>
+void entity<T>::addPart(entity<T> ent, coord cor){
+  m_parts.push_back(std::pair<entity<T>, coord>(ent, cor));
+}
+
+template<class T>
+typename std::vector<std::pair<entity<T>, coord>>::iterator entity<T>::partBegin(){
+  return m_parts.begin();
+}
+
+template<class T>
+typename std::vector<std::pair<entity<T>, coord>>::iterator entity<T>::partEnd(){
+  return m_parts.end();
+}
+
+template<class T>
 template<unsigned int X, unsigned int Y>
 void entity<T>::draw(buffer<X, Y>& frame){
   for(auto it:m_image){
@@ -87,6 +102,14 @@ vec2& entity<T>::getAcceleration(){
 template<class T>
 double& entity<T>::getMass(){
   return m_mass;
+}
+
+template<class T>
+double entity<T>::getTotalMass(){
+  double mass = m_mass;
+  for(auto it:m_parts){
+    mass += it.getMass();
+  }
 }
 
 template<class T>
