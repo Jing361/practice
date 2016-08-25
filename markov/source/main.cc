@@ -5,6 +5,7 @@
 #include<cctype>
 #include<string>
 #include<locale>
+#include<random>
 
 #include<story.hh>
 
@@ -63,13 +64,35 @@ int main( int argc, char** argv ){
   }
 
   //output
-  for(auto wordMap : chain){
-    cout << wordMap.first << '\t' << counts[wordMap.first] << '\n';
-    for(auto word : wordMap.second){
-      cout << '\t' << word.first << '\t' << word.second.mCount << '\t' << word.second.mChance << '\n';
+  std::random_device rd;
+  std::mt19937 rate( rd() );
+  std::uniform_int_distribution<> dist( 0, chain.size() );
+  std::uniform_int_distribution<> gene( 0, 100 );
+  unsigned int wordidx = dist( rate ); 
+  string lastword;
+
+  for( auto it : chain ){
+    wordidx--;
+    if( wordidx == 0 ){
+      lastword = it.first;
+      break;
     }
   }
-  cout << flush;
+  cout << lastword << ' ';
+
+  for( unsigned int i = 0; i < 10; ){
+    auto ticks = gene( rate );
+    auto wordMap = chain[lastword];
+    for( auto word : wordMap ){
+      ticks -= word.second.mChance;
+      if( ticks <= 0 ){
+        cout << word.first << ' ';
+        lastword = word.first;
+        ++i;
+        break;
+      }
+    }
+  }
 
   return 0;
 }
