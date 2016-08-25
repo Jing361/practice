@@ -10,6 +10,17 @@
 
 using namespace std;
 
+class word_wrapper{
+public:
+  unsigned long mCount;
+  unsigned long mChance;
+
+  word_wrapper():
+    mCount(0),
+    mChance(0.0){
+  }
+};
+
 int main( int argc, char** argv ){
   string str;
   if( argc == 2 ){
@@ -19,17 +30,14 @@ int main( int argc, char** argv ){
   }
 
   fstream sher( str );
-  map<string, unsigned int> counts;
-  multimap<string, unsigned int> pages;
   story lock( sher );
-  unsigned long page = 0;
-  unsigned long line = 0;
+  map<string, map<string, word_wrapper> > chain;
+  map<string, unsigned long> counts;
+  unsigned long words = 0;
+  string lastWord;
 
   // doc parsing
   while( getline( sher, str ) ){
-    if( ++line > 40 ){
-      ++page;
-    }
     if( !lock.isTitle( str ) ){
       stringstream ss( str );
       string word;
@@ -39,26 +47,31 @@ int main( int argc, char** argv ){
           return specialUpper( c );
         } );
 
-        pages.insert( make_pair( word, page ) );
-        ++counts[word];
+        chain[lastWord][word].mCount++;
+        ++counts[lastWord];
+
+        lastWord = word;
       }
+    }
+  }
+
+  //post-process
+  for(auto wordMap : chain){
+    unsigned long count = counts[wordMap.first];
+    for(auto word : wordMap.second){
+      word.second.mChance = ( double(word.second.mCount) / double(count) ) * 100;
     }
   }
 
   //output
-  string lineWord;
-  for( auto it = pages.begin(); it != pages.end(); ++it ){
-    if( counts[( *it ).first] < 30 ){
-      if( lineWord != ( *it ).first ){
-        lineWord = ( *it ).first;
-        cout << endl << ( *it ).first << '\t';
-      }
-
-      cout << ( *it ).second << ", ";
+  for(auto wordMap : chain){
+    cout << wordMap.first << '\t' << counts[wordMap.first] << '\n';
+    for(auto word : wordMap.second){
+      cout << '\t' << word.first << '\t' << word.second.mCount << '\t' << word.second.mChance << '\n';
     }
   }
+  cout << flush;
 
-  sher.close();
   return 0;
 }
 
