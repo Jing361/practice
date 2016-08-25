@@ -17,7 +17,7 @@ public:
 
   word_wrapper():
     mCount(0),
-    mChance(0.0){
+    mChance(0){
   }
 };
 
@@ -33,7 +33,6 @@ int main( int argc, char** argv ){
   story lock( sher );
   map<string, map<string, word_wrapper> > chain;
   map<string, unsigned long> counts;
-  unsigned long words = 0;
   string lastWord;
 
   // doc parsing
@@ -56,10 +55,10 @@ int main( int argc, char** argv ){
   }
 
   //post-process
-  for(auto wordMap : chain){
+  for(auto& wordMap : chain){
     unsigned long count = counts[wordMap.first];
-    for(auto word : wordMap.second){
-      word.second.mChance = ( double(word.second.mCount) / double(count) ) * 100;
+    for(auto& word : wordMap.second){
+      word.second.mChance = ( ( double(word.second.mCount) / double(count) ) * 100 );
     }
   }
 
