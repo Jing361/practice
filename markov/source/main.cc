@@ -22,6 +22,60 @@ public:
   }
 };
 
+class markov_chain{
+private:
+  map<string, map<string, word_wrapper> > mChain;
+  map<string, unsigned long> mWordCounts;
+  random_device rd;
+  mt19937 rate;
+  uniform_int_distribution<> gene;
+
+public:
+  markov_chain():
+    rd(),
+    rate( rd() ),
+    gene( 0, 100 ){
+  }
+
+  string generate_word(const string& lastWord){
+    if( lastWord == "" ){
+      uniform_int_distribution<> dist( 0, mChain.size() );
+      unsigned int wordidx = dist( rate );
+
+      for( auto it : mChain ){
+        --wordidx;
+        if( wordidx == 0 ){
+          return it.first;
+        }
+      }
+    } else {
+      auto ticks = gene( rate );
+      auto wordMap = mChain[lastWord];
+
+      for( auto word : wordMap ){
+        ticks -= word.second.mChance;
+        if( ticks <= 0 ){
+          return word.first;
+        }
+      }
+    }
+
+    return "";
+  }
+  void add( string word, string nextWord){
+    ++mChain[word][nextWord].mCount;
+    ++mWordCounts[word];
+  }
+  void process(){
+    for(auto& wordMap : mChain){
+      unsigned long count = mWordCounts[wordMap.first];
+      for(auto& word : wordMap.second){
+        word.second.mChance = ( ( double(word.second.mCount) / double(count) ) * 100 );
+      }
+    }
+  }
+};
+
 int main( int argc, char** argv ){
   string str;
   if( argc == 2 ){
@@ -32,9 +86,8 @@ int main( int argc, char** argv ){
 
   fstream sher( str );
   story lock( sher );
-  map<string, map<string, word_wrapper> > chain;
-  map<string, unsigned long> counts;
   string lastWord;
+  markov_chain mc;
 
   // doc parsing
   while( getline( sher, str ) ){
@@ -47,8 +100,7 @@ int main( int argc, char** argv ){
           return specialUpper( c );
         } );
 
-        chain[lastWord][word].mCount++;
-        ++counts[lastWord];
+        mc.add(lastWord, word);
 
         lastWord = word;
       }
@@ -56,42 +108,13 @@ int main( int argc, char** argv ){
   }
 
   //post-process
-  for(auto& wordMap : chain){
-    unsigned long count = counts[wordMap.first];
-    for(auto& word : wordMap.second){
-      word.second.mChance = ( ( double(word.second.mCount) / double(count) ) * 100 );
-    }
-  }
+  mc.process();
 
   //output
-  std::random_device rd;
-  std::mt19937 rate( rd() );
-  std::uniform_int_distribution<> dist( 0, chain.size() );
-  std::uniform_int_distribution<> gene( 0, 100 );
-  unsigned int wordidx = dist( rate ); 
-  string lastword;
-
-  for( auto it : chain ){
-    wordidx--;
-    if( wordidx == 0 ){
-      lastword = it.first;
-      break;
-    }
-  }
-  cout << lastword << ' ';
-
-  for( unsigned int i = 0; i < 10; ){
-    auto ticks = gene( rate );
-    auto wordMap = chain[lastword];
-    for( auto word : wordMap ){
-      ticks -= word.second.mChance;
-      if( ticks <= 0 ){
-        cout << word.first << ' ';
-        lastword = word.first;
-        ++i;
-        break;
-      }
-    }
+  lastWord = mc.generate_word( "" );
+  for( unsigned int i = 0; i < 10; ++i){
+    cout << lastWord << ' ';
+    lastWord = mc.generate_word( lastWord );
   }
 
   return 0;
