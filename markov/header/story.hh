@@ -8,13 +8,14 @@
 #include<iostream>
 #include<algorithm> 
 
-extern std::string ltrim( std::string s );
+extern std::string ltrim_punct( std::string s );
+extern std::string ltrim_space( std::string s );
 
-// trim from end
-extern std::string rtrim( std::string s );
+extern std::string rtrim_punct( std::string s );
+extern std::string rtrim_space( std::string s );
 
-// trim from both ends
-extern std::string trim( const std::string& s );
+extern std::string trim_punct( std::string s );
+extern std::string trim_space( std::string s );
 
 char specialUpper( char c );
 
@@ -33,8 +34,6 @@ public:
   }
 
 };
-
-void printRoman( std::string str );
 
 #endif
 

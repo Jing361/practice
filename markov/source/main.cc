@@ -28,19 +28,23 @@ int main( int argc, char** argv ){
   story lock( sher );
   string lastWord;
   markov_chain mc;
+  string line;
 
   // doc parsing
-  while( getline( sher, str ) ){
-    if( !lock.isTitle( str ) ){
-      stringstream ss( str );
+  while( getline( sher, line ) ){
+    if( !(lock.isTitle( line ) || trim_space( trim_punct( line ) ) == "" ) ){
+      stringstream ss( line );
       string word;
       while( ss >> word ){
-        word = trim( word );
+        if( word == "&" ){
+          word = "AND";
+        }
+        word = trim_punct( word );
         transform( word.begin(), word.end(), word.begin(), [&]( char c ){
           return specialUpper( c );
         } );
 
-        mc.add(lastWord, word);
+        mc.add( lastWord, word );
 
         lastWord = word;
       }
@@ -51,11 +55,15 @@ int main( int argc, char** argv ){
   mc.process();
 
   //output
-  lastWord = mc.generate_word( "" );
+  lastWord = "";
   for( unsigned int i = 0; i < wordCount; ++i){
-    cout << lastWord << ' ';
     lastWord = mc.generate_word( lastWord );
+    cout << lastWord << ' ';
+    if(lastWord == ""){
+      cout << "WTF\n";
+    }
   }
+  cout << flush;
 
   return 0;
 }
