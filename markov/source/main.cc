@@ -12,10 +12,16 @@ using namespace std;
 
 int main( int argc, char** argv ){
   string str;
-  if( argc == 2 ){
+  unsigned int wordCount;
+  if( argc >= 1 ){
     str = argv[1];
   } else {
     str = "data/sherlock.txt";
+  }
+  if( argc == 3){
+    wordCount = std::atoi( argv[2] );
+  } else {
+    wordCount = 10;
   }
 
   fstream sher( str );
@@ -46,7 +52,7 @@ int main( int argc, char** argv ){
 
   //output
   lastWord = mc.generate_word( "" );
-  for( unsigned int i = 0; i < 10; ++i){
+  for( unsigned int i = 0; i < wordCount; ++i){
     cout << lastWord << ' ';
     lastWord = mc.generate_word( lastWord );
   }
