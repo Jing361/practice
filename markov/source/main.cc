@@ -36,9 +36,12 @@ int main( int argc, char** argv ){
       stringstream ss( line );
       string word;
       while( ss >> word ){
+        bool endSentence = word[word.size() - 1] == '.';
+
         if( word == "&" ){
           word = "AND";
         }
+
         word = trim_punct( word );
         transform( word.begin(), word.end(), word.begin(), [&]( char c ){
           return specialUpper( c );
@@ -47,6 +50,11 @@ int main( int argc, char** argv ){
         mc.add( lastWord, word );
 
         lastWord = word;
+
+        if( endSentence ){
+          mc.add( lastWord, "." );
+          lastWord = "";
+        }
       }
     }
   }
@@ -59,9 +67,6 @@ int main( int argc, char** argv ){
   for( unsigned int i = 0; i < wordCount; ++i){
     lastWord = mc.generate_word( lastWord );
     cout << lastWord << ' ';
-    if(lastWord == ""){
-      cout << "WTF\n";
-    }
   }
   cout << flush;
 

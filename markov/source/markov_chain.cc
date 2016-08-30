@@ -47,3 +47,4 @@ void markov_chain::process(){
     }
   }
 }
+
