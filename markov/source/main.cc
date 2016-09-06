@@ -7,24 +7,19 @@
 
 #include<story.hh>
 #include<markov_chain.hh>
+#include<argparse.hh>
 
 using namespace std;
 
-int main( int argc, char** argv ){
-  string str;
-  unsigned int wordCount;
-  if( argc >= 1 ){
-    str = argv[1];
-  } else {
-    str = "data/sherlock.txt";
-  }
-  if( argc == 3){
-    wordCount = std::atoi( argv[2] );
-  } else {
-    wordCount = 10;
-  }
+int main( int argc, const char** argv ){
+  argparse ap;
 
-  fstream sher( str );
+  ap.add_argument("-data", "data/sherlock.txt", 1);
+  ap.add_argument("-words", "10", 1);
+
+  ap.parse_args(argc, argv);
+
+  fstream sher( ap.get_argument<string>( "-data" ) );
   story lock( sher );
   string lastWord;
   markov_chain mc;
@@ -64,7 +59,7 @@ int main( int argc, char** argv ){
 
   //output
   lastWord = "";
-  for( unsigned int i = 0; i < wordCount; ++i){
+  for( unsigned int i = 0; i < ap.get_argument<unsigned int>("-words"); ++i){
     lastWord = mc.generate_word( lastWord );
     cout << lastWord << ' ';
   }
