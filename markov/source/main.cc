@@ -11,6 +11,7 @@
 
 using namespace std;
 
+
 int main( int argc, const char** argv ){
   argparse ap;
 
@@ -19,19 +20,20 @@ int main( int argc, const char** argv ){
 
   ap.parse_args(argc, argv);
 
-  fstream sher( ap.get_argument<string>( "-data" ) );
-  story lock( sher );
-  string lastWord;
+  fstream lock( ap.get_argument<string>( "-data" ) );
+  story sher( lock );
   markov_chain mc;
+  const string SENTENCE_BOUNDARY = mc.BOUNDARY;
+  string lastWord( SENTENCE_BOUNDARY );
   string line;
 
   // doc parsing
-  while( getline( sher, line ) ){
-    if( !(lock.isTitle( line ) || trim_space( trim_punct( line ) ) == "" ) ){
+  while( getline( lock, line ) ){
+    if( !(sher.isTitle( line ) || trim_space( trim_punct( line ) ) == "" ) ){
       stringstream ss( line );
       string word;
       while( ss >> word ){
-        bool endSentence = word[word.size() - 1] == '.';
+        bool endSentence = word.back() == '.';
 
         if( word == "&" ){
           word = "AND";
@@ -46,9 +48,10 @@ int main( int argc, const char** argv ){
 
         lastWord = word;
 
+        //at the end of a sentence, additionally add the boundary
         if( endSentence ){
           mc.add( lastWord, "." );
-          lastWord = "";
+          lastWord = SENTENCE_BOUNDARY;
         }
       }
     }
@@ -58,12 +61,15 @@ int main( int argc, const char** argv ){
   mc.process();
 
   //output
-  lastWord = "";
+  lastWord = SENTENCE_BOUNDARY;
   for( unsigned int i = 0; i < ap.get_argument<unsigned int>("-words"); ++i){
     lastWord = mc.generate_word( lastWord );
     cout << lastWord << ' ';
   }
   cout << flush;
+
+  cout << '\n' << '\n';
+  cout << mc.generate_word( " " ) << endl;
 
   return 0;
 }

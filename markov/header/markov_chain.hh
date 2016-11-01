@@ -17,6 +17,9 @@ public:
 };
 
 class markov_chain{
+public:
+  const std::string BOUNDARY;
+
 private:
   std::map<std::string, std::map<std::string, word_wrapper> > mChain;
   std::map<std::string, unsigned long> mWordCounts;
@@ -27,7 +30,7 @@ private:
 public:
   markov_chain();
 
-  std::string generate_word( const std::string& lastWord );
+  std::string generate_word( const std::string& lastWord ) const;
 
   void add( std::string word, std::string nextWord );
 

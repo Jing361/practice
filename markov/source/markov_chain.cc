@@ -3,13 +3,14 @@
 using namespace std;
 
 markov_chain::markov_chain():
+  BOUNDARY(""),
   rd(),
   rate( rd() ),
   gene( 0, 100 ){
 }
 
-string markov_chain::generate_word( const string& lastWord ){
-  if( lastWord == "" ){
+string markov_chain::generate_word( const string& lastWord ) const{
+  if( lastWord == BOUNDARY ){
     uniform_int_distribution<> dist( 0, mChain.size() );
     unsigned int wordidx = dist( rate );
 
@@ -40,10 +41,10 @@ void markov_chain::add( std::string word, std::string nextWord ){
 }
 
 void markov_chain::process(){
-  for(auto& wordMap : mChain){
+  for( auto& wordMap : mChain ){
     unsigned long count = mWordCounts[wordMap.first];
-    for(auto& word : wordMap.second){
-      word.second.mChance = ( ( double(word.second.mCount) / double(count) ) * 100 );
+    for( auto& word : wordMap.second ){
+      word.second.mChance = ( ( double( word.second.mCount ) / double( count ) ) * 100 );
     }
   }
 }
