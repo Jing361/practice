@@ -33,7 +33,7 @@ int main( int argc, const char** argv ){
       stringstream ss( line );
       string word;
       while( ss >> word ){
-        bool endSentence = word.back() == '.';
+        bool endSentence = ( word.back() == '.' );
 
         if( word == "&" ){
           word = "AND";
@@ -67,9 +67,6 @@ int main( int argc, const char** argv ){
     cout << lastWord << ' ';
   }
   cout << flush;
-
-  cout << '\n' << '\n';
-  cout << mc.generate_word( " " ) << endl;
 
   return 0;
 }

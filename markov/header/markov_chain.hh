@@ -4,6 +4,19 @@
 #include<random>
 #include<string>
 #include<map>
+#include<exception>
+
+class invalidInputException : public std::exception {
+private:
+  std::string mMessage;
+  std::string mCulprit;
+
+public:
+  invalidInputException( const std::string& param );
+
+  virtual const char* what() const noexcept;
+  virtual const char* culprit() const noexcept;
+};
 
 class word_wrapper{
 public:
@@ -24,8 +37,8 @@ private:
   std::map<std::string, std::map<std::string, word_wrapper> > mChain;
   std::map<std::string, unsigned long> mWordCounts;
   std::random_device rd;
-  std::mt19937 rate;
-  std::uniform_int_distribution<> gene;
+  mutable std::mt19937 rate;
+  mutable std::uniform_int_distribution<> gene;
 
 public:
   markov_chain();

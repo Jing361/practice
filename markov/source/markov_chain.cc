@@ -2,6 +2,19 @@
 
 using namespace std;
 
+invalidInputException::invalidInputException( const std::string& param ):
+  mMessage( "Could not find \"" + param + "\".\n" ),
+  mCulprit( param ){
+}
+
+const char* invalidInputException::what() const noexcept{
+  return mMessage.c_str();
+}
+
+const char* invalidInputException::culprit() const noexcept{
+  return mCulprit.c_str();
+}
+
 markov_chain::markov_chain():
   BOUNDARY(""),
   rd(),
@@ -22,7 +35,12 @@ string markov_chain::generate_word( const string& lastWord ) const{
     }
   } else {
     auto ticks = gene( rate );
-    auto wordMap = mChain[lastWord];
+    std::map<std::string, word_wrapper> wordMap;
+    try{
+      wordMap = mChain.at( lastWord );
+    } catch( std::out_of_range& ){
+      throw invalidInputException( lastWord );
+    }
 
     for( auto word : wordMap ){
       ticks -= word.second.mChance;
@@ -32,7 +50,7 @@ string markov_chain::generate_word( const string& lastWord ) const{
     }
   }
 
-  return "";
+  return BOUNDARY;
 }
 
 void markov_chain::add( std::string word, std::string nextWord ){
