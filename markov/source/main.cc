@@ -62,7 +62,7 @@ int main( int argc, const char** argv ){
 
   //output
   lastWord = SENTENCE_BOUNDARY;
-  for( unsigned int i = 0; i < ap.get_argument<unsigned int>("-words"); ++i){
+  for( unsigned int i = 0; i < ap.get_argument<unsigned int>( "-words" ); ++i ){
     lastWord = mc.generate_word( lastWord );
     cout << lastWord << ' ';
   }

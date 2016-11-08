@@ -16,7 +16,7 @@ const char* invalidInputException::culprit() const noexcept{
 }
 
 markov_chain::markov_chain():
-  BOUNDARY(""),
+  BOUNDARY("."),
   rd(),
   rate( rd() ),
   gene( 0, 100 ){
