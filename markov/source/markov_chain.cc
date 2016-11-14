@@ -1,4 +1,5 @@
 #include<markov_chain.hh>
+#include<iostream>
 
 using namespace std;
 
@@ -15,11 +16,20 @@ const char* invalidInputException::culprit() const noexcept{
   return mCulprit.c_str();
 }
 
+internalErrorException::internalErrorException( ):
+  mMessage( "Internal error occurred." ){
+}
+
+const char* internalErrorException::what() const noexcept{
+  return mMessage.c_str();
+}
+
 markov_chain::markov_chain():
-  BOUNDARY("."),
+  BOUNDARY( "." ),
+  CHANCE_TICK( 10000000 ),
   rd(),
   rate( rd() ),
-  gene( 0, 100 ){
+  gene( 0, CHANCE_TICK ){
 }
 
 string markov_chain::generate_word( const string& lastWord ) const{
@@ -35,6 +45,7 @@ string markov_chain::generate_word( const string& lastWord ) const{
     }
   } else {
     auto ticks = gene( rate );
+    decltype(ticks) sum = 0;
     std::map<std::string, word_wrapper> wordMap;
     try{
       wordMap = mChain.at( lastWord );
@@ -44,13 +55,14 @@ string markov_chain::generate_word( const string& lastWord ) const{
 
     for( auto word : wordMap ){
       ticks -= word.second.mChance;
+      sum += word.second.mChance;
       if( ticks <= 0 ){
         return word.first;
       }
     }
   }
 
-  return BOUNDARY;
+  throw internalErrorException( );
 }
 
 void markov_chain::add( std::string word, std::string nextWord ){
@@ -62,7 +74,16 @@ void markov_chain::process(){
   for( auto& wordMap : mChain ){
     unsigned long count = mWordCounts[wordMap.first];
     for( auto& word : wordMap.second ){
-      word.second.mChance = ( ( double( word.second.mCount ) / double( count ) ) * 100 );
+      word.second.mChance = ( double( double( word.second.mCount ) / double( count ) ) * CHANCE_TICK );
+    }
+  }
+}
+
+void markov_chain::print(){
+  for( auto it : mChain ){
+    cout << it.first << '\t' << mWordCounts[it.first] << '\n';
+    for( auto jt : it.second ){
+      cout << '\t' << jt.first << '\t' << jt.second.mCount << '\t' << jt.second.mChance << '\n';
     }
   }
 }

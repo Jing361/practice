@@ -18,6 +18,16 @@ public:
   virtual const char* culprit() const noexcept;
 };
 
+class internalErrorException : public std::exception {
+private:
+  std::string mMessage;
+
+public:
+  internalErrorException( );
+
+  virtual const char* what() const noexcept;
+};
+
 class word_wrapper{
 public:
   unsigned long mCount;
@@ -32,6 +42,7 @@ public:
 class markov_chain{
 public:
   const std::string BOUNDARY;
+  const unsigned long long CHANCE_TICK;
 
 private:
   std::map<std::string, std::map<std::string, word_wrapper> > mChain;
@@ -48,6 +59,8 @@ public:
   void add( std::string word, std::string nextWord );
 
   void process();
+
+  void print();
 };
 
 #endif
