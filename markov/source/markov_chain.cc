@@ -45,7 +45,6 @@ string markov_chain::generate_word( const string& lastWord ) const{
     }
   } else {
     auto ticks = gene( rate );
-    decltype(ticks) sum = 0;
     std::map<std::string, word_wrapper> wordMap;
     try{
       wordMap = mChain.at( lastWord );
@@ -55,7 +54,6 @@ string markov_chain::generate_word( const string& lastWord ) const{
 
     for( auto word : wordMap ){
       ticks -= word.second.mChance;
-      sum += word.second.mChance;
       if( ticks <= 0 ){
         return word.first;
       }
