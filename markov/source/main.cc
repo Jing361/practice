@@ -16,8 +16,8 @@ int main( int argc, const char** argv ){
   argparse ap;
 
   ap.add_argument( "-data", "data/sherlock.txt", 1 );
-  ap.add_argument( "-words", "10", 1 );
-  ap.add_argument( "-sentence", "0", 1 );
+  ap.add_argument( "-words", "0", 1 );
+  ap.add_argument( "-sentence", "1", 1 );
 
   ap.parse_args( argc, argv );
 
