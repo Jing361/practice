@@ -39,6 +39,7 @@ public:
   }
 };
 
+//TODO: make template of this class to handle any type, not just strings
 class markov_chain{
 public:
   const std::string BOUNDARY;
@@ -56,11 +57,21 @@ public:
 
   std::string generate_word( const std::string& lastWord ) const;
 
-  void add( std::string word, std::string nextWord );
+  void add( const std::string& word, const std::string& nextWord, double chance = 0.0 );
 
   void process();
 
-  void print();
+  template<typename OSTREAM>
+  OSTREAM& print( OSTREAM& os ){
+    for( auto it : mChain ){
+      os << it.first << '\t' << mWordCounts[it.first] << '\n';
+      for( auto jt : it.second ){
+        os << '\t' << jt.first << '\t' << jt.second.mCount << '\t' << jt.second.mChance << '\n';
+      }
+    }
+
+    return os;
+  }
 };
 
 #endif

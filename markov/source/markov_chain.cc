@@ -1,5 +1,4 @@
 #include<markov_chain.hh>
-#include<iostream>
 
 using namespace std;
 
@@ -63,25 +62,22 @@ string markov_chain::generate_word( const string& lastWord ) const{
   throw internalErrorException( );
 }
 
-void markov_chain::add( std::string word, std::string nextWord ){
-  ++mChain[word][nextWord].mCount;
-  ++mWordCounts[word];
+//TODO: check for some of all chances being more than 100% or on generation, check for less than or greater 100%
+void markov_chain::add( const std::string& word, const std::string& nextWord, double chance ){
+  if( chance == 0.0 ){
+    ++mChain[word][nextWord].mCount;
+    ++mWordCounts[word];
+  } else {
+    mChain[word][nextWord].mChance = chance;
+  }
 }
 
 void markov_chain::process(){
   for( auto& wordMap : mChain ){
     unsigned long count = mWordCounts[wordMap.first];
+
     for( auto& word : wordMap.second ){
       word.second.mChance = ( double( double( word.second.mCount ) / double( count ) ) * CHANCE_TICK );
-    }
-  }
-}
-
-void markov_chain::print(){
-  for( auto it : mChain ){
-    cout << it.first << '\t' << mWordCounts[it.first] << '\n';
-    for( auto jt : it.second ){
-      cout << '\t' << jt.first << '\t' << jt.second.mCount << '\t' << jt.second.mChance << '\n';
     }
   }
 }
