@@ -3,6 +3,7 @@
 #include<iostream>
 #include<string>
 #include<sstream>
+
 #include"entity.hh"
 #include"image.hh"
 #include"sharedTypes.hh"
@@ -20,6 +21,9 @@ int main(int argc, char** argv){
                                       std::map<std::string, image>& images,
                                       std::map<std::string, entity<image>>& entities,
                                       std::map<std::string, tri>& tris){
+    (void) images;
+    (void) tris;
+
     std::stringstream ss(line);
     std::string alias;
 
@@ -30,7 +34,6 @@ int main(int argc, char** argv){
     phys.addEntity(alias, &entities[name]);
   };
   gfx.loadConfig(argv[1]);
-
 
   phys.setDamping(.6);
   gfx.m_tickCallbacks.push_back([&](double diff){

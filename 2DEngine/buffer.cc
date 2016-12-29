@@ -105,10 +105,10 @@ void buffer<X, Y>::display(){
 
 template<unsigned int X, unsigned int Y>
 void buffer<X, Y>::draw(image img, coord c){
-  int x = c.first;
-  int y = c.second;
-  int i = 0;
-  int j = 0;
+  auto x = c.first;
+  auto y = c.second;
+  unsigned int i = 0;
+  unsigned int j = 0;
 
   while(y >= 0 && y < Y && j < img.data().size()){
     while(x >= 0 && x < X && i < img.data()[j].size()){
