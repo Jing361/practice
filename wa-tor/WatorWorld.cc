@@ -1,67 +1,71 @@
 #include"WatorWorld.hh"
 
 WatorWorld::WatorWorld(unsigned int x, unsigned int y){
-  this->height = x;
-  this->width = y;
-  this->universe = new Entity**[this->height];
-  for(unsigned int i = 0; i < this->height; ++i){
-    this->universe[i] = new Entity*[this->width];
+  height = x;
+  width = y;
+
+  universe = new Entity**[height];
+  for(unsigned int i = 0; i < height; ++i){
+    universe[i] = new Entity*[width];
   }
 }
 
 WatorWorld::WatorWorld(unsigned int x, unsigned int y, Entity*** world):WatorWorld(x, y){
   for(unsigned int i = 0; i < x; ++i){
     for(unsigned int j = 0; j < y; ++j){
-      this->universe[i][j] = world[i][j];
+      universe[i][j] = world[i][j];
     }
   }
 }
 
 WatorWorld::~WatorWorld(){
-  for(unsigned int i = 0; i < this->height; ++i){
-    delete[] this->universe[i];
+  for(unsigned int i = 0; i < height; ++i){
+    delete[] universe[i];
   }
-  delete[] this->universe;
+  delete[] universe;
 }
 
 Entity* WatorWorld::get(unsigned int x, unsigned int y){
-  return this->universe[x][y];
+  return universe[x][y];
 }
  
 void WatorWorld::set(unsigned int x, unsigned int y, Entity* newEnt){
-  this->universe[x][y] = newEnt;
+  universe[x][y] = newEnt;
 }
  
 Entity*** WatorWorld::getPercepts(unsigned int cX, unsigned int cY, unsigned int sX, unsigned int sY){
-  Entity*** percepts = new Entity**[sX];
   //X and Y radii
   int xR = sX / 2;
   int yR = sY / 2;
+
+  Entity*** percepts = new Entity**[sX];
   for(unsigned int i = 0; i < sY; ++i){
     percepts[i] = new Entity*[sY];
   }
+
   for(unsigned int k = 0; k < sX; ++k){
     for(unsigned int l = 0; l < sY; ++l){
-      unsigned int x;
-      unsigned int y;
-      unsigned int xt = cX - (k - xR) % this->height;
-      unsigned int yt = cY - (l - yR) % this->width;
+      int x;
+      int y;
+      int xt = cX - (k - xR) % height;
+      int yt = cY - (l - yR) % width;
       //Account for negative world indexes
       if(xt < 0){
-        x = this->height + xt;
+        x = height + xt;
       } else {
         x = xt;
       }
       if(yt < 0){
-        y = this->width + yt;
+        y = width + yt;
       } else {
         y = yt;
       }
+
       //loop control variable is a modifier to the central cell
       //to generalize: center is half of percept range
       //    modifier is negative half of percept range
       //    up to positive half of percept range
-      percepts[k][l] = this->universe[x][y];
+      percepts[k][l] = universe[x][y];
     }
   }
   return percepts;

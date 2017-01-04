@@ -1,5 +1,5 @@
 CC:=g++
-flags:=-Wall -std=c++11
+flags:=-Wall -Wextra -pedantic -std=c++14
 #debug flags
 dflags:=-ggdb3
 #valgrind flags

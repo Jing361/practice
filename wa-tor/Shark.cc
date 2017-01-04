@@ -1,17 +1,14 @@
 #include"Shark.hh"
-#include<iostream>
-using std::cout;
-using std::endl;
 
 //Shark::Shark(int r = 1):Shark(0, 0)
 Shark::Shark(int r):Shark(0, 0){
-  this->seekRange = r;
+  seekRange = r;
 }
 
 Shark::Shark(int x, int y):Entity(x, y){
-  this->sym = 'o';
-  this->seekRange = 1;
-  this->starveTime = 15;
+  sym = 'o';
+  seekRange = 1;
+  starveTime = 15;
 }
 
 Shark::Shark(const vec& pos):Shark(pos.x, pos.y){  }
@@ -20,12 +17,12 @@ Shark::~Shark(){
 }
 
 char Shark::getSym(){
-  return this->sym;
+  return sym;
 }
 
 void Shark::tick(Entity*** percepts){
-  this->tickAge();
-  this->move(percepts);
+  tickAge();
+  move(percepts);
 }
 
 //move by changing position information
@@ -33,15 +30,15 @@ void Shark::move(Entity*** percepts){
 }
 
 unsigned int Shark::getRange(){
-  return this->seekRange;
+  return seekRange;
 }
 
 void Shark::tickAge(){
-  ++this->feedTime;
-  if(++this->age == this->breedAge){
-    this->breed();
+  ++feedTime;
+  if(++age == breedAge){
+    breed();
   }
-  if(this->feedTime == this->starveTime){
+  if(feedTime == starveTime){
     delete this;
   }
 }
@@ -51,7 +48,7 @@ Entity* Shark::breed(){
 }
 
 void Shark::feed(Entity* food){
-  this->feedTime = 0;
+  feedTime = 0;
   delete food;
 }
 

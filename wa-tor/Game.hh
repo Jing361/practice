@@ -6,6 +6,9 @@ protected:
   bool running;
   unsigned int age;
 public:
+  Game():
+    running( false ),
+    age( 0 ){  }
   virtual void run() = 0;
 };
 
