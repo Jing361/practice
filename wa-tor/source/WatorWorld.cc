@@ -1,16 +1,13 @@
 #include"WatorWorld.hh"
 
-WatorWorld::WatorWorld(unsigned int x, unsigned int y){
-  height = x;
-  width = y;
-
-  universe = new Entity**[height];
-  for(unsigned int i = 0; i < height; ++i){
-    universe[i] = new Entity*[width];
-  }
+WatorWorld::WatorWorld(unsigned int x, unsigned int y):
+  height( x ),
+  width( y ){
 }
 
-WatorWorld::WatorWorld(unsigned int x, unsigned int y, Entity*** world):WatorWorld(x, y){
+WatorWorld::WatorWorld(unsigned int x, unsigned int y, Entity*** world):
+  WatorWorld(x, y){
+
   for(unsigned int i = 0; i < x; ++i){
     for(unsigned int j = 0; j < y; ++j){
       universe[i][j] = world[i][j];

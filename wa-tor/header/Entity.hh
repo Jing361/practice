@@ -6,6 +6,7 @@
 class vec{
 public:
   int x, y, z;
+
   vec():x(0),
         y(0),
         z(0){ }

@@ -1,10 +1,20 @@
 #ifndef __WATORWORLD_H__
 #define __WATORWORLD_H__
 
+#include<vector>
+
 #include"World.hh"
 #include"Entity.hh"
 
-class WatorWorld:public World<Entity*>{
+class WatorWorld{
+public:
+  typedef T value_type;
+
+private:
+  std::vector<std::vector<Entity> > universe;
+  unsigned int height;
+  unsigned int width;
+
 public:
   //Specify world size
   //TODO:Implement z-dimension

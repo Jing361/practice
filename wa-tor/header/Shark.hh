@@ -10,6 +10,7 @@ protected:
   unsigned int feedTime;
   //Time when starvation occurs
   unsigned int starveTime;
+
 public:
   Shark(int r = 1);
   Shark(int x, int y);
