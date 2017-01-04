@@ -7,37 +7,34 @@ WatorGame::WatorGame(unsigned int sX, unsigned int sY):WatorGame(sX, sY, .5){  }
 WatorGame::WatorGame(unsigned int sX, unsigned int sY, double fract):
   Game(),
   height( sX ),
-  width( sY ){
-  world = new WatorWorld(height, width);
-  fishFract = fract;
-  entityCount = (height * width) / 2;
-  fishCount = entityCount * fishFract;
-  sharkCount = entityCount - fishCount;
+  width( sY ),
+  world( height, width ),
+  fishFract( fract ),
+  entityCount( (height * width) / 2 ),
+  fishCount( entityCount * fishFract ),
+  sharkCount( entityCount - fishCount ){
 
-  initialize();
+  srand(time(NULL));
+  populateWorld();
 }
 
 WatorGame::~WatorGame(){
-  cleanup();
 }
 
 //Possibly good idea to generate list of entities, and then register them with the game
 void WatorGame::populateWorld(){
+  int name = 0;
   for(unsigned int i = 0; i < fishCount; ++i){
     unsigned int h, w;
-    do{
-      h = rand() % height;
-      w = rand() % width;
-    } while(world->get(h, w) != 0);
-    world->set(h, w, new Fish(h, w));
+    h = rand() % height;
+    w = rand() % width;
+    world.get( name++ ) = Fish( h, w );
   }
   for(unsigned int i = 0; i < sharkCount; ++i){
     unsigned int h, w;
-    do{
-      h = rand() % height;
-      w = rand() % width;
-    } while(world->get(h, w) != 0);
-    world->set(h, w, new Shark(h, w));
+    h = rand() % height;
+    w = rand() % width;
+    world.get( name++ ) = Shark( h, w );
   }
 }
 
@@ -46,18 +43,6 @@ void WatorGame::run(){
   while(running){
     loop();
   }
-}
-
-void WatorGame::initialize(){
-  srand(time(NULL));
-
-  world = new WatorWorld(height, width);
-
-  populateWorld();
-}
-
-void WatorGame::cleanup(){
-  delete world;
 }
 
 void WatorGame::loop(){

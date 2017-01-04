@@ -1,58 +1,54 @@
 #include"WatorWorld.hh"
 
-WatorWorld::WatorWorld(unsigned int x, unsigned int y):
+WatorWorld::WatorWorld( unsigned int x, unsigned int y ):
   height( x ),
   width( y ){
 }
 
-WatorWorld::WatorWorld(unsigned int x, unsigned int y, Entity*** world):
-  WatorWorld(x, y){
+WatorWorld::WatorWorld( unsigned int x, unsigned int y, Entity*** world ):
+  WatorWorld( x, y ){
 
-  for(unsigned int i = 0; i < x; ++i){
-    for(unsigned int j = 0; j < y; ++j){
+  for( unsigned int i = 0; i < x; ++i ){
+    for( unsigned int j = 0; j < y; ++j ){
       universe[i][j] = world[i][j];
     }
   }
 }
 
 WatorWorld::~WatorWorld(){
-  for(unsigned int i = 0; i < height; ++i){
+  for( unsigned int i = 0; i < height; ++i ){
     delete[] universe[i];
   }
   delete[] universe;
 }
 
-Entity* WatorWorld::get(unsigned int x, unsigned int y){
-  return universe[x][y];
+Entity& WatorWorld::get( int name ){
+  return universe[name];
 }
  
-void WatorWorld::set(unsigned int x, unsigned int y, Entity* newEnt){
-  universe[x][y] = newEnt;
-}
- 
-Entity*** WatorWorld::getPercepts(unsigned int cX, unsigned int cY, unsigned int sX, unsigned int sY){
+Entity*** WatorWorld::getPercepts( unsigned int cX, unsigned int cY, unsigned int sX, unsigned int sY ){
   //X and Y radii
   int xR = sX / 2;
   int yR = sY / 2;
 
   Entity*** percepts = new Entity**[sX];
-  for(unsigned int i = 0; i < sY; ++i){
+  for( unsigned int i = 0; i < sY; ++i ){
     percepts[i] = new Entity*[sY];
   }
 
-  for(unsigned int k = 0; k < sX; ++k){
-    for(unsigned int l = 0; l < sY; ++l){
+  for( unsigned int k = 0; k < sX; ++k ){
+    for( unsigned int l = 0; l < sY; ++l ){
       int x;
       int y;
-      int xt = cX - (k - xR) % height;
-      int yt = cY - (l - yR) % width;
+      int xt = cX - ( k - xR ) % height;
+      int yt = cY - ( l - yR ) % width;
       //Account for negative world indexes
-      if(xt < 0){
+      if( xt < 0 ){
         x = height + xt;
       } else {
         x = xt;
       }
-      if(yt < 0){
+      if( yt < 0 ){
         y = width + yt;
       } else {
         y = yt;

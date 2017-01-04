@@ -1,7 +1,9 @@
 #ifndef __WATORWORLD_H__
 #define __WATORWORLD_H__
 
+#include<map>
 #include<vector>
+#include<memory>
 
 #include"World.hh"
 #include"Entity.hh"
@@ -11,7 +13,7 @@ public:
   typedef T value_type;
 
 private:
-  std::vector<std::vector<Entity> > universe;
+  std::map<int, std::shared_ptr<Entity> > universe;
   unsigned int height;
   unsigned int width;
 
@@ -22,9 +24,8 @@ public:
   WatorWorld(unsigned int x, unsigned int y, Entity*** world);
   virtual ~WatorWorld();
 
-  Entity* get(unsigned int x, unsigned int y);
-  void set(unsigned int x, unsigned int y, Entity* newEnt);
-  Entity*** getPercepts(unsigned int cX, unsigned int cY, unsigned int sX, unsigned int sY);
+  std::shared_ptr<Entity> get( int name );
+  std::vector<Entity> getPercepts(unsigned int cX, unsigned int cY, unsigned int sX, unsigned int sY);
 };
 
 #endif
