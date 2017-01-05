@@ -28,7 +28,6 @@ public:
   void draw(tri tr, coord loc, char c = '#');
   template<class T>
   void draw(entity<T> ent);
-  void drawTri(coord v1, coord v2, coord v3, coord loc, char c = '#');
 };
 
 #include"buffer.cc"

@@ -8,6 +8,7 @@ void buffer<X, Y>::drawLine(coord v1, coord v2, char c){
   int end = std::max(v1.first, v2.first);
   double slope = (v2.second - v1.second) / (v2.first - v1.first);
   int offset = v1.second - (slope * v1.first);
+
   for(; start <= end; ++start){
     m_buffer[slope * start + offset][start] = c;
   }
@@ -17,6 +18,7 @@ template<unsigned int X, unsigned int Y>
 void buffer<X, Y>::drawFlatLine(int y, int x1, int x2, char c){
   int start = std::min(x1, x2);
   int end = std::max(x1, x2);
+
   for(; start <= end; ++start){
     m_buffer[y][start] = c;
   }
@@ -126,8 +128,12 @@ void buffer<X, Y>::draw(image img, coord c){
 }
 
 template<unsigned int X, unsigned int Y>
-void buffer<X, Y>::drawTri(coord v1, coord v2, coord v3, coord loc, char c){
+void buffer<X, Y>::draw(tri tr, coord loc, char c){
+  coord v1 = std::get<0>(tr);
+  coord v2 = std::get<1>(tr);
+  coord v3 = std::get<2>(tr);
   std::vector<coord> vec{ v1, v2, v3 };
+
   for(coord& it:vec){
     it.first += loc.first;
     it.second += loc.second;
@@ -149,11 +155,6 @@ void buffer<X, Y>::drawTri(coord v1, coord v2, coord v3, coord loc, char c){
     drawFlatTopTri(vec[0], vec[1], v4, c);
     drawFlatBotTri(vec[1], v4, vec[2], c);
   }
-}
-
-template<unsigned int X, unsigned int Y>
-void buffer<X, Y>::draw(tri tr, coord loc, char c){
-  drawTri(std::get<0>(tr), std::get<1>(tr), std::get<2>(tr), loc, c);
 }
 
 template<unsigned int X, unsigned int Y>
