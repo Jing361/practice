@@ -1,37 +1,97 @@
-CC:=g++
-flags:=-Wall -Wextra -pedantic -std=c++14
-dflags:=-ggdb3
-cflags:=-c $(dflags)
+include Makefile.cfg
 
-default:main
+ifndef BINLOC
 
-main:main.o image.o engine.o libMap.so
-	$(CC) main.o image.o engine.o -lpthread -ldl -o main
+.DEFAULT_GOAL:=default
 
-main.o:main.cc buffer.cc physics.cc entity.cc graphics.cc
-	$(CC) $(cflags) $(flags) main.cc
+$(builds): export BINLOC = $(binarydir)/$($@dir)/$(name)
+$(builds): export FLAGS  = $($@flags)
+$(builds): export objdir = $(objectdir)/$($@dir)
+$(builds): export depdir = $(dependdir)/$($@dir)
+$(builds): export bindir = $(binarydir)/$($@dir)
+$(builds):
+	@$(MAKE)
 
-image.o:image.cc
-	$(CC) $(cflags) $(flags) image.cc
+else
 
-engine.o:engine.cc
-	$(CC) $(cflags) $(flags) engine.cc
+ifeq ($(OS), Windows_NT)
+	FLAGS += -DWIN32
 
-tarSplit.o:tarSplit.cc
-	$(CC) $(cflags) $(flags) tarSplit.cc
+	ifeq ($(PROCESSOR_ARCHITEW6432),AMD64)
+#64bit
+	else
+		ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
+#64bit
+		endif
+		ifeq ($(PROCESSOR_ARCHITECTURE),x86)
+#32bit
+		endif
+	endif
+else
+	UNAME_S:=$(shell uname -s)
+	UNAME_P:=$(shell uname -p)
 
-libTarSplit.a:tarSplit.o
-	ar -cvq libTarSplit.a tarSplit.o
+	ifeq ($(UNAME_S),Linux)
+#linux
+	endif
+	ifeq ($(UNAME_S),Darwin)
+#OSX
+	endif
 
-map.tar:data/map.adv data/libMap.so
-	cd data && tar -cf map.tar libMap.so map.wld && mv map.tar ..
+	ifeq ($(UNAME_S),x86_64)
+#64bit
+	endif
+	ifneq ($(filter %86,$(UNAME_P)),)
+#32bit
+	endif
+	ifneq ($(filter arm%,$(UNAME_P)),)
+#arm
+	endif
+endif
 
-data/map.o:data/map.cc
-	$(CC) $(cflags) $(flags) -fPIC -o data/map.o data/map.cc
+.DEFAULT_GOAL:=$(BINLOC)
 
-libMap.so:data/map.o
-	$(CC) -shared -o libMap.so data/map.o
+SOURCES:=$(shell find $(sourcedir) -name '*$(sourceextension)')
+OBJECTS:=$(subst $(sourcedir),$(objdir), $(subst $(sourceextension),.o, $(SOURCES)))
+DEPENDS:=$(subst $(sourcedir),$(depdir), $(subst $(sourceextension),.d, $(SOURCES)))
+DIRS := $(sourcedir) $(headerdir) $(objectdir) $(objdir) $(dependdir) $(depdir) $(binarydir) $(bindir)
+
+.SECONDARY:$(OBJECTS)
+
+# link everything together
+%/$(name):$(OBJECTS)
+	$(CC) $+ $(FLAGS) -o $@
+
+-include $(DEPENDS)
+
+# generate directories
+$(DIRS):
+	@echo Making directory: $@
+	@mkdir $@
+
+# more complicated dependency computation, so all prereqs listed
+# will also become command-less, prereq-less targets
+#   sed:    strip the target (everything before colon)
+#   sed:    remove any continuation backslashes
+#   fmt -1: list words one per line
+#   sed:    strip leading spaces
+#   sed:    add trailing colons
+$(objdir)/%.o:|$(DIRS)
+	$(CC) -c $(sourcedir)/$*$(sourceextension) $(FLAGS) -o $@
+	$(CC) -MM $(FLAGS) $(sourcedir)/$*$(sourceextension) > $(depdir)/$*.d
+	@mv -f $(depdir)/$*.d $(depdir)/$*.d.tmp
+	@sed -e 's|.*:|$(objdir)/$*.o:|' < $(depdir)/$*.d.tmp > $(depdir)/$*.d
+	@sed -e 's/.*://' -e 's/\\$$//' < $(depdir)/$*.d.tmp | fmt -1 | \
+	  sed -e 's/^ *//' -e 's/$$/:/' >> $(depdir)/$*.d
+	@$(RM) -f $(depdir)/$*.d.tmp
+
+endif
 
 clean:
-	rm *.o core main *.so
+	-@$(RM) -rf $(objectdir) *.exe* $(dependdir) $(binarydir) $(name)
+
+#file partially written based on information from:
+#http://scottmcpeak.com/autodepend/autodepend.html
+
+.PHONY:clean $(DEPENDS) Makefile Makefile.cfg $(builds)
 
