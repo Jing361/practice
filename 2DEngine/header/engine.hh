@@ -58,19 +58,20 @@ public:
 template<unsigned int X, unsigned int Y>
 class engine{
 public:
+  typedef entity<image> ent_type;
   typedef std::function<void( std::string, std::string,
                               std::map<std::string, image>&,
-                              std::map<std::string, entity<image>>&,
+                              std::map<std::string, ent_type>&,
                               std::map<std::string, tri>& )>
                               configCallback;
 
 private:
   std::map<std::string, configCallback> mConfigCallbacks;
-  std::map<std::string, entity<image> > mEntities;
+  std::map<std::string, ent_type > mEntities;
   std::map<std::string, tri> mTriangles;
   std::map<std::string, image> mImages;
   std::vector<void*> mHandles;
-  physics mPsx;
+  physics<ent_type> mPsx;
   graphics<X, Y> mGfx;
   IO mio;
 
@@ -127,7 +128,7 @@ public:
         mTriangles[name] = tr;
       } else if( word == "ent" ){
         std::string img;
-        entity<image> ent;
+        ent_type ent;
 
         ss >> img;
         ent.addElement( mImages[img] );
@@ -193,7 +194,7 @@ public:
 
         ss >> key;
         ss >> fn;
-        auto tmp = ( void( * )( entity<image>& ) )dlsym( handle, fn.data() );
+        auto tmp = ( void( * )( ent_type& ) )dlsym( handle, fn.data() );
         if( ( error = dlerror() ) != 0 ){
           throw badLibFuncReferenceException( fn );
         }
@@ -213,7 +214,7 @@ public:
   void tick( std::clock_t diff, OSTREAM& os ){
     mPsx.handleCollisions();
     mPsx.tick( diff );
-    mGfx.tick( diff, os );
+    mGfx.tick( os );
   }
 
   template<typename OSTREAM>

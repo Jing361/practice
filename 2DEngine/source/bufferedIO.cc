@@ -52,7 +52,7 @@ IO::IO( char kill ):
 }
 
 void IO::killThread(){
-  char c;
+  char c = ~mKillChar;
   bufferedIO b;
 
   b.turnOff();

@@ -53,6 +53,8 @@ public:
       os << mBorder;
     }
     os << mCorner << '\n';
+
+    return os;
   }
   void draw( unsigned int x, unsigned int y, char c ){
     mBuffer[x][y] = c;
