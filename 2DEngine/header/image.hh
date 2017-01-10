@@ -3,9 +3,10 @@
 
 #include<vector>
 #include<string>
+#include<fstream>
 
 template<typename T>
-typedef std::vector<std::vector<T> > dubArr;
+using dubArr = std::vector<std::vector<T> >;
 
 class image{
 private:
@@ -13,31 +14,11 @@ private:
 
 public:
   image() = default;
-  image( const std::string& fileName ){
-  }
+  image( const std::string& fileName );
 
-  void readString( std::string str ){
-    std::stringstream ss(str);
-    std::string line;
-    while( std::getline(ss, line ) ){
-      std::vector<char> vec( line.begin(), line.end() );
-      m_image.push_back( vec );
-    }
-  }
-  void readFile( std::fstream&& file ){
-    std::string str;
-
-    file.seekg( 0, std::ios::end );
-    str.reserve( file.tellg() );
-    file.seekg( 0, std::ios::beg );
-
-    str.assign( ( std::istreambuf_iterator<char>( file ) ),
-                  std::istreambuf_iterator<char>() );
-    readString( str );
-  }
-  dubArr& data(){
-    return mImage;
-  }
+  void readString( std::string str );
+  void readFile( std::fstream&& file );
+  dubArr<char>& data();
 };
 
 #endif

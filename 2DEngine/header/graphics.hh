@@ -13,16 +13,19 @@ class graphics{
 private:
   screen<X, Y> mScreen;
   std::map<std::string, image > mImages;
-  std::map<std::string, entity<T> > mEntities;
+  std::map<std::string, entity<image> > mEntities;
 
 public:
-  void tick( double diff ){
+  template<typename OSTREAM>
+  OSTREAM& tick( double diff, OSTREAM& os ){
     mScreen.clear();
 
     for( auto pr : mEntities ){
       pr.second.draw( mScreen );
     }
-    screen.display( ostream );
+    mScreen.display( os );
+
+    return os;
   }
 };
 

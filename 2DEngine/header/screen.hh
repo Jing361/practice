@@ -6,8 +6,8 @@
 template<unsigned int X, unsigned int Y>
 class screen{
 public:
-  const static WIDTH = X;
-  const static HEIGHT = X;
+  const static unsigned int WIDTH = X;
+  const static unsigned int HEIGHT = X;
 
 private:
   std::array<std::array<char, WIDTH>, HEIGHT> mBuffer;
@@ -15,7 +15,10 @@ private:
   char mCorner;
 
 public:
-  screen( char border, char corner = border ):
+  screen( char border = '*' ):
+    screen( border, border ){
+  }
+  screen( char border, char corner ):
     mBorder( border ),
     mCorner( corner ){
     clear();
@@ -28,7 +31,7 @@ public:
       }
     }
   }
-  template<OSTREAM>
+  template<typename OSTREAM>
   OSTREAM& display( OSTREAM& os ){
     os << mCorner;
     for( unsigned int i = 0; i < WIDTH; ++i ){
@@ -36,7 +39,7 @@ public:
     }
     os << mCorner << '\n';
 
-    for( auto arr : m_buffer ){
+    for( auto arr : mBuffer ){
       os << mBorder;
 
       for( auto it : arr ){
@@ -51,8 +54,8 @@ public:
     }
     os << mCorner << '\n';
   }
-  void draw( unsigned int X, unsigned int Y, char c ){
-    mBuffer[X][Y] = c;
+  void draw( unsigned int x, unsigned int y, char c ){
+    mBuffer[x][y] = c;
   }
 };
 

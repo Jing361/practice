@@ -1,3 +1,6 @@
 libMap.so
 log.txt
+depend/*
+object/*
+binary/*
 
