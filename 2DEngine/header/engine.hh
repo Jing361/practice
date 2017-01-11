@@ -107,7 +107,7 @@ public:
       std::string name;
 
       ss >> word;
-      ss >> word;
+      ss >> name;
 
       if( word == "img" ){
         std::string file;
@@ -117,14 +117,15 @@ public:
       } else if( word == "tri" ){
         std::array<coord, 3> arr;
 
-        for( int i = 0; i < 3; ++i ){
+        for( auto cor : arr ){
           int x;
           int y;
 
           ss >> x;
           ss >> y;
-          arr[i].first = x;
-          arr[i].second = y;
+
+          cor.first = x;
+          cor.second = y;
         }
 
         tri tr( coord( arr[0].first, arr[0].second ), coord( arr[0].first, arr[0].second ), coord( arr[0].first, arr[0].second ) );
@@ -139,14 +140,15 @@ public:
       } else if( word == "stbb" ){
         std::array<coord, 2> arr;
 
-        for( int i = 0; i < 2; ++i ){
+        for( auto cor : arr ){
           int x;
           int y;
 
           ss >> x;
           ss >> y;
-          arr[i].first = x;
-          arr[i].second = y;
+
+          cor.first = x;
+          cor.second = y;
         }
         mEntities[name].getHitBox() = std::pair<coord, coord>( arr[0], arr[1] );
       } else if( word == "stp" ){
@@ -186,6 +188,7 @@ public:
         mPsx.addEntity( alias, mEntities[name] );
       } else if( word == "lib" ){
         hndl = dlopen( name.data(), RTLD_LAZY );
+
         if( !hndl ){
           throw libraryNotFoundException( name );
         }

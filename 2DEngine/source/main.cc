@@ -17,7 +17,15 @@ int main( int argc, char** argv ){
     return 1;
   }
 
-  engine<80, 40> eng;
+  typedef engine<80, 40> eng_type;
+  eng_type eng;
+
+  eng.registerConfigCallback("print", []( std::string, std::string w,
+                                          resourcemanager<image>&,
+                                          std::map<std::string, eng_type::ent_type>&,
+                                          std::map<std::string, tri>& ){
+    cout << w << endl;
+  });
 
   try{
     eng.loadConfig( argv[1] );
