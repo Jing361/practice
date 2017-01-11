@@ -12,6 +12,7 @@
 #include"entity.hh"
 #include"bufferedIO.hh"
 #include"shared_types.hh"
+#include"resourcemanager.hh"
 
 class unrecognizedKeywordException : std::exception{
 private:
@@ -58,9 +59,10 @@ public:
 template<unsigned int X, unsigned int Y>
 class engine{
 public:
+  typedef void* handle_type;
   typedef entity<image> ent_type;
   typedef std::function<void( std::string, std::string,
-                              std::map<std::string, image>&,
+                              resourcemanager<image>&,
                               std::map<std::string, ent_type>&,
                               std::map<std::string, tri>& )>
                               configCallback;
@@ -69,8 +71,9 @@ private:
   std::map<std::string, configCallback> mConfigCallbacks;
   std::map<std::string, ent_type > mEntities;
   std::map<std::string, tri> mTriangles;
-  std::map<std::string, image> mImages;
-  std::vector<void*> mHandles;
+  std::vector<handle_type> mHandles;
+  resourcemanager<image> mImages;
+
   physics<ent_type> mPsx;
   graphics<X, Y> mGfx;
   IO mio;
@@ -91,7 +94,7 @@ public:
   }
 
   void loadConfig( const std::string& configName ){
-    void* handle;
+    handle_type hndl;
     std::fstream config( configName );
     std::string line;
 
@@ -110,7 +113,7 @@ public:
         std::string file;
 
         ss >> file;
-        mImages[name] = image( file );
+        mImages.acquire( file, name );
       } else if( word == "tri" ){
         std::array<coord, 3> arr;
 
@@ -182,11 +185,11 @@ public:
 
         mPsx.addEntity( alias, mEntities[name] );
       } else if( word == "lib" ){
-        handle = dlopen( name.data(), RTLD_LAZY );
-        if( !handle ){
+        hndl = dlopen( name.data(), RTLD_LAZY );
+        if( !hndl ){
           throw libraryNotFoundException( name );
         }
-        mHandles.push_back( handle );
+        mHandles.push_back( hndl );
       } else if( word == "cbk" ){
         std::string fn;
         char key;
@@ -194,7 +197,7 @@ public:
 
         ss >> key;
         ss >> fn;
-        auto tmp = ( void( * )( ent_type& ) )dlsym( handle, fn.data() );
+        auto tmp = ( void( * )( ent_type& ) )dlsym( hndl, fn.data() );
         if( ( error = dlerror() ) != 0 ){
           throw badLibFuncReferenceException( fn );
         }

@@ -5,27 +5,42 @@
 #include<map>
 #include<fstream>
 #include<functional>
+#include<utility>
 
 template<typename RESOURCE, typename REFERENCE = std::string>
 class resourcemanager{
 public:
   typedef RESOURCE res_type;
   typedef REFERENCE ref_type;
-  typedef std::function<res_type( std::fstream )> processCallback;
+  typedef std::function<res_type( std::fstream&& )> processCallback;
 
 private:
   std::map<ref_type, res_type> mResources;
   processCallback resourceCallback;
 
 public:
-  resourcemanager( processCallback callback = []->res_type( std::fstream file ){ return res_type( file ); } ):
+  resourcemanager( processCallback callback =
+    []( std::fstream&& file )->res_type{
+      return res_type( std::move( file ) );
+    } ):
     resourceCallback( callback ){
   }
 
   void acquire( const std::string& fileName, const ref_type& resourceName ){
     mResources[resourceName] = resourceCallback( std::fstream( fileName ) );
   }
+
   res_type& retrieve( const ref_type& resourceName ){
+    return mResources.at( resourceName );
+  }
+  res_type& operator[]( const ref_type& resourceName ){
+    return mResources.at( resourceName );
+  }
+
+  const res_type& retrieve( const ref_type& resourceName ) const{
+    return mResources.at( resourceName );
+  }
+  const res_type& operator[]( const ref_type& resourceName ) const{
     return mResources.at( resourceName );
   }
 };

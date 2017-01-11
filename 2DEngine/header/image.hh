@@ -15,6 +15,7 @@ private:
 public:
   image() = default;
   image( const std::string& fileName );
+  image( std::fstream&& file );
 
   void readString( std::string str );
   void readFile( std::fstream&& file );

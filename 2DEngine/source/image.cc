@@ -1,11 +1,16 @@
 #include<sstream>
+#include<utility>
 
 #include"image.hh"
 
 using namespace std;
 
-image::image( const string& fileName ){
-  readFile( fstream( fileName ) );
+image::image( const string& fileName ):
+  image( fstream( fileName ) ){
+}
+
+image::image( fstream&& file ){
+  readFile( move( file ) );
 }
 
 void image::readString( string str ){
