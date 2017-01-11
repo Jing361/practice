@@ -54,13 +54,14 @@ endif
 SOURCES:=$(shell find $(sourcedir) -name '*$(sourceextension)')
 OBJECTS:=$(subst $(sourcedir),$(objdir), $(subst $(sourceextension),.o, $(SOURCES)))
 DEPENDS:=$(subst $(sourcedir),$(depdir), $(subst $(sourceextension),.d, $(SOURCES)))
-DIRS := $(sourcedir) $(headerdir) $(objectdir) $(objdir) $(dependdir) $(depdir) $(binarydir) $(bindir)
+DIRS := $(sourcedir) $(headerdir) $(objectdir) $(objdir) $(dependdir) $(depdir) $(binarydir) $(bindir) $(librarydir)
+LIBS:=$(patsubst %,-l%,$(libraries))
 
 .SECONDARY:$(OBJECTS)
 
 # link everything together
 %/$(name):$(OBJECTS)
-	$(CC) $+ $(FLAGS) -o $@
+	$(CC) $+ $(FLAGS) -o $@ $(LIBS)
 
 -include $(DEPENDS)
 
