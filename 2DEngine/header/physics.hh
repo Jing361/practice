@@ -16,6 +16,20 @@ private:
   std::map<std::string, ent_type > mEntities;
   double mDamping;
 
+  // collide function only applies physics result to entity a
+  void collide( ent_type& a, ent_type& b ){
+    double aMass = a.getTotalMass();
+    double bMass = b.getTotalMass();
+    auto& aVel = a.getVelocity();
+    auto bVel = b.getVelocity();
+
+    double pix = ( ( aMass * aVel.first ) + ( bMass * bVel.first ) );
+    aVel.first = ( pix + bMass * ( bVel.first - aVel.first ) ) / ( aMass + bMass );
+
+    double piy = ( ( aMass * aVel.second ) + ( bMass * bVel.second ) );
+    aVel.second = ( piy + bMass * ( bVel.second - aVel.second ) ) / ( aMass + bMass );
+  }
+
 public:
   void addEntity( const std::string& name, ent_type ent ){
     mEntities[name] = ent;
@@ -34,6 +48,7 @@ public:
     for(auto pr1 : mEntities ){
       for( auto pr2 : mEntities ){
         if( checkCollision( pr1.second, pr2.second ) ){
+          collide( pr1.second, pr2.second );
           pr1.second.collide( pr2.second );
         }
       }
