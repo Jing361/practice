@@ -14,7 +14,7 @@
 #include"shared_types.hh"
 #include"resourcemanager.hh"
 
-class unrecognizedKeywordException : std::exception{
+class unrecognizedKeywordException : public std::exception{
 private:
   std::string mMesg;
 
@@ -28,7 +28,7 @@ public:
   }
 };
 
-class badLibFuncReferenceException : std::exception{
+class badLibFuncReferenceException : public std::exception{
 private:
   std::string mMesg;
 
@@ -42,7 +42,7 @@ public:
   }
 };
 
-class libraryNotFoundException : std::exception{
+class libraryNotFoundException : public std::exception{
 private:
   std::string mMesg;
 

@@ -3,6 +3,7 @@
 #include<iostream>
 #include<string>
 #include<sstream>
+#include<exception>
 
 #include"engine.hh"
 #include"entity.hh"
@@ -18,7 +19,11 @@ int main( int argc, char** argv ){
 
   engine<80, 40> eng;
 
-  eng.loadConfig( argv[1] );
+  try{
+    eng.loadConfig( argv[1] );
+  }catch( exception& e ){
+    cout << e.what() << endl;
+  }
 
   eng.run( cout );
 

@@ -49,7 +49,8 @@ public:
   }
 
   template<typename U>
-  void collide( const entity<U>& ent );
+  void collide( const entity<U>& ent ){
+  }
   template<typename U>
   bool isCollide( const entity<U>& ent ) const{
     return physics<entity>::checkCollision( mHitBox, ent.getHitBox() );
