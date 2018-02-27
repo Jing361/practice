@@ -3,11 +3,10 @@
 
 #include<map>
 #include<string>
-#include<algorithm>
 #include<memory>
 
-#include"screen.hh"
-#include"shared_types.hh"
+#include<screen.hh>
+#include<shared_types.hh>
 
 class graphics;
 
@@ -42,6 +41,8 @@ public:
 
   renderable( renderable&& ) = default;
 
+  ~renderable() = default;
+
   template<typename T>
   renderable( T t )
     : mIface( std::make_shared<wrapper<T> >( t ) ){
@@ -59,11 +60,16 @@ public:
   }
 
   void
-  draw( graphics& gfx ){
+  draw( graphics& gfx ) const{
     mIface->draw( gfx );
   }
 };
 
+/*!
+ * @todo
+ * The rendenring space should be allowed to be larger than the screen space.
+ * So the rendering space needs some way to be translated to screen space.
+ */
 class graphics{
 private:
   screen mScreen;
@@ -87,11 +93,14 @@ private:
 public:
   graphics( unsigned int X, unsigned int Y );
 
+  ~graphics() = default;
+
+  void
+  clearBuffer();
+
   template<typename OSTREAM>
   OSTREAM&
   show( OSTREAM& os ){
-    mScreen.clear();
-
     for( auto pr : mParts ){
       pr.second.draw( *this );
     }
@@ -105,10 +114,27 @@ public:
   add( const std::string& name, const renderable& rndrbl );
 
   void
-  draw( tri t, coord cor, char c );
+  draw( simple_tri t, coord cor, char c );
 
   void
   draw( line l, char c );
+
+  void
+  draw( const renderable& rndrbl );
+};
+
+class tri{
+private:
+  simple_tri mCoords;
+
+public:
+  tri( coord c1, coord c2, coord c3 )
+    : mCoords{c1, c2, c3 }{
+  }
+
+  void draw( graphics& gfx ) const{
+    gfx.draw( mCoords, {0, 0}, '+' );
+  }
 };
 
 #endif

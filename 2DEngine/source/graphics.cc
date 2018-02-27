@@ -1,10 +1,14 @@
+#include<algorithm>
+
 #include<graphics.hh>
+
+using namespace std;
 
 void
 graphics::drawFlatTopTri( coord v1, coord v2, coord v3, char c ){
-  std::vector<coord> vec{v1, v2, v3};
+  vector<coord> vec{v1, v2, v3};
 
-  auto lowIt = std::min_element( vec.begin(), vec.end(),
+  auto lowIt = min_element( vec.begin(), vec.end(),
     []( coord a, coord b )->bool{
       return a.second < b.second;
     }
@@ -13,25 +17,25 @@ graphics::drawFlatTopTri( coord v1, coord v2, coord v3, char c ){
   coord low = *lowIt;
   vec.erase( lowIt );
 
-  double liSlope = ( double )( vec[0].first  - low.first )
-                 / ( double )( vec[0].second - low.second );
-  double riSlope = ( double )( vec[1].first  - low.first )
-                 / ( double )( vec[1].second - low.second );
-  double xr = low.first;
-  double xl = low.first;
+  double slope0 = ( double )( vec[0].first  - low.first )
+                / ( double )( vec[0].second - low.second );
+  double slope1 = ( double )( vec[1].first  - low.first )
+                / ( double )( vec[1].second - low.second );
+  double x0 = low.first;
+  double x1 = low.first;
 
-  for( unsigned int i = low.second; i < vec[0].second; ++i ){
-    drawFlatLine( i, xl, xr, c );
-    xl += liSlope;
-    xr += riSlope;
+  for( int i = low.second; i <= vec[0].second; ++i ){
+    drawFlatLine( i, x0, x1, c );
+    x0 += slope0;
+    x1 += slope1;
   }
 }
 
 void
 graphics::drawFlatBotTri( coord v1, coord v2, coord v3, char c ){
-  std::vector<coord> vec{v1, v2, v3};
+  vector<coord> vec{v1, v2, v3};
 
-  auto hiIt = std::max_element( vec.begin(), vec.end(),
+  auto hiIt = max_element( vec.begin(), vec.end(),
     []( coord a, coord b )->bool{
       return a.second < b.second;
     }
@@ -40,44 +44,44 @@ graphics::drawFlatBotTri( coord v1, coord v2, coord v3, char c ){
   coord hi = *hiIt;
   vec.erase( hiIt );
 
-  double liSlope = ( double )( vec[0].first  - hi.first )
-                 / ( double )( vec[0].second - hi.second );
-  double riSlope = ( double )( vec[1].first  - hi.first )
-                 / ( double )( vec[1].second - hi.second );
-  double xr = hi.first;
-  double xl = hi.first;
+  double slope0 = ( double )( vec[0].first  - hi.first )
+                / ( double )( vec[0].second - hi.second );
+  double slope1 = ( double )( vec[1].first  - hi.first )
+                / ( double )( vec[1].second - hi.second );
+  double x0 = hi.first;
+  double x1 = hi.first;
 
-  for( unsigned int i = hi.second; i > vec[0].second - 1; --i ){
-    drawFlatLine( i, xl, xr, c );
-    xl -= liSlope;
-    xr -= riSlope;
+  for( int i = hi.second; i >= vec[0].second; --i ){
+    drawFlatLine( i, x0, x1, c );
+    x0 -= slope0;
+    x1 -= slope1;
   }
 }
 
 void
 graphics::drawFlatLine( int y, int x1, int x2, char c ){
-  int start = std::min( x1, x2 );
-  int end = std::max( x1, x2 );
+  int start = min( x1, x2 );
+  int end = max( x1, x2 );
 
   for( ; start <= end; ++start ){
-    mScreen.draw( y, start, c );
+    mScreen.draw( start, y, c );
   }
 }
 
 void
 graphics::drawTri( coord v1, coord v2, coord v3, coord loc, char c ){
-  std::vector<coord> vec{ v1, v2, v3 };
-  for( coord& it:vec ){
+  vector<coord> vec{ v1, v2, v3 };
+  for( coord& it : vec ){
     it.first += loc.first;
     it.second += loc.second;
   }
-  std::sort( vec.begin(), vec.end(), [](coord a, coord b ){
+  sort( vec.begin(), vec.end(), [](coord a, coord b ){
     return a.second < b.second;
   });
 
-  if( vec[1].second == vec[2].second ){
+  if( vec[0].second == vec[1].second ){
     drawFlatBotTri( v1, v2, v3, c );
-  } else if( vec[0].second == vec[1].second ){
+  } else if( vec[1].second == vec[2].second ){
     drawFlatTopTri( v1, v2, v3, c );
   } else {
     coord v4 = coord( ( ( vec[1].second - vec[0].second ) / 
@@ -92,8 +96,8 @@ graphics::drawTri( coord v1, coord v2, coord v3, coord loc, char c ){
 
 void
 graphics::drawLine( coord v1, coord v2, char c ){
-  int start = std::min( v1.first, v2.first );
-  int end = std::max( v1.first, v2.first );
+  int start = min( v1.first, v2.first );
+  int end = max( v1.first, v2.first );
   double slope = ( v2.second - v1.second ) / ( v2.first - v1.first );
   int offset = v1.second - ( slope * v1.first );
 
@@ -107,17 +111,27 @@ graphics::graphics( unsigned int X, unsigned int Y )
 }
 
 void
-graphics::add( const std::string& name, const renderable& rndrbl ){
+graphics::clearBuffer(){
+  mScreen.clear();
+}
+
+void
+graphics::add( const string& name, const renderable& rndrbl ){
   mParts.emplace( name, rndrbl );
 }
 
 void
-graphics::draw( tri t, coord cor, char c ){
-  drawTri( std::get<0>( t ), std::get<1>( t ), std::get<2>( t ), cor, c );
+graphics::draw( simple_tri t, coord cor, char c ){
+  drawTri( get<0>( t ), get<1>( t ), get<2>( t ), cor, c );
 }
 
 void
 graphics::draw( line l, char c ){
-  drawLine( std::get<0>( l ), std::get<1>( l ), c );
+  drawLine( get<0>( l ), get<1>( l ), c );
+}
+
+void
+graphics::draw( const renderable& rndrbl ){
+  rndrbl.draw( *this );
 }
 

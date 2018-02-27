@@ -36,13 +36,16 @@ public:
       for( auto it : arr ){
         os << it;
       }
+
       os << mBorder << '\n';
     }
 
     os << mCorner;
+
     for(unsigned int i = 0; i < WIDTH; ++i){
       os << mBorder;
     }
+
     os << mCorner << '\n';
 
     return os;

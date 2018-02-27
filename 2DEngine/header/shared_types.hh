@@ -4,9 +4,9 @@
 #include<tuple>
 
 using vec2 = std::pair<double, double>;
-using coord = std::pair<unsigned int, unsigned int>;
-using tri = std::tuple<coord, coord, coord>;
+using coord = std::pair<int, int>;
 using line = std::tuple<coord, coord>;
+using simple_tri = std::tuple<coord, coord, coord>;
 
 bool coordXLess( const coord& a, const coord& b );
 
