@@ -14,32 +14,12 @@ private:
   char mCorner;
 
 public:
-  screen( char border = '*' ):
-    screen( border, border ){
-  }
+  screen( char border = '*' );
 
-  screen( unsigned int X, unsigned int Y, char border = '*', char corner = '*' )
-    : WIDTH( X )
-    , HEIGHT( Y )
-    , mBuffer( X )
-    , mBorder( border )
-    , mCorner( corner ){
-
-    for( auto& line : mBuffer ){
-      line.resize( Y );
-    }
-
-    clear();
-  }
+  screen( unsigned int X, unsigned int Y, char border = '*', char corner = '*' );
 
   void
-  clear(){
-    for( auto& arr : mBuffer ){
-      for( auto& c : arr ){
-        c = ' ';
-      }
-    }
-  }
+  clear();
 
   template<typename OSTREAM>
   OSTREAM&
@@ -69,9 +49,7 @@ public:
   }
 
   void
-  draw( unsigned int x, unsigned int y, char c ){
-    mBuffer[x][y] = c;
-  }
+  draw( unsigned int x, unsigned int y, char c );
 };
 
 #endif
