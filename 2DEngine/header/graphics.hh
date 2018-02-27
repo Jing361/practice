@@ -4,50 +4,88 @@
 #include<map>
 #include<string>
 #include<algorithm>
+#include<memory>
 
 #include"screen.hh"
-#include"entity.hh"
-#include"image.hh"
 #include"shared_types.hh"
 
-template<unsigned int X, unsigned int Y>
-class graphics{
+class graphics;
+
+class renderable{
 private:
-  screen<X, Y> mScreen;
-  std::map<std::string, image > mImages;
-  std::map<std::string, entity<image> > mEntities;
+  class interface{
+  public:
+    virtual void draw( graphics& ) const = 0;
+  };
+
+  template<typename T>
+  class wrapper : public interface{
+  private:
+    T mUnder;
+
+  public:
+    wrapper( T t )
+      : mUnder( t ){
+    }
+
+    void draw( graphics& gfx ) const{
+      mUnder.draw( gfx );
+    }
+  };
+
+  std::shared_ptr<interface> mIface;
 
 public:
-  void drawLine( coord v1, coord v2, char c ){
-    int start = std::min( v1.first, v2.first );
-    int end = std::max( v1.first, v2.first );
-    double slope = ( v2.second - v1.second ) / ( v2.first - v1.first );
-    int offset = v1.second - ( slope * v1.first );
+  renderable() = default;
 
-    for( ; start <= end; ++start ){
-      mScreen.draw( slope * start + offset, start, c );
-    }
+  renderable( const renderable& ) = default;
+
+  renderable( renderable&& ) = default;
+
+  template<typename T>
+  renderable( T t )
+    : mIface( std::make_shared<wrapper<T> >( t ) ){
   }
 
-  void drawFlatLine( int y, int x1, int x2, char c ){
-    int start = std::min( x1, x2 );
-    int end = std::max( x1, x2 );
+  renderable& operator=( const renderable& ) = default;
 
-    for( ; start <= end; ++start ){
-      mScreen.draw( y, start, c );
-    }
+  renderable& operator=( renderable&& ) = default;
+
+  template<typename T>
+  renderable& operator=( T t ){
+    mIface = std::make_shared<wrapper<T> >( t );
+
+    return *this;
   }
 
-  void drawFlatTopTri( coord v1, coord v2, coord v3, char c ){
-    std::vector<coord> vec{ v1, v2, v3 };
-    auto lowIt = std::min_element( vec.begin(), vec.end(), []( coord a, coord b )->bool{
-      return a.second < b.second;
-    });
+  void
+  draw( graphics& gfx ){
+    mIface->draw( gfx );
+  }
+};
+
+class graphics{
+private:
+  screen mScreen;
+  std::map<std::string, renderable> mParts;
+
+  void
+  drawFlatTopTri( coord v1, coord v2, coord v3, char c ){
+    std::vector<coord> vec{v1, v2, v3};
+
+    auto lowIt = std::min_element( vec.begin(), vec.end(),
+      []( coord a, coord b )->bool{
+        return a.second < b.second;
+      }
+    );
 
     coord low = *lowIt;
     vec.erase( lowIt );
-    double liSlope = ( double )( vec[0].first - low.first ) / ( double )( vec[0].second - low.second );
-    double riSlope = ( double )( vec[1].first - low.first ) / ( double )( vec[1].second - low.second );
+
+    double liSlope = ( double )( vec[0].first  - low.first )
+                   / ( double )( vec[0].second - low.second );
+    double riSlope = ( double )( vec[1].first  - low.first )
+                   / ( double )( vec[1].second - low.second );
     double xr = low.first;
     double xl = low.first;
 
@@ -58,16 +96,23 @@ public:
     }
   }
 
-  void drawFlatBotTri( coord v1, coord v2, coord v3, char c ){
-    std::vector<coord> vec{ v1, v2, v3 };
-    auto hiIt = std::max_element( vec.begin(), vec.end(), []( coord a, coord b )->bool{
-      return a.second < b.second;
-    });
+  void
+  drawFlatBotTri( coord v1, coord v2, coord v3, char c ){
+    std::vector<coord> vec{v1, v2, v3};
+
+    auto hiIt = std::max_element( vec.begin(), vec.end(),
+      []( coord a, coord b )->bool{
+        return a.second < b.second;
+      }
+    );
 
     coord hi = *hiIt;
     vec.erase( hiIt );
-    double liSlope = ( double )( vec[0].first - hi.first ) / ( double )( vec[0].second - hi.second );
-    double riSlope = ( double )( vec[1].first - hi.first ) / ( double )( vec[1].second - hi.second );
+
+    double liSlope = ( double )( vec[0].first  - hi.first )
+                   / ( double )( vec[0].second - hi.second );
+    double riSlope = ( double )( vec[1].first  - hi.first )
+                   / ( double )( vec[1].second - hi.second );
     double xr = hi.first;
     double xl = hi.first;
 
@@ -78,7 +123,18 @@ public:
     }
   }
 
-  void drawTri( coord v1, coord v2, coord v3, coord loc, char c ){
+  void
+  drawFlatLine( int y, int x1, int x2, char c ){
+    int start = std::min( x1, x2 );
+    int end = std::max( x1, x2 );
+
+    for( ; start <= end; ++start ){
+      mScreen.draw( y, start, c );
+    }
+  }
+
+  void
+  drawTri( coord v1, coord v2, coord v3, coord loc, char c ){
     std::vector<coord> vec{ v1, v2, v3 };
     for( coord& it:vec ){
       it.first += loc.first;
@@ -103,22 +159,50 @@ public:
     }
   }
 
+  void
+  drawLine( coord v1, coord v2, char c ){
+    int start = std::min( v1.first, v2.first );
+    int end = std::max( v1.first, v2.first );
+    double slope = ( v2.second - v1.second ) / ( v2.first - v1.first );
+    int offset = v1.second - ( slope * v1.first );
+
+    for( ; start <= end; ++start ){
+      mScreen.draw( slope * start + offset, start, c );
+    }
+  }
+
+public:
+  graphics( unsigned int X, unsigned int Y )
+    : mScreen( X, Y ){
+  }
+
   template<typename OSTREAM>
-  OSTREAM& tick( OSTREAM& os ){
+  OSTREAM&
+  show( OSTREAM& os ){
     mScreen.clear();
 
-    for( auto pr : mEntities ){
+    for( auto pr : mParts ){
       pr.second.draw( *this );
     }
+
     mScreen.display( os );
 
     return os;
   }
 
-  void draw( tri t, coord cor ){
-    
+  void
+  add( const std::string& name, const renderable& rndrbl ){
+    mParts.emplace( name, rndrbl );
   }
-  void draw( image, coord cor ){
+
+  void
+  draw( tri t, coord cor, char c ){
+    drawTri( std::get<0>( t ), std::get<1>( t ), std::get<2>( t ), cor, c );
+  }
+
+  void
+  draw( line l, char c ){
+    drawLine( std::get<0>( l ), std::get<1>( l ), c );
   }
 };
 

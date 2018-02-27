@@ -1,16 +1,15 @@
 #ifndef __SCREEN_HH__
 #define __SCREEN_HH__
 
-#include<array>
+#include<vector>
 
-template<unsigned int X, unsigned int Y>
 class screen{
 public:
-  const static unsigned int WIDTH = X;
-  const static unsigned int HEIGHT = X;
+  const unsigned int WIDTH;
+  const unsigned int HEIGHT;
 
 private:
-  std::array<std::array<char, WIDTH>, HEIGHT> mBuffer;
+  std::vector<std::vector<char> > mBuffer;
   char mBorder;
   char mCorner;
 
@@ -18,21 +17,33 @@ public:
   screen( char border = '*' ):
     screen( border, border ){
   }
-  screen( char border, char corner ):
-    mBorder( border ),
-    mCorner( corner ){
+
+  screen( unsigned int X, unsigned int Y, char border = '*', char corner = '*' )
+    : WIDTH( X )
+    , HEIGHT( Y )
+    , mBuffer( X )
+    , mBorder( border )
+    , mCorner( corner ){
+
+    for( auto& line : mBuffer ){
+      line.resize( Y );
+    }
+
     clear();
   }
 
-  void clear(){
+  void
+  clear(){
     for( auto& arr : mBuffer ){
       for( auto& c : arr ){
         c = ' ';
       }
     }
   }
+
   template<typename OSTREAM>
-  OSTREAM& display( OSTREAM& os ){
+  OSTREAM&
+  display( OSTREAM& os ){
     os << mCorner;
     for( unsigned int i = 0; i < WIDTH; ++i ){
       os << mBorder;
@@ -49,14 +60,16 @@ public:
     }
 
     os << mCorner;
-    for(unsigned int i = 0; i < X; ++i){
+    for(unsigned int i = 0; i < WIDTH; ++i){
       os << mBorder;
     }
     os << mCorner << '\n';
 
     return os;
   }
-  void draw( unsigned int x, unsigned int y, char c ){
+
+  void
+  draw( unsigned int x, unsigned int y, char c ){
     mBuffer[x][y] = c;
   }
 };

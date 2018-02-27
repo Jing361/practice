@@ -5,24 +5,28 @@
 
 using namespace std;
 
-image::image( const string& fileName ):
-  image( fstream( fileName ) ){
+image::image( const string& fileName )
+  : image( fstream( fileName ) ){
 }
 
 image::image( fstream&& file ){
   readFile( move( file ) );
 }
 
-void image::readString( string str ){
-  stringstream ss(str);
+void
+image::readString( const string& str ){
+  mImage.clear();
+
+  stringstream ss( str );
   string line;
-  while( getline(ss, line ) ){
-    vector<char> vec( line.begin(), line.end() );
-    mImage.push_back( vec );
+
+  while( getline( ss, line ) ){
+    mImage.emplace_back( vector<char>( line.begin(), line.end() ) );
   }
 }
 
-void image::readFile( fstream&& file ){
+void
+image::readFile( fstream&& file ){
   string str;
 
   file.seekg( 0, ios::end );
@@ -34,7 +38,8 @@ void image::readFile( fstream&& file ){
   readString( str );
 }
 
-dubArr<char>& image::data(){
+vec_vec<char>&
+image::data(){
   return mImage;
 }
 

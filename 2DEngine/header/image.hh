@@ -6,20 +6,25 @@
 #include<fstream>
 
 template<typename T>
-using dubArr = std::vector<std::vector<T> >;
+using vec_vec = std::vector<std::vector<T> >;
 
 class image{
 private:
-  dubArr<char> mImage;
+  vec_vec<char> mImage;
 
 public:
   image() = default;
   image( const std::string& fileName );
   image( std::fstream&& file );
 
-  void readString( std::string str );
-  void readFile( std::fstream&& file );
-  dubArr<char>& data();
+  void
+  readString( const std::string& str );
+
+  void
+  readFile( std::fstream&& file );
+
+  vec_vec<char>&
+  data();
 };
 
 #endif

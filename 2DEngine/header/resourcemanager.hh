@@ -10,9 +10,9 @@
 template<typename RESOURCE, typename REFERENCE = std::string>
 class resourcemanager{
 public:
-  typedef RESOURCE res_type;
-  typedef REFERENCE ref_type;
-  typedef std::function<res_type( std::fstream&& )> processCallback;
+  using res_type = RESOURCE;
+  using ref_type = REFERENCE;
+  using processCallback = std::function<res_type( std::fstream&& )>;
 
 private:
   std::map<ref_type, res_type> mResources;
@@ -33,6 +33,7 @@ public:
   res_type& retrieve( const ref_type& resourceName ){
     return mResources.at( resourceName );
   }
+
   res_type& operator[]( const ref_type& resourceName ){
     return mResources.at( resourceName );
   }
@@ -40,6 +41,7 @@ public:
   const res_type& retrieve( const ref_type& resourceName ) const{
     return mResources.at( resourceName );
   }
+
   const res_type& operator[]( const ref_type& resourceName ) const{
     return mResources.at( resourceName );
   }

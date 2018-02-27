@@ -5,6 +5,9 @@
 
 using namespace std;
 
+/**********
+ bufferedIO
+ **********/
 bufferedIO::~bufferedIO(){
   turnOn();
 }
@@ -45,8 +48,9 @@ void bufferedIO::toggleBuffering(){
   }
 }
 
-
-
+/****
+ IO::
+ ****/
 IO::IO( char kill ):
   mKillChar( kill ){
 }
