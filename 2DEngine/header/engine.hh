@@ -56,26 +56,23 @@ public:
   }
 };
 
-template<unsigned int X, unsigned int Y>
 class engine{
 public:
   typedef void* handle_type;
   typedef entity<image> ent_type;
   typedef std::function<void( std::string, std::string,
                               resourcemanager<image>&,
-                              std::map<std::string, ent_type>&,
-                              std::map<std::string, tri>& )>
+                              std::map<std::string, renderable>& )>
                               configCallback;
 
 private:
   std::map<std::string, configCallback> mConfigCallbacks;
-  std::map<std::string, ent_type > mEntities;
-  std::map<std::string, tri> mTriangles;
+  std::map<std::string, renderable> mRenderables;
   std::vector<handle_type> mHandles;
   resourcemanager<image> mImages;
 
-  physics<ent_type> mPsx;
-  graphics<X, Y> mGfx;
+  physics mPsx;
+  graphics mGfx;
   IO mio;
 
 public:
@@ -129,7 +126,7 @@ public:
         }
 
         tri tr( coord( arr[0].first, arr[0].second ), coord( arr[0].first, arr[0].second ), coord( arr[0].first, arr[0].second ) );
-        mTriangles[name] = tr;
+        mRenderables[name] = tr;
       } else if( word == "ent" ){
         std::string img;
         ent_type ent;
@@ -208,7 +205,7 @@ public:
         mio.registerCallback( key, callback );
       } else {
         try{
-          mConfigCallbacks.at( word )( name, line, mImages, mEntities, mTriangles );
+          mConfigCallbacks.at( word )( name, line, mImages, mRenderables );
         } catch( std::out_of_range& e ){
           throw unrecognizedKeywordException( word, configName );
         }
