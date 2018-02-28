@@ -29,6 +29,8 @@ screen::clear(){
 
 void
 screen::draw( unsigned int x, unsigned int y, char c ){
-  mBuffer[x][y] = c;
+//the first index indicates the row (which is the y direction), and the second
+//  the position in the row(x direction)
+  mBuffer[y][x] = c;
 }
 

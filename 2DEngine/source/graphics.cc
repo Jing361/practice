@@ -59,16 +59,6 @@ graphics::drawFlatBotTri( coord v1, coord v2, coord v3, char c ){
 }
 
 void
-graphics::drawFlatLine( int y, int x1, int x2, char c ){
-  int start = min( x1, x2 );
-  int end = max( x1, x2 );
-
-  for( ; start <= end; ++start ){
-    mScreen.draw( start, y, c );
-  }
-}
-
-void
 graphics::drawTri( coord v1, coord v2, coord v3, coord loc, char c ){
   vector<coord> vec{ v1, v2, v3 };
   for( coord& it : vec ){
@@ -95,14 +85,25 @@ graphics::drawTri( coord v1, coord v2, coord v3, coord loc, char c ){
 }
 
 void
+graphics::drawFlatLine( int y, int x1, int x2, char c ){
+  int start = min( x1, x2 );
+  int end = max( x1, x2 );
+
+  for( ; start <= end; ++start ){
+    mScreen.draw( start, y, c );
+  }
+}
+
+void
 graphics::drawLine( coord v1, coord v2, char c ){
   int start = min( v1.first, v2.first );
   int end = max( v1.first, v2.first );
-  double slope = ( v2.second - v1.second ) / ( v2.first - v1.first );
+  double slope = double( v1.second - v2.second )
+               / double( v1.first  - v2.first );
   int offset = v1.second - ( slope * v1.first );
 
   for( ; start <= end; ++start ){
-    mScreen.draw( slope * start + offset, start, c );
+    mScreen.draw( start, ( slope * start ) + offset, c );
   }
 }
 
@@ -126,12 +127,47 @@ graphics::draw( simple_tri t, coord cor, char c ){
 }
 
 void
-graphics::draw( line l, char c ){
+graphics::draw( simple_line l, char c ){
   drawLine( get<0>( l ), get<1>( l ), c );
 }
 
 void
 graphics::draw( const renderable& rndrbl ){
   rndrbl.draw( *this );
+}
+
+void
+graphics::draw( coord cr, char c ){
+  mScreen.draw( get<0>( cr ), get<1>( cr ), c );
+}
+
+
+tri::tri( simple_tri stri, char c )
+  : mCoords( stri )
+  , mVal( c ){
+}
+
+tri::tri( coord c1, coord c2, coord c3, char c )
+  : tri( {c1, c2, c3}, c ){
+}
+
+void
+tri::draw( graphics& gfx ) const{
+  gfx.draw( mCoords, {0, 0}, mVal );
+}
+
+
+line::line( simple_line sl, char c )
+  : mLine( sl )
+  , mVal( c ){
+}
+
+line::line( coord c1, coord c2, char c )
+  : line( {c1, c2}, c ){
+}
+
+void
+line::draw( graphics& gfx ) const{
+  gfx.draw( mLine, mVal );
 }
 

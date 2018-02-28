@@ -14,7 +14,9 @@ class renderable{
 private:
   class interface{
   public:
-    virtual void draw( graphics& ) const = 0;
+    virtual
+    void
+    draw( graphics& ) const = 0;
   };
 
   template<typename T>
@@ -27,7 +29,8 @@ private:
       : mUnder( t ){
     }
 
-    void draw( graphics& gfx ) const{
+    void
+    draw( graphics& gfx ) const{
       mUnder.draw( gfx );
     }
   };
@@ -41,19 +44,22 @@ public:
 
   renderable( renderable&& ) = default;
 
-  ~renderable() = default;
-
   template<typename T>
   renderable( T t )
     : mIface( std::make_shared<wrapper<T> >( t ) ){
   }
 
-  renderable& operator=( const renderable& ) = default;
+  ~renderable() = default;
 
-  renderable& operator=( renderable&& ) = default;
+  renderable&
+  operator=( const renderable& ) = default;
+
+  renderable&
+  operator=( renderable&& ) = default;
 
   template<typename T>
-  renderable& operator=( T t ){
+  renderable&
+  operator=( T t ){
     mIface = std::make_shared<wrapper<T> >( t );
 
     return *this;
@@ -82,10 +88,10 @@ private:
   drawFlatBotTri( coord v1, coord v2, coord v3, char c );
 
   void
-  drawFlatLine( int y, int x1, int x2, char c );
+  drawTri( coord v1, coord v2, coord v3, coord loc, char c );
 
   void
-  drawTri( coord v1, coord v2, coord v3, coord loc, char c );
+  drawFlatLine( int y, int x1, int x2, char c );
 
   void
   drawLine( coord v1, coord v2, char c );
@@ -117,24 +123,40 @@ public:
   draw( simple_tri t, coord cor, char c );
 
   void
-  draw( line l, char c );
+  draw( simple_line l, char c );
 
   void
   draw( const renderable& rndrbl );
+
+  void
+  draw( coord cr, char c );
 };
 
 class tri{
 private:
   simple_tri mCoords;
+  char mVal;
 
 public:
-  tri( coord c1, coord c2, coord c3 )
-    : mCoords{c1, c2, c3 }{
-  }
+  tri( simple_tri stri, char c = '+' );
 
-  void draw( graphics& gfx ) const{
-    gfx.draw( mCoords, {0, 0}, '+' );
-  }
+  tri( coord c1, coord c2, coord c3, char c = '+' );
+
+  void draw( graphics& gfx ) const;
+};
+
+class line{
+private:
+  simple_line mLine;
+  char mVal;
+
+public:
+  line( simple_line sl, char c = '+' );
+
+  line( coord c1, coord c2, char c = '+' );
+
+  void
+  draw( graphics& gfx ) const;
 };
 
 #endif
