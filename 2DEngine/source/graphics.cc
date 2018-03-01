@@ -5,6 +5,11 @@
 using namespace std;
 
 void
+renderable::draw( graphics& gfx ) const{
+  mIface->draw( gfx );
+}
+
+void
 graphics::drawFlatTopTri( coord v1, coord v2, coord v3, char c ){
   vector<coord> vec{v1, v2, v3};
 

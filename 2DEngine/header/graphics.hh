@@ -66,9 +66,7 @@ public:
   }
 
   void
-  draw( graphics& gfx ) const{
-    mIface->draw( gfx );
-  }
+  draw( graphics& gfx ) const;
 };
 
 /*!

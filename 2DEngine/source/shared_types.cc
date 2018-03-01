@@ -16,7 +16,7 @@ coord operator+( const coord& a, const coord& b ){
   return coord( a.first + b.first, a.second + b.second );
 }
 
-vec2 operator*( const vec2& a, const double& b ){
+vec2 operator*( const vec2& a, double b ){
   return vec2( a.first * b, a.second * b );
 }
 
@@ -24,12 +24,20 @@ vec2 operator/( const vec2& a, const double& b ){
   return vec2( a.first / b, a.second / b );
 }
 
-vec2 operator*( const double& a, const vec2& b ){
+vec2 operator*( const vec2& a, const vec2& b ){
+  return vec2( a.first * b.first, a.second * b.second );
+}
+
+vec2 operator*( double a, const vec2& b ){
   return b * a;
 }
 
 vec2 operator+( const vec2& a, const vec2& b ){
   return vec2( a.first + b.first, a.second + b.second );
+}
+
+vec2 operator-( const vec2& a, const vec2& b ){
+  return vec2( a.first - b.first, a.second - b.second );
 }
 
 vec2 operator-( const vec2& a ){
@@ -44,11 +52,15 @@ vec2 normalize( const vec2& x ){
   if( x.first == 0 && x.second == 0 ){
     return {0, 0};
   } else {
-    return x / sqrt( ( x.first * x.first ) + ( x.second * x.second ) );
+    return x / get_length( x );
   }
 }
 
 coord operator+( const coord& a, const vec2& b ){
   return coord( a.first + floor( b.first ), a.second + floor(b.second ) );
+}
+
+double get_length( const vec2& v ){
+  return sqrt( ( v.first * v.first ) + ( v.second * v.second ) );
 }
 

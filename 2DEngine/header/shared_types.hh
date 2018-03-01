@@ -15,22 +15,26 @@ bool coordYLess( const coord& a, const coord& b );
 
 coord operator+( const coord& a, const coord& b );
 
-vec2 operator*( const vec2& a, const double& b );
+vec2 operator*( const vec2& a, double b );
 
 vec2 operator/( const vec2& a, const double& b );
 
-/*vec2 operator*(const vec2& a, const vec2& b){
-  return 
-}*/
+/*! Technically an invalid vector operation
+ */
+vec2 operator*( const vec2& a, const vec2& b );
 
-vec2 operator*( const double& a, const vec2& b );
+vec2 operator*( double a, const vec2& b );
 
 vec2 operator+( const vec2& a, const vec2& b );
+
+vec2 operator-( const vec2& a, const vec2& b );
 
 vec2 operator-( const vec2& a );
 
 vec2 operator+=( vec2& a, const vec2& b );
 
+/*! Get unit vector in the same direction
+ */
 vec2 normalize( const vec2& x );
 
 /*vec2 operator*=(vec2& a, const vec2& b){
@@ -38,6 +42,8 @@ vec2 normalize( const vec2& x );
 }*/
 
 coord operator+( const coord& a, const vec2& b );
+
+double get_length( const vec2& v );
 
 #endif
 
