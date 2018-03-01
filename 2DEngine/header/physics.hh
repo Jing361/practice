@@ -4,6 +4,7 @@
 #include<memory>
 #include<map>
 #include<string>
+#include<set>
 
 #include"image.hh"
 #include"shared_types.hh"
@@ -12,6 +13,14 @@ class entity{
 private:
   class interface{
   public:
+    virtual
+    simple_box&
+    get_bounding_box() = 0;
+
+    virtual
+    const simple_box&
+    get_bounding_box() const = 0;
+
     virtual
     vec2&
     get_velocity() = 0;
@@ -43,6 +52,10 @@ private:
     virtual
     vec2
     get_net_force() const = 0;
+
+    virtual
+    bool
+    operator<( const entity& ) const = 0;
   };
 
   template<typename T>
@@ -55,29 +68,39 @@ private:
       : mUnder( t ){
     }
 
+    simple_box&
+    get_bounding_box(){
+      return mUnder.get_bounding_box();
+    }
+
+    const simple_box&
+    get_bounding_box() const{
+      return mUnder.get_bounding_box();
+    }
+
     vec2&
     get_velocity(){
-      return mUnder.get_velocity()
+      return mUnder.get_velocity();
     }
 
     vec2&
     get_acceleration(){
-      return mUnder.get_acceleration()
+      return mUnder.get_acceleration();
     }
 
     vec2&
     get_position(){
-      return mUnder.get_position()
+      return mUnder.get_position();
     }
 
     double&
     get_mass(){
-      return mUnder.get_mass()
+      return mUnder.get_mass();
     }
 
     double
     get_total_mass() const{
-      return mUnder.get_total_mass()
+      return mUnder.get_total_mass();
     }
 
     void
@@ -94,6 +117,11 @@ private:
     get_net_force() const{
       return mUnder.get_net_force();
     }
+
+    bool
+    operator<( const entity& e ) const{
+      return mUnder < e;
+    }
   };
 
   std::shared_ptr<interface> mIface;
@@ -106,7 +134,7 @@ public:
   entity( entity&& ) = default;
 
   template<typename T>
-  entity( T t ){
+  entity( T t )
     : mIface( std::make_shared<wrapper<T> >( t ) ){
   }
 
@@ -126,45 +154,38 @@ public:
     return *this;
   }
 
-  vec2&
-  get_velocity(){
-    return mIface->get_velocity()
-  }
+  simple_box&
+  get_bounding_box();
+
+  const simple_box&
+  get_bounding_box() const;
 
   vec2&
-  get_acceleration(){
-    return mIface->get_acceleration()
-  }
+  get_velocity();
 
   vec2&
-  get_position(){
-    return mIface->get_position()
-  }
+  get_acceleration();
+
+  vec2&
+  get_position();
 
   double&
-  get_mass(){
-    return mIface->get_mass()
-  }
+  get_mass();
 
   double
-  get_total_mass() const{
-    return mIface->get_total_mass()
-  }
+  get_total_mass() const;
 
   void
-  tick( double diff ){
-    mIface->tick( diff );
-  }
+  tick( double diff );
 
   void
-  applyForce( vec2 force ){
-    mIface->applyForce( force );
-  }
+  applyForce( vec2 force );
 
   vec2
-  get_net_force() const{
-    return mIface->get_net_force();
-  }
+  get_net_force() const;
+
+  bool
+  operator<( const entity& ) const;
 };
 
 class physics{
@@ -173,33 +194,23 @@ private:
   double mDamping;
 
   // collide function only applies physics result to entity a
-  void collide( entity& a, entity& b ){
-    double aMass = a.getTotalMass();
-    double bMass = b.getTotalMass();
-    auto& aVel = a.getVelocity();
-    auto bVel = b.getVelocity();
+  void
+  collide( entity& a, entity& b );
 
-    double pix = ( ( aMass * aVel.first ) + ( bMass * bVel.first ) );
-    aVel.first = ( pix + bMass * ( bVel.first - aVel.first ) ) / ( aMass + bMass );
+  std::set<std::set<entity> >
+  check_collisions() const;
 
-    double piy = ( ( aMass * aVel.second ) + ( bMass * bVel.second ) );
-    aVel.second = ( piy + bMass * ( bVel.second - aVel.second ) ) / ( aMass + bMass );
-  }
+  bool colliding( const entity& a, const entity& b ) const;
 
 public:
-  void addEntity( const std::string& name, entity ent ){
-    mEntities[name] = ent;
-  }
+  void
+  addEntity( const std::string& name, entity ent );
 
-  double& damping(){
-    return mDamping;
-  }
+  double&
+  damping();
 
-  void tick( double diff ){
-    for( auto pr : mEntities ){
-      pr.second.tick( diff );
-    }
-  }
+  void
+  tick( double diff );
 };
 
 #endif
