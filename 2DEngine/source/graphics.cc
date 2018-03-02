@@ -194,13 +194,8 @@ polygon::polygon( const std::vector<coord>& vec, char c )
 /*! @todo make poly's fillable */
 void
 polygon::draw( graphics& gfx ) const{
-  if( mPoints.size() < 2 ){
-    return;
-  }
-
-  auto p1 = mPoints[0];
-  auto p2 = mPoints[1];
-  array<coord, 5> corners{p1, {p1.first, p2.second}, p2, {p2.first, p1.second}, p1};
+  vector<coord> corners( mPoints );
+  corners.push_back( mPoints[0] );
 
   auto one = corners.begin();
   for( auto two = one + 1; two != corners.end(); ++one, ++two ){
