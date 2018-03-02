@@ -51,29 +51,36 @@ entity::applyForce( vec2 force ){
   mIface->applyForce( force );
 }
 
-bool
-entity::operator<( const entity& e ) const{
-  return *mIface < e;
-}
-
 /***********
  * physics *
  ***********/
 
-set<set<entity> >
+set<set<tuple<string, entity> > >
 physics::check_collisions() const{
-  set<set<entity> > ret;
+  set<set<tuple<string, entity> > > ret;
 
   for( auto ent1 : mEntities ){
     for( auto ent2 : mEntities ){
       if( colliding( ent1.second, ent2.second ) ){
-        ret.emplace( set<entity>{ent1.second, ent2.second} );
+ /*       set<tuple<string, entity> > pair(
+          []( const tuple<string, entity>& a, const tuple<string, entity>& b )->bool{
+            return get<0>( a ).compare( get<0>( b ) ) < 0;
+          }
+        );
+
+        pair.emplace( ent1 );
+        pair.emplace( ent2 );
+
+        ret.emplace( pair );*/
       }
     }
   }
+
+  return ret;
 }
 
-bool physics::colliding( const entity& a, const entity& b ) const{
+bool
+physics::colliding( const entity& a, const entity& b ) const{
   auto aBox = a.get_bounding_box();
   auto bBox = b.get_bounding_box();
 
@@ -87,10 +94,10 @@ bool physics::colliding( const entity& a, const entity& b ) const{
   // b large
   auto bLarge = get<1>( bBox );
 
-  auto overlap = max( 0, min( aLarge.first,  bLarge.first )
-                       - max( aSmall.first,  bSmall.first ) )
-               * max( 0, min( aLarge.second, bLarge.second )
-                       - max( aSmall.second, bSmall.second ) );
+  auto overlap = max( 0.0, min( aLarge.first,  bLarge.first )
+                         - max( aSmall.first,  bSmall.first ) )
+               * max( 0.0, min( aLarge.second, bLarge.second )
+                         - max( aSmall.second, bSmall.second ) );
 
   return overlap > 0;
 }

@@ -37,6 +37,16 @@ public:
     , mAcceleration( acc ){
   }
 
+  simple_box&
+  get_bounding_box(){
+    return mHitBox;
+  }
+
+  const simple_box&
+  get_bounding_box() const{
+    return mHitBox;
+  }
+
   vec2&
   get_velocity(){
     return mVelocity;

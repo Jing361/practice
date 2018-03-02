@@ -52,10 +52,6 @@ private:
     virtual
     vec2
     get_net_force() const = 0;
-
-    virtual
-    bool
-    operator<( const entity& ) const = 0;
   };
 
   template<typename T>
@@ -116,11 +112,6 @@ private:
     vec2
     get_net_force() const{
       return mUnder.get_net_force();
-    }
-
-    bool
-    operator<( const entity& e ) const{
-      return mUnder < e;
     }
   };
 
@@ -183,9 +174,6 @@ public:
 
   vec2
   get_net_force() const;
-
-  bool
-  operator<( const entity& ) const;
 };
 
 class physics{
@@ -197,7 +185,7 @@ private:
   void
   collide( entity& a, entity& b );
 
-  std::set<std::set<entity> >
+  std::set<std::set<std::tuple<std::string, entity> > >
   check_collisions() const;
 
   bool colliding( const entity& a, const entity& b ) const;
