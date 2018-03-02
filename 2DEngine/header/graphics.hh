@@ -140,7 +140,7 @@ public:
 
   tri( coord c1, coord c2, coord c3, char c = '+' );
 
-  void draw( graphics& gfx ) const;
+  void draw( graphics& ) const;
 };
 
 class line{
@@ -154,7 +154,25 @@ public:
   line( coord c1, coord c2, char c = '+' );
 
   void
-  draw( graphics& gfx ) const;
+  draw( graphics& ) const;
+};
+
+class polygon{
+private:
+  std::vector<coord> mPoints;
+  char mVal;
+
+public:
+  template<typename inputIter>
+  polygon( inputIter first, inputIter last, char c )
+    : mPoints( first, last )
+    , mVal( c ){
+  }
+
+  polygon( const std::vector<coord>&, char c );
+
+  void
+  draw( graphics& ) const;
 };
 
 #endif

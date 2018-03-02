@@ -146,6 +146,9 @@ graphics::draw( coord cr, char c ){
   mScreen.draw( get<0>( cr ), get<1>( cr ), c );
 }
 
+/*******
+ * tri *
+ *******/
 
 tri::tri( simple_tri stri, char c )
   : mCoords( stri )
@@ -161,6 +164,9 @@ tri::draw( graphics& gfx ) const{
   gfx.draw( mCoords, {0, 0}, mVal );
 }
 
+/********
+ * line *
+ ********/
 
 line::line( simple_line sl, char c )
   : mLine( sl )
@@ -174,5 +180,31 @@ line::line( coord c1, coord c2, char c )
 void
 line::draw( graphics& gfx ) const{
   gfx.draw( mLine, mVal );
+}
+
+/***********
+ * polygon *
+ ***********/
+
+polygon::polygon( const std::vector<coord>& vec, char c )
+  : mPoints( vec )
+  , mVal( c ){
+}
+
+/*! @todo make poly's fillable */
+void
+polygon::draw( graphics& gfx ) const{
+  if( mPoints.size() < 2 ){
+    return;
+  }
+
+  auto p1 = mPoints[0];
+  auto p2 = mPoints[1];
+  array<coord, 5> corners{p1, {p1.first, p2.second}, p2, {p2.first, p1.second}, p1};
+
+  auto one = corners.begin();
+  for( auto two = one + 1; two != corners.end(); ++one, ++two ){
+    gfx.draw( {*one, *two}, mVal );
+  }
 }
 

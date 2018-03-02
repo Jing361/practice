@@ -1,10 +1,12 @@
 #include<iostream>
 
 #include<graphics.hh>
+#include<physics.hh>
 
 using namespace std;
 
-int main(){
+void
+test_graphics(){
   graphics gfx( 15, 15 );
 
 
@@ -78,6 +80,16 @@ int main(){
   gfx.draw( {8, 0}, 'y' );
 
   gfx.show( cout );
+}
+
+void
+test_physics(){
+  physics psx;
+}
+
+int main(){
+  test_graphics();
+  test_physics();
 
   return 0;
 }

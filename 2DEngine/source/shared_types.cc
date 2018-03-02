@@ -12,9 +12,9 @@ bool coordYLess( const coord& a, const coord& b ){
   return get<1>( a ) < get<1>( b );
 }
 
-coord operator+( const coord& a, const coord& b ){
+/*coord operator+( const coord& a, const coord& b ){
   return coord( a.first + b.first, a.second + b.second );
-}
+}*/
 
 vec2 operator*( const vec2& a, double b ){
   return vec2( a.first * b, a.second * b );
@@ -54,10 +54,6 @@ vec2 normalize( const vec2& x ){
   } else {
     return x / get_length( x );
   }
-}
-
-coord operator+( const coord& a, const vec2& b ){
-  return coord( a.first + floor( b.first ), a.second + floor(b.second ) );
 }
 
 double get_length( const vec2& v ){
