@@ -47,36 +47,28 @@ entity::tick( double diff ){
 }
 
 void
-entity::applyForce( vec2 force ){
-  mIface->applyForce( force );
+entity::apply_force( vec2 force ){
+  mIface->apply_force( force );
+}
+
+vec2
+entity::get_net_force() const{
+  return mIface->get_net_force();
 }
 
 /***********
  * physics *
  ***********/
 
-set<set<tuple<string, entity> > >
-physics::check_collisions() const{
-  set<set<tuple<string, entity> > > ret;
-
+void
+physics::do_collisions(){
   for( auto ent1 : mEntities ){
     for( auto ent2 : mEntities ){
       if( colliding( ent1.second, ent2.second ) ){
- /*       set<tuple<string, entity> > pair(
-          []( const tuple<string, entity>& a, const tuple<string, entity>& b )->bool{
-            return get<0>( a ).compare( get<0>( b ) ) < 0;
-          }
-        );
-
-        pair.emplace( ent1 );
-        pair.emplace( ent2 );
-
-        ret.emplace( pair );*/
+        collide( get<1>( ent1 ), get<1>( ent2 ) );
       }
     }
   }
-
-  return ret;
 }
 
 bool
@@ -107,11 +99,12 @@ physics::collide( entity& a, entity& b ){
   double aMass = a.get_total_mass();
   double bMass = b.get_total_mass();
   auto& aVel = a.get_velocity();
-  auto bVel = b.get_velocity();
+  auto& bVel = b.get_velocity();
   auto aMomentum = aMass * aVel;
   auto bMomentum = bMass * bVel;
 
   aVel = ( ( aMomentum + bMomentum ) * ( bVel - aVel ) ) / ( aMass + bMass );
+  bVel = ( ( bMomentum + aMomentum ) * ( aVel - bVel ) ) / ( bMass + aMass );
 }
 
 void
@@ -128,10 +121,14 @@ void
 physics::tick( double diff ){
   for( auto ent : mEntities ){
     ent.second.tick( diff );
+    auto& vel = ent.second.get_velocity();
+    auto& acc = ent.second.get_acceleration();
+
+    ent.second.get_position() += diff * vel;
+    vel += diff * acc;
+    acc = ent.second.get_net_force() / ent.second.get_total_mass();
   }
 
-  for( auto coll : check_collisions() ){
-    //collide( a, b );
-  }
+  do_collisions();
 }
 

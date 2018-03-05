@@ -44,5 +44,11 @@ vec2 normalize( const vec2& x );
 
 double get_length( const vec2& v );
 
+template<typename OSTREAM>
+OSTREAM&
+operator<<( OSTREAM& os, const vec2& v ){
+  return os << '{' << std::get<0>( v ) << ", " << std::get<1>( v ) << '}';
+}
+
 #endif
 

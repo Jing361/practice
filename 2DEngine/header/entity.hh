@@ -9,7 +9,7 @@
 class basic_entity{
 private:
   std::vector<entity> mParts;
-  hitbox mHitBox;
+  simple_box mHitBox;
   double mMass;
   vec2 mNetForce;
   vec2 mPosition;
@@ -28,8 +28,8 @@ public:
   }
 
   //! @todo use unit datastructure
-  basic_entity( vec2 pos = { 0, 0 }, vec2 vel = { 0, 0 }, vec2 acc = { 0, 0 },
-                double mass, hitbox hit_box )
+  basic_entity( vec2 pos = {0, 0}, vec2 vel = {0, 0}, vec2 acc = {0, 0},
+                double mass = 1.0, simple_box hit_box = {{0.0, 0.0}, {1.0, 1.0}} )
     : mHitBox( hit_box )
     , mMass( mass )
     , mPosition( pos )
@@ -80,13 +80,11 @@ public:
 
   void
   tick( double diff ){
-    mPosition += diff * mVelocity;
-    mVelocity += diff * mAcceleration;
-    mAcceleration = mNetForce / getTotalMass();
+    (void) diff;
   }
 
   void
-  applyForce( vec2 force ){
+  apply_force( vec2 force ){
     mNetForce += force;
   }
 

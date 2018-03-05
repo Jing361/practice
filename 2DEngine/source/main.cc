@@ -2,6 +2,7 @@
 
 #include<graphics.hh>
 #include<physics.hh>
+#include<entity.hh>
 
 using namespace std;
 
@@ -85,10 +86,36 @@ test_graphics(){
 void
 test_physics(){
   physics psx;
+
+  entity e1 = basic_entity();
+  entity e2 = basic_entity();
+
+  psx.addEntity( "A", e1 );
+  psx.addEntity( "B", e2 );
+
+  cout << "no move" << endl;
+  cout << e1.get_position() << endl;
+  cout << e2.get_position() << endl;
+
+  psx.tick( 1 );
+
+  cout << e1.get_position() << endl;
+  cout << e2.get_position() << endl;
+
+  cout << "with move" << endl;
+  e1.get_velocity() += {1.0, 0.0};
+
+  cout << e1.get_position() << endl;
+  cout << e2.get_position() << endl;
+
+  psx.tick( 1 );
+
+  cout << e1.get_position() << endl;
+  cout << e2.get_position() << endl;
 }
 
 int main(){
-  test_graphics();
+//  test_graphics();
   test_physics();
 
   return 0;

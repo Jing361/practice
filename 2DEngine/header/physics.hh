@@ -47,7 +47,7 @@ private:
 
     virtual
     void
-    applyForce( vec2 force ) = 0;
+    apply_force( vec2 force ) = 0;
 
     virtual
     vec2
@@ -105,8 +105,8 @@ private:
     }
 
     void
-    applyForce( vec2 force ){
-      mUnder.applyForce( force );
+    apply_force( vec2 force ){
+      mUnder.apply_force( force );
     }
 
     vec2
@@ -170,7 +170,7 @@ public:
   tick( double diff );
 
   void
-  applyForce( vec2 force );
+  apply_force( vec2 force );
 
   vec2
   get_net_force() const;
@@ -181,12 +181,11 @@ private:
   std::map<std::string, entity> mEntities;
   double mDamping;
 
-  // collide function only applies physics result to entity a
   void
   collide( entity& a, entity& b );
 
-  std::set<std::set<std::tuple<std::string, entity> > >
-  check_collisions() const;
+  void
+  do_collisions();
 
   bool colliding( const entity& a, const entity& b ) const;
 
