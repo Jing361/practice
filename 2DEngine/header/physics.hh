@@ -200,5 +200,46 @@ public:
   tick( double diff );
 };
 
+class box{
+private:
+  simple_box mHitBox;
+  double mMass;
+  vec2 mNetForce;
+  vec2 mPosition;
+  vec2 mVelocity;
+  vec2 mAcceleration;
+
+public:
+  simple_box&
+  get_bounding_box();
+
+  const simple_box&
+  get_bounding_box() const;
+
+  vec2&
+  get_velocity();
+
+  vec2&
+  get_acceleration();
+
+  vec2&
+  get_position();
+
+  double&
+  get_mass();
+
+  double
+  get_total_mass() const;
+
+  void
+  tick( double diff );
+
+  void
+  apply_force( vec2 force );
+
+  vec2
+  get_net_force() const;
+};
+
 #endif
 

@@ -132,3 +132,47 @@ physics::tick( double diff ){
   do_collisions();
 }
 
+/*******
+ * box *
+ *******/
+
+simple_box&
+box::get_bounding_box(){
+}
+
+const simple_box&
+box::get_bounding_box() const{
+}
+
+vec2&
+box::get_velocity(){
+}
+
+vec2&
+box::get_acceleration(){
+}
+
+vec2&
+box::get_position(){
+}
+
+double&
+box::get_mass(){
+}
+
+double
+box::get_total_mass() const{
+}
+
+void
+box::tick( double diff ){
+}
+
+void
+box::apply_force( vec2 force ){
+}
+
+vec2
+box::get_net_force() const{
+}
+

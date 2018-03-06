@@ -121,8 +121,8 @@ test_combined(){
 
   pEntity p1;
   pEntity p2;
-  gEntity g1;
-  gEntity g2;
+  gEntity g1( tri( {0, 0}, {3, 0}, {0, 3}, '+' ) );
+  gEntity g2( line( {2, 2}, {4, 4}, '+' ) );
 
   basic_entity e1( p1, g1 );
   basic_entity e2( p2, g2 );
