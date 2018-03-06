@@ -107,45 +107,64 @@ basic_gEntity::draw( graphics& gfx ) const{
 
 simple_box&
 basic_entity::get_bounding_box(){
+  return mPEntity.get_bounding_box();
 }
 
 const simple_box&
 basic_entity::get_bounding_box() const{
+  return mPEntity.get_bounding_box();
 }
 
 vec2&
 basic_entity::get_velocity(){
+  return mPEntity.get_velocity();
 }
 
 vec2&
 basic_entity::get_acceleration(){
+  return mPEntity.get_acceleration();
 }
 
 vec2&
 basic_entity::get_position(){
+  return mPEntity.get_position();
 }
 
 double&
 basic_entity::get_mass(){
+  return mPEntity.get_mass();
 }
 
 double
 basic_entity::get_total_mass() const{
+  double total = mPEntity.get_total_mass();
+
+  for( auto part : mParts ){
+    total += part.get_total_mass();
+  }
+
+  return total;
 }
 
 void
 basic_entity::tick( double diff ){
+  for( auto& part : mParts ){
+    part.tick( diff );
+  }
 }
 
 void
 basic_entity::apply_force( vec2 force ){
+  mPEntity.apply_force( force );
 }
 
 vec2
 basic_entity::get_net_force() const{
+  return mPEntity.get_net_force();
 }
 
 void
 basic_entity::draw( graphics& gfx ) const{
+  mGEntity.draw( gfx );
 }
 

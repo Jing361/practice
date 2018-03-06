@@ -88,13 +88,8 @@ public:
 class basic_entity{
 private:
   std::vector<basic_entity> mParts;
-  gEntity mEntity;
-  simple_box mHitBox;
-  double mMass;
-  vec2 mNetForce;
-  vec2 mPosition;
-  vec2 mVelocity;
-  vec2 mAcceleration;
+  pEntity mPEntity;
+  gEntity mGEntity;
 
 public:
   simple_box&
