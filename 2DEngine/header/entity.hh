@@ -17,81 +17,41 @@ private:
   vec2 mAcceleration;
 
 public:
-  basic_pEntity( const basic_pEntity& other )
-    : mParts( other.mParts )
-    , mHitBox( other.mHitBox )
-    , mMass( other.mMass )
-    , mNetForce( other.mNetForce )
-    , mPosition( other.mPosition )
-    , mVelocity( other.mVelocity )
-    , mAcceleration( other.mAcceleration ){
-  }
+  basic_pEntity( const basic_pEntity& other );
 
   //! @todo use unit datastructure
   basic_pEntity( vec2 pos = {0, 0}, vec2 vel = {0, 0}, vec2 acc = {0, 0},
-                 double mass = 1.0, simple_box hit_box = {{0.0, 0.0}, {1.0, 1.0}} )
-    : mHitBox( hit_box )
-    , mMass( mass )
-    , mPosition( pos )
-    , mVelocity( vel )
-    , mAcceleration( acc ){
-  }
+                 double mass = 1.0, simple_box hit_box = {{0.0, 0.0}, {1.0, 1.0}} );
 
   simple_box&
-  get_bounding_box(){
-    return mHitBox;
-  }
+  get_bounding_box();
 
   const simple_box&
-  get_bounding_box() const{
-    return mHitBox;
-  }
+  get_bounding_box() const;
 
   vec2&
-  get_velocity(){
-    return mVelocity;
-  }
+  get_velocity();
 
   vec2&
-  get_acceleration(){
-    return mAcceleration;
-  }
+  get_acceleration();
 
   vec2&
-  get_position(){
-    return mPosition;
-  }
+  get_position();
 
   double&
-  get_mass(){
-    return mMass;
-  }
+  get_mass();
 
   double
-  get_total_mass() const{
-    double total = mMass;
-
-    for( auto part : mParts ){
-      total += part.get_total_mass();
-    }
-
-    return total;
-  }
+  get_total_mass() const;
 
   void
-  tick( double diff ){
-    (void) diff;
-  }
+  tick( double diff );
 
   void
-  apply_force( vec2 force ){
-    mNetForce += force;
-  }
+  apply_force( vec2 force );
 
   vec2
-  get_net_force() const{
-    return mNetForce;
-  }
+  get_net_force() const;
 };
 
 #endif
