@@ -10,7 +10,7 @@
 
 class graphics;
 
-class renderable{
+class gEntity{
 private:
   class interface{
   public:
@@ -38,27 +38,27 @@ private:
   std::shared_ptr<interface> mIface;
 
 public:
-  renderable() = default;
+  gEntity() = default;
 
-  renderable( const renderable& ) = default;
+  gEntity( const gEntity& ) = default;
 
-  renderable( renderable&& ) = default;
+  gEntity( gEntity&& ) = default;
 
   template<typename T>
-  renderable( T t )
+  gEntity( T t )
     : mIface( std::make_shared<wrapper<T> >( t ) ){
   }
 
-  ~renderable() = default;
+  ~gEntity() = default;
 
-  renderable&
-  operator=( const renderable& ) = default;
+  gEntity&
+  operator=( const gEntity& ) = default;
 
-  renderable&
-  operator=( renderable&& ) = default;
+  gEntity&
+  operator=( gEntity&& ) = default;
 
   template<typename T>
-  renderable&
+  gEntity&
   operator=( T t ){
     mIface = std::make_shared<wrapper<T> >( t );
 
@@ -77,7 +77,7 @@ public:
 class graphics{
 private:
   screen mScreen;
-  std::map<std::string, renderable> mParts;
+  std::map<std::string, gEntity> mParts;
 
   void
   drawFlatTopTri( coord v1, coord v2, coord v3, char c );
@@ -115,7 +115,7 @@ public:
   }
 
   void
-  add( const std::string& name, const renderable& rndrbl );
+  add( const std::string& name, const gEntity& rndrbl );
 
   void
   draw( simple_tri t, coord cor, char c );
@@ -124,7 +124,7 @@ public:
   draw( simple_line l, char c );
 
   void
-  draw( const renderable& rndrbl );
+  draw( const gEntity& rndrbl );
 
   void
   draw( coord cr, char c );

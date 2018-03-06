@@ -5,7 +5,7 @@
 using namespace std;
 
 void
-renderable::draw( graphics& gfx ) const{
+gEntity::draw( graphics& gfx ) const{
   mIface->draw( gfx );
 }
 
@@ -122,7 +122,7 @@ graphics::clearBuffer(){
 }
 
 void
-graphics::add( const string& name, const renderable& rndrbl ){
+graphics::add( const string& name, const gEntity& rndrbl ){
   mParts.emplace( name, rndrbl );
 }
 
@@ -137,7 +137,7 @@ graphics::draw( simple_line l, char c ){
 }
 
 void
-graphics::draw( const renderable& rndrbl ){
+graphics::draw( const gEntity& rndrbl ){
   rndrbl.draw( *this );
 }
 
