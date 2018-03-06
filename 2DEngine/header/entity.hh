@@ -92,6 +92,8 @@ private:
   gEntity mGEntity;
 
 public:
+  basic_entity( pEntity pent, gEntity gent );
+
   simple_box&
   get_bounding_box();
 

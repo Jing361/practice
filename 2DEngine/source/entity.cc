@@ -105,6 +105,11 @@ basic_gEntity::draw( graphics& gfx ) const{
  * basic_entity *
  ****************/
 
+basic_entity::basic_entity( pEntity pent, gEntity gent )
+  : mPEntity( pent )
+  , mGEntity( gent ){
+}
+
 simple_box&
 basic_entity::get_bounding_box(){
   return mPEntity.get_bounding_box();
