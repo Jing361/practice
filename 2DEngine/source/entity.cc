@@ -10,8 +10,8 @@ basic_pEntity::basic_pEntity( const basic_pEntity& other )
   , mAcceleration( other.mAcceleration ){
 }
 
-basic_pEntity::basic_pEntity( vec2 pos = {0, 0}, vec2 vel = {0, 0}, vec2 acc = {0, 0},
-                              double mass = 1.0, simple_box hit_box = {{0.0, 0.0}, {1.0, 1.0}} )
+basic_pEntity::basic_pEntity( vec2 pos, vec2 vel, vec2 acc,
+                              double mass, simple_box hit_box )
   : mHitBox( hit_box )
   , mMass( mass )
   , mPosition( pos )
