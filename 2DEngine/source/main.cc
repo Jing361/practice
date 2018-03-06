@@ -11,7 +11,7 @@ test_graphics(){
   graphics gfx( 15, 15 );
 
 
-  gfx.add( "tri", tri( {0, 0}, {3, 0}, {0, 3}) );
+  gfx.addEntity( "tri", tri( {0, 0}, {3, 0}, {0, 3}) );
 
   gfx.show( cout );
 
@@ -114,9 +114,29 @@ test_physics(){
   cout << e2.get_position() << endl;
 }
 
+void
+test_combined(){
+  physics psx;
+  graphics gfx( 5, 5 );
+
+  pEntity p1;
+  pEntity p2;
+  gEntity g1;
+  gEntity g2;
+
+  basic_entity e1( p1, g1 );
+  basic_entity e2( p2, g2 );
+
+  psx.addEntity( "A", e1 );
+  psx.addEntity( "B", e2 );
+  gfx.addEntity( "A", e1 );
+  gfx.addEntity( "B", e2 );
+}
+
 int main(){
 //  test_graphics();
-  test_physics();
+//  test_physics();
+  test_combined();
 
   return 0;
 }

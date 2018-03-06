@@ -122,7 +122,7 @@ graphics::clearBuffer(){
 }
 
 void
-graphics::add( const string& name, const gEntity& rndrbl ){
+graphics::addEntity( const string& name, const gEntity& rndrbl ){
   mParts.emplace( name, rndrbl );
 }
 

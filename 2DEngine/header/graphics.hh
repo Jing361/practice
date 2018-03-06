@@ -115,7 +115,7 @@ public:
   }
 
   void
-  add( const std::string& name, const gEntity& rndrbl );
+  addEntity( const std::string& name, const gEntity& rndrbl );
 
   void
   draw( simple_tri t, coord cor, char c );
