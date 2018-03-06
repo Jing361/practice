@@ -2,57 +2,57 @@
 
 using namespace std;
 
-/**********
- * entity *
- **********/
+/***********
+ * pEntity *
+ ***********/
 
 simple_box&
-entity::get_bounding_box(){
+pEntity::get_bounding_box(){
   return mIface->get_bounding_box();
 }
 
 const simple_box&
-entity::get_bounding_box() const{
+pEntity::get_bounding_box() const{
   return mIface->get_bounding_box();
 }
 
 vec2&
-entity::get_velocity(){
+pEntity::get_velocity(){
   return mIface->get_velocity();
 }
 
 vec2&
-entity::get_acceleration(){
+pEntity::get_acceleration(){
   return mIface->get_acceleration();
 }
 
 vec2&
-entity::get_position(){
+pEntity::get_position(){
   return mIface->get_position();
 }
 
 double&
-entity::get_mass(){
+pEntity::get_mass(){
   return mIface->get_mass();
 }
 
 double
-entity::get_total_mass() const{
+pEntity::get_total_mass() const{
   return mIface->get_total_mass();
 }
 
 void
-entity::tick( double diff ){
+pEntity::tick( double diff ){
   mIface->tick( diff );
 }
 
 void
-entity::apply_force( vec2 force ){
+pEntity::apply_force( vec2 force ){
   mIface->apply_force( force );
 }
 
 vec2
-entity::get_net_force() const{
+pEntity::get_net_force() const{
   return mIface->get_net_force();
 }
 
@@ -72,7 +72,7 @@ physics::do_collisions(){
 }
 
 bool
-physics::colliding( const entity& a, const entity& b ) const{
+physics::colliding( const pEntity& a, const pEntity& b ) const{
   auto aBox = a.get_bounding_box();
   auto bBox = b.get_bounding_box();
 
@@ -95,7 +95,7 @@ physics::colliding( const entity& a, const entity& b ) const{
 }
 
 void
-physics::collide( entity& a, entity& b ){
+physics::collide( pEntity& a, pEntity& b ){
   double aMass = a.get_total_mass();
   double bMass = b.get_total_mass();
   auto& aVel = a.get_velocity();
@@ -108,7 +108,7 @@ physics::collide( entity& a, entity& b ){
 }
 
 void
-physics::addEntity( const string& name, entity ent ){
+physics::addEntity( const string& name, pEntity ent ){
   mEntities[name] = ent;
 }
 

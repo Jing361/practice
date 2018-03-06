@@ -6,9 +6,9 @@
 #include<graphics.hh>
 #include"shared_types.hh"
 
-class basic_entity{
+class basic_pEntity{
 private:
-  std::vector<entity> mParts;
+  std::vector<basic_pEntity> mParts;
   simple_box mHitBox;
   double mMass;
   vec2 mNetForce;
@@ -17,7 +17,7 @@ private:
   vec2 mAcceleration;
 
 public:
-  basic_entity( const basic_entity& other )
+  basic_pEntity( const basic_pEntity& other )
     : mParts( other.mParts )
     , mHitBox( other.mHitBox )
     , mMass( other.mMass )
@@ -28,8 +28,8 @@ public:
   }
 
   //! @todo use unit datastructure
-  basic_entity( vec2 pos = {0, 0}, vec2 vel = {0, 0}, vec2 acc = {0, 0},
-                double mass = 1.0, simple_box hit_box = {{0.0, 0.0}, {1.0, 1.0}} )
+  basic_pEntity( vec2 pos = {0, 0}, vec2 vel = {0, 0}, vec2 acc = {0, 0},
+                 double mass = 1.0, simple_box hit_box = {{0.0, 0.0}, {1.0, 1.0}} )
     : mHitBox( hit_box )
     , mMass( mass )
     , mPosition( pos )

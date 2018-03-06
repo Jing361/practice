@@ -9,7 +9,7 @@
 #include"image.hh"
 #include"shared_types.hh"
 
-class entity{
+class pEntity{
 private:
   class interface{
   public:
@@ -118,27 +118,27 @@ private:
   std::shared_ptr<interface> mIface;
 
 public:
-  entity() = default;
+  pEntity() = default;
 
-  entity( const entity& ) = default;
+  pEntity( const pEntity& ) = default;
 
-  entity( entity&& ) = default;
+  pEntity( pEntity&& ) = default;
 
   template<typename T>
-  entity( T t )
+  pEntity( T t )
     : mIface( std::make_shared<wrapper<T> >( t ) ){
   }
 
-  ~entity() = default;
+  ~pEntity() = default;
 
-  entity&
-  operator=( const entity& ) = default;
+  pEntity&
+  operator=( const pEntity& ) = default;
 
-  entity&
-  operator=( entity&& ) = default;
+  pEntity&
+  operator=( pEntity&& ) = default;
 
   template<typename T>
-  entity&
+  pEntity&
   operator=( T t ){
     mIface = std::make_shared<wrapper<T> >( t );
 
@@ -178,20 +178,20 @@ public:
 
 class physics{
 private:
-  std::map<std::string, entity> mEntities;
+  std::map<std::string, pEntity> mEntities;
   double mDamping;
 
   void
-  collide( entity& a, entity& b );
+  collide( pEntity& a, pEntity& b );
 
   void
   do_collisions();
 
-  bool colliding( const entity& a, const entity& b ) const;
+  bool colliding( const pEntity& a, const pEntity& b ) const;
 
 public:
   void
-  addEntity( const std::string& name, entity ent );
+  addEntity( const std::string& name, pEntity ent );
 
   double&
   damping();

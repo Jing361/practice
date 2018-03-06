@@ -87,8 +87,8 @@ void
 test_physics(){
   physics psx;
 
-  entity e1 = basic_entity();
-  entity e2 = basic_entity();
+  pEntity e1 = basic_pEntity( {5, 5}, {0, 0}, {0, 0}, 1.0, {{-1, -1}, {1, 1}} );
+  pEntity e2 = basic_pEntity();
 
   psx.addEntity( "A", e1 );
   psx.addEntity( "B", e2 );
