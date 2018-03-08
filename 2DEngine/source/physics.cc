@@ -143,9 +143,9 @@ physics::tick( physics::time diff ){
 
       ent.second.get_position()[i] += diff * vel;
       vel += diff * acc[i];
-    }
 
-    acc = ent.second.get_net_force() / ent.second.get_total_mass();
+      acc[i] = ent.second.get_net_force()[i] / ent.second.get_total_mass();
+    }
   }
 
   do_collisions();
