@@ -94,24 +94,24 @@ test_physics(){
   psx.addEntity( "B", e2 );
 
   cout << "no move" << endl;
-  cout << e1.get_position() << endl;
-  cout << e2.get_position() << endl;
+  cout << e1.get_position()[0].getValue() << ", " << e1.get_position()[1].getValue() << endl;
+  cout << e2.get_position()[0].getValue() << ", " << e2.get_position()[1].getValue() << endl;
 
   psx.tick( 1 );
 
-  cout << e1.get_position() << endl;
-  cout << e2.get_position() << endl;
+  cout << e1.get_position()[0].getValue() << ", " << e1.get_position()[1].getValue() << endl;
+  cout << e2.get_position()[0].getValue() << ", " << e2.get_position()[1].getValue() << endl;
 
   cout << "with move" << endl;
   e1.get_velocity() += {1.0, 0.0};
 
-  cout << e1.get_position() << endl;
-  cout << e2.get_position() << endl;
+  cout << e1.get_position()[0].getValue() << ", " << e1.get_position()[1].getValue() << endl;
+  cout << e2.get_position()[0].getValue() << ", " << e2.get_position()[1].getValue() << endl;
 
   psx.tick( 1 );
 
-  cout << e1.get_position() << endl;
-  cout << e2.get_position() << endl;
+  cout << e1.get_position()[0].getValue() << ", " << e1.get_position()[1].getValue() << endl;
+  cout << e2.get_position()[0].getValue() << ", " << e2.get_position()[1].getValue() << endl;
 }
 
 void

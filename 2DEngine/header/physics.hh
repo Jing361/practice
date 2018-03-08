@@ -8,6 +8,7 @@
 
 #include"image.hh"
 #include"shared_types.hh"
+#include<unit.hh>
 
 class pEntity{
 private:
@@ -22,35 +23,35 @@ private:
     get_bounding_box() const = 0;
 
     virtual
-    vec2&
+    vec2_velocity&
     get_velocity() = 0;
 
     virtual
-    vec2&
+    vec2_acceleration&
     get_acceleration() = 0;
 
     virtual
-    vec2&
+    vec2_position&
     get_position() = 0;
 
     virtual
-    double&
+    gsw::mass<>&
     get_mass() = 0;
 
     virtual
-    double
+    gsw::mass<>
     get_total_mass() const = 0;
 
     virtual
     void
-    tick( double ) = 0;
+    tick( gsw::time<> ) = 0;
 
     virtual
     void
-    apply_force( vec2 force ) = 0;
+    apply_force( vec2_force force ) = 0;
 
     virtual
-    vec2
+    vec2_force
     get_net_force() const = 0;
   };
 
@@ -74,42 +75,42 @@ private:
       return mUnder.get_bounding_box();
     }
 
-    vec2&
+    vec2_velocity&
     get_velocity(){
       return mUnder.get_velocity();
     }
 
-    vec2&
+    vec2_acceleration&
     get_acceleration(){
       return mUnder.get_acceleration();
     }
 
-    vec2&
+    vec2_position&
     get_position(){
       return mUnder.get_position();
     }
 
-    double&
+    gsw::mass<>&
     get_mass(){
       return mUnder.get_mass();
     }
 
-    double
+    gsw::mass<>
     get_total_mass() const{
       return mUnder.get_total_mass();
     }
 
     void
-    tick( double diff ){
+    tick( gsw::time<> diff ){
       mUnder.tick( diff );
     }
 
     void
-    apply_force( vec2 force ){
+    apply_force( vec2_force force ){
       mUnder.apply_force( force );
     }
 
-    vec2
+    vec2_force
     get_net_force() const{
       return mUnder.get_net_force();
     }
@@ -151,32 +152,36 @@ public:
   const simple_box&
   get_bounding_box() const;
 
-  vec2&
+  vec2_velocity&
   get_velocity();
 
-  vec2&
+  vec2_acceleration&
   get_acceleration();
 
-  vec2&
+  vec2_position&
   get_position();
 
-  double&
+  gsw::mass<>&
   get_mass();
 
-  double
+  gsw::mass<>
   get_total_mass() const;
 
   void
-  tick( double diff );
+  tick( gsw::time<> diff );
 
   void
-  apply_force( vec2 force );
+  apply_force( vec2_force force );
 
-  vec2
+  vec2_force
   get_net_force() const;
 };
 
 class physics{
+public:
+  using time = gsw::time<>;
+  using mass = gsw::mass<>;
+
 private:
   std::map<std::string, pEntity> mEntities;
   double mDamping;
@@ -197,47 +202,53 @@ public:
   damping();
 
   void
-  tick( double diff );
+  tick( time diff );
 };
 
 class box{
+public:
+  using time = gsw::time<>;
+  using mass = gsw::mass<>;
+
 private:
   simple_box mHitBox;
-  double mMass;
-  vec2 mNetForce;
-  vec2 mPosition;
-  vec2 mVelocity;
-  vec2 mAcceleration;
+  mass mMass;
+  vec2_force mNetForce;
+  vec2_position mPosition;
+  vec2_velocity mVelocity;
+  vec2_acceleration mAcceleration;
 
 public:
+  box( vec2_position position, simple_box hitbox = {{0, 0}, {1, 1}} );
+
   simple_box&
   get_bounding_box();
 
   const simple_box&
   get_bounding_box() const;
 
-  vec2&
+  vec2_velocity&
   get_velocity();
 
-  vec2&
+  vec2_acceleration&
   get_acceleration();
 
-  vec2&
+  vec2_position&
   get_position();
 
-  double&
+  mass&
   get_mass();
 
-  double
+  mass
   get_total_mass() const;
 
   void
-  tick( double diff );
+  tick( time diff );
 
   void
-  apply_force( vec2 force );
+  apply_force( vec2_force force );
 
-  vec2
+  vec2_force
   get_net_force() const;
 };
 

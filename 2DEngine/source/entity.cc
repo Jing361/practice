@@ -14,8 +14,8 @@ basic_pEntity::basic_pEntity( const basic_pEntity& other )
   , mAcceleration( other.mAcceleration ){
 }
 
-basic_pEntity::basic_pEntity( vec2 pos, vec2 vel, vec2 acc,
-                              double mass, simple_box hit_box )
+basic_pEntity::basic_pEntity( vec2_position pos, vec2_velocity vel, vec2_acceleration acc,
+                              mass mass, simple_box hit_box )
   : mHitBox( hit_box )
   , mMass( mass )
   , mPosition( pos )
@@ -33,29 +33,29 @@ basic_pEntity::get_bounding_box() const{
   return mHitBox;
 }
 
-vec2&
+vec2_velocity&
 basic_pEntity::get_velocity(){
   return mVelocity;
 }
 
-vec2&
+vec2_acceleration&
 basic_pEntity::get_acceleration(){
   return mAcceleration;
 }
 
-vec2&
+vec2_position&
 basic_pEntity::get_position(){
   return mPosition;
 }
 
-double&
+basic_pEntity::mass&
 basic_pEntity::get_mass(){
   return mMass;
 }
 
-double
+basic_pEntity::mass
 basic_pEntity::get_total_mass() const{
-  double total = mMass;
+  basic_pEntity::mass total = mMass;
 
   for( auto part : mParts ){
     total += part.get_total_mass();
@@ -65,16 +65,16 @@ basic_pEntity::get_total_mass() const{
 }
 
 void
-basic_pEntity::tick( double diff ){
+basic_pEntity::tick( time diff ){
   (void) diff;
 }
 
 void
-basic_pEntity::apply_force( vec2 force ){
+basic_pEntity::apply_force( vec2_force force ){
   mNetForce += force;
 }
 
-vec2
+vec2_force
 basic_pEntity::get_net_force() const{
   return mNetForce;
 }
@@ -120,29 +120,29 @@ basic_entity::get_bounding_box() const{
   return mPEntity.get_bounding_box();
 }
 
-vec2&
+vec2_velocity&
 basic_entity::get_velocity(){
   return mPEntity.get_velocity();
 }
 
-vec2&
+vec2_acceleration&
 basic_entity::get_acceleration(){
   return mPEntity.get_acceleration();
 }
 
-vec2&
+vec2_position&
 basic_entity::get_position(){
   return mPEntity.get_position();
 }
 
-double&
+basic_entity::mass&
 basic_entity::get_mass(){
   return mPEntity.get_mass();
 }
 
-double
+basic_entity::mass
 basic_entity::get_total_mass() const{
-  double total = mPEntity.get_total_mass();
+  basic_entity::mass total = mPEntity.get_total_mass();
 
   for( auto part : mParts ){
     total += part.get_total_mass();
@@ -152,18 +152,18 @@ basic_entity::get_total_mass() const{
 }
 
 void
-basic_entity::tick( double diff ){
+basic_entity::tick( time diff ){
   for( auto& part : mParts ){
     part.tick( diff );
   }
 }
 
 void
-basic_entity::apply_force( vec2 force ){
+basic_entity::apply_force( vec2_force force ){
   mPEntity.apply_force( force );
 }
 
-vec2
+vec2_force
 basic_entity::get_net_force() const{
   return mPEntity.get_net_force();
 }

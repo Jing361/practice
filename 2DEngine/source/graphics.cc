@@ -15,21 +15,21 @@ graphics::drawFlatTopTri( coord v1, coord v2, coord v3, char c ){
 
   auto lowIt = min_element( vec.begin(), vec.end(),
     []( coord a, coord b )->bool{
-      return a.second < b.second;
+      return a[1] < b[1];
     }
   );
 
   coord low = *lowIt;
   vec.erase( lowIt );
 
-  double slope0 = ( double )( vec[0].first  - low.first )
-                / ( double )( vec[0].second - low.second );
-  double slope1 = ( double )( vec[1].first  - low.first )
-                / ( double )( vec[1].second - low.second );
-  double x0 = low.first;
-  double x1 = low.first;
+  double slope0 = ( double )( vec[0][0] - low[0] )
+                / ( double )( vec[0][1] - low[1] );
+  double slope1 = ( double )( vec[1][0] - low[0] )
+                / ( double )( vec[1][1] - low[1] );
+  double x0 = low[0];
+  double x1 = low[0];
 
-  for( int i = low.second; i <= vec[0].second; ++i ){
+  for( int i = low[1]; i <= vec[0][1]; ++i ){
     drawFlatLine( i, x0, x1, c );
     x0 += slope0;
     x1 += slope1;
@@ -42,21 +42,21 @@ graphics::drawFlatBotTri( coord v1, coord v2, coord v3, char c ){
 
   auto hiIt = max_element( vec.begin(), vec.end(),
     []( coord a, coord b )->bool{
-      return a.second < b.second;
+      return a[1] < b[1];
     }
   );
 
   coord hi = *hiIt;
   vec.erase( hiIt );
 
-  double slope0 = ( double )( vec[0].first  - hi.first )
-                / ( double )( vec[0].second - hi.second );
-  double slope1 = ( double )( vec[1].first  - hi.first )
-                / ( double )( vec[1].second - hi.second );
-  double x0 = hi.first;
-  double x1 = hi.first;
+  double slope0 = ( double )( vec[0][0] - hi[0] )
+                / ( double )( vec[0][1] - hi[1] );
+  double slope1 = ( double )( vec[1][0] - hi[0] )
+                / ( double )( vec[1][1] - hi[1] );
+  double x0 = hi[0];
+  double x1 = hi[0];
 
-  for( int i = hi.second; i >= vec[0].second; --i ){
+  for( int i = hi[1]; i >= vec[0][1]; --i ){
     drawFlatLine( i, x0, x1, c );
     x0 -= slope0;
     x1 -= slope1;
@@ -67,22 +67,22 @@ void
 graphics::drawTri( coord v1, coord v2, coord v3, coord loc, char c ){
   vector<coord> vec{ v1, v2, v3 };
   for( coord& it : vec ){
-    it.first += loc.first;
-    it.second += loc.second;
+    it[0] += loc[0];
+    it[1] += loc[1];
   }
   sort( vec.begin(), vec.end(), [](coord a, coord b ){
-    return a.second < b.second;
+    return a[1] < b[1];
   });
 
-  if( vec[0].second == vec[1].second ){
+  if( vec[0][1] == vec[1][1] ){
     drawFlatBotTri( v1, v2, v3, c );
-  } else if( vec[1].second == vec[2].second ){
+  } else if( vec[1][1] == vec[2][1] ){
     drawFlatTopTri( v1, v2, v3, c );
   } else {
-    coord v4 = coord( ( ( vec[1].second - vec[0].second ) / 
-                      ( ( vec[0].second - vec[2].second ) / 
-                        ( vec[0].first  - vec[2].first ) ) ) + 
-                          vec[0].first, vec[1].second );
+    coord v4 = coord( {( ( vec[1][1] - vec[0][1] )
+                     / ( ( vec[0][1] - vec[2][1] )
+                       / ( vec[0][0] - vec[2][0] ) ) )
+                         + vec[0][0], vec[1][1]} );
 
     drawFlatTopTri( vec[0], vec[1], v4, c );
     drawFlatBotTri( vec[1], v4, vec[2], c );
@@ -101,11 +101,11 @@ graphics::drawFlatLine( int y, int x1, int x2, char c ){
 
 void
 graphics::drawLine( coord v1, coord v2, char c ){
-  int start = min( v1.first, v2.first );
-  int end = max( v1.first, v2.first );
-  double slope = double( v1.second - v2.second )
-               / double( v1.first  - v2.first );
-  int offset = v1.second - ( slope * v1.first );
+  int start = min( v1[0], v2[0] );
+  int end = max( v1[0], v2[0] );
+  double slope = double( v1[1] - v2[1] )
+               / double( v1[0] - v2[0] );
+  int offset = v1[1] - ( slope * v1[0] );
 
   for( ; start <= end; ++start ){
     mScreen.draw( start, ( slope * start ) + offset, c );
