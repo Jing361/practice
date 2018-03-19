@@ -23,6 +23,11 @@ basic_pEntity::basic_pEntity( vec2_position pos, vec2_velocity vel, vec2_acceler
   , mAcceleration( acc ){
 }
 
+void
+basic_pEntity::add_part( pEntity ent ){
+  mParts.push_back( ent );
+}
+
 simple_box&
 basic_pEntity::get_bounding_box(){
   return mHitBox;
@@ -153,6 +158,8 @@ basic_entity::get_total_mass() const{
 
 void
 basic_entity::tick( time diff ){
+  mPEntity.tick( diff );
+
   for( auto& part : mParts ){
     part.tick( diff );
   }

@@ -119,8 +119,8 @@ test_combined(){
   physics psx;
   graphics gfx( 5, 5 );
 
-  pEntity p1;
-  pEntity p2;
+  pEntity p1( box( {0, 0}, {{0, 0}, {1, 1}} ) );
+  pEntity p2( box( {0, 0}, {{0, 0}, {1, 1}} ) );
   gEntity g1( tri( {0, 0}, {3, 0}, {0, 3}, '+' ) );
   gEntity g2( line( {2, 2}, {4, 4}, '+' ) );
 
@@ -131,6 +131,14 @@ test_combined(){
   psx.addEntity( "B", e2 );
   gfx.addEntity( "A", e1 );
   gfx.addEntity( "B", e2 );
+
+  gfx.show( cout );
+  psx.tick( 1 );
+  gfx.show( cout );
+  psx.tick( 1 );
+  gfx.show( cout );
+  psx.tick( 1 );
+  gfx.show( cout );
 }
 
 int main(){

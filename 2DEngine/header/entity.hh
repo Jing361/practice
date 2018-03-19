@@ -30,9 +30,7 @@ public:
                  mass mass = 1.0, simple_box hit_box = {{0.0, 0.0}, {1.0, 1.0}} );
 
   void
-  add_part( pEntity ent ){
-    mParts.push_back( ent );
-  }
+  add_part( pEntity ent );
 
   simple_box&
   get_bounding_box();
