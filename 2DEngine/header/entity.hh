@@ -85,7 +85,7 @@ public:
   add_part( gEntity );
 
   void
-  draw( graphics& gfx ) const;
+  draw( graphics& gfx, const vec2_position& pos ) const;
 };
 
 class basic_entity{
@@ -132,7 +132,7 @@ public:
   get_net_force() const;
 
   void
-  draw( graphics& gfx ) const;
+  draw( graphics& gfx, const vec2_position& pos ) const;
 };
 
 #endif

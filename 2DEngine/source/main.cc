@@ -117,7 +117,7 @@ test_physics(){
 void
 test_combined(){
   physics psx;
-  graphics gfx( 5, 5 );
+  graphics gfx( 25, 25 );
 
   pEntity p1( box( {0, 0}, {{0, 0}, {1, 1}} ) );
   pEntity p2( box( {0, 0}, {{0, 0}, {1, 1}} ) );
@@ -131,6 +131,9 @@ test_combined(){
   psx.addEntity( "B", e2 );
   gfx.addEntity( "A", e1 );
   gfx.addEntity( "B", e2 );
+
+  p1.get_velocity() += {1, 0};
+  p2.get_velocity() += {0, 1};
 
   gfx.show( cout );
   psx.tick( 1 );

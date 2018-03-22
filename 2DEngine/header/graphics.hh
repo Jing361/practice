@@ -16,7 +16,7 @@ private:
   public:
     virtual
     void
-    draw( graphics& ) const = 0;
+    draw( graphics&, const vec2_position& ) const = 0;
   };
 
   template<typename T>
@@ -30,8 +30,8 @@ private:
     }
 
     void
-    draw( graphics& gfx ) const{
-      mUnder.draw( gfx );
+    draw( graphics& gfx, const vec2_position& pos ) const{
+      mUnder.draw( gfx, pos );
     }
   };
 
@@ -66,7 +66,7 @@ public:
   }
 
   void
-  draw( graphics& gfx ) const;
+  draw( graphics& gfx, const vec2_position& pos ) const;
 };
 
 /*!
@@ -86,7 +86,7 @@ private:
   drawFlatBotTri( coord v1, coord v2, coord v3, char c );
 
   void
-  drawTri( coord v1, coord v2, coord v3, coord loc, char c );
+  drawTri( coord v1, coord v2, coord v3, char c );
 
   void
   drawFlatLine( int y, int x1, int x2, char c );
@@ -106,7 +106,7 @@ public:
   OSTREAM&
   show( OSTREAM& os ){
     for( auto pr : mParts ){
-      pr.second.draw( *this );
+      pr.second.draw( *this, {0, 0} );
     }
 
     mScreen.display( os );
@@ -115,19 +115,19 @@ public:
   }
 
   void
-  addEntity( const std::string& name, const gEntity& rndrbl );
+  addEntity( const std::string& name, const gEntity& ent );
 
   void
-  draw( simple_tri t, coord cor, char c );
+  draw( simple_tri t, char c, const vec2_position& loc = {0, 0} );
 
   void
-  draw( simple_line l, char c );
+  draw( simple_line l, char c, const vec2_position& loc = {0, 0} );
 
   void
-  draw( const gEntity& rndrbl );
+  draw( const gEntity& ent, const vec2_position& loc = {0, 0} );
 
   void
-  draw( coord cr, char c );
+  draw( coord cr, char c, const vec2_position& loc = {0, 0} );
 };
 
 class tri{
@@ -140,7 +140,7 @@ public:
 
   tri( coord c1, coord c2, coord c3, char c = '+' );
 
-  void draw( graphics& ) const;
+  void draw( graphics&, const vec2_position& ) const;
 };
 
 class line{
@@ -154,7 +154,7 @@ public:
   line( coord c1, coord c2, char c = '+' );
 
   void
-  draw( graphics& ) const;
+  draw( graphics&, const vec2_position& ) const;
 };
 
 class polygon{
@@ -169,10 +169,10 @@ public:
     , mVal( c ){
   }
 
-  polygon( const std::vector<coord>&, char c );
+  polygon( const std::vector<coord>& vec, char c );
 
   void
-  draw( graphics& ) const;
+  draw( graphics& gfx, const vec2_position& pos ) const;
 };
 
 #endif

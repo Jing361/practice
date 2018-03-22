@@ -14,6 +14,10 @@ private:
   std::array<T, 2> mData;
 
 public:
+  vec2( const std::array<T, 2>& arr )
+    : mData( arr ){
+  }
+
   vec2( value_type x = 0.0, value_type y = 0.0 )
     : mData( {x, y} ){
   }
@@ -106,8 +110,8 @@ using vec2_force        = vec2<gsw::force<> >;
 
 using coord = std::array<double, 2>;
 using simple_line = std::tuple<coord, coord>;
-using simple_box = std::tuple<coord, coord>;
-using simple_tri = std::tuple<coord, coord, coord>;
+using simple_box  = std::tuple<coord, coord>;
+using simple_tri  = std::tuple<coord, coord, coord>;
 
 bool coordXLess( const coord& a, const coord& b );
 

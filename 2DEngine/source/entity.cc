@@ -98,12 +98,12 @@ basic_gEntity::add_part( gEntity ent ){
 }
 
 void
-basic_gEntity::draw( graphics& gfx ) const{
+basic_gEntity::draw( graphics& gfx, const vec2_position& pos ) const{
   for( auto part : mParts ){
-    part.draw( gfx );
+    part.draw( gfx, pos );
   }
 
-  mEntity.draw( gfx );
+  mEntity.draw( gfx, pos );
 }
 
 /****************
@@ -176,7 +176,11 @@ basic_entity::get_net_force() const{
 }
 
 void
-basic_entity::draw( graphics& gfx ) const{
-  mGEntity.draw( gfx );
+basic_entity::draw( graphics& gfx, const vec2_position& pos ) const{
+  for( auto& part : mParts ){
+    part.draw( gfx, pos );
+  }
+
+  mGEntity.draw( gfx, pos );
 }
 
