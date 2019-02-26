@@ -14,7 +14,7 @@
 #include"shared_types.hh"
 #include"resourcemanager.hh"
 
-class unrecognizedKeywordException : public std::exception{
+class unrecognizedKeywordException : public std::out_of_range{
 private:
   std::string mMesg;
 

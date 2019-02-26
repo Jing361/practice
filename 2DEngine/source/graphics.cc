@@ -113,6 +113,16 @@ graphics::graphics( unsigned int X, unsigned int Y )
   : mScreen( X, Y ){
 }
 
+gEntity&
+graphics::operator[]( const std::string& idx ){
+  return mParts[idx];
+}
+
+const gEntity&
+graphics::operator[]( const std::string& idx ) const{
+  return mParts[idx];
+}
+
 void
 graphics::clearBuffer(){
   mScreen.clear();

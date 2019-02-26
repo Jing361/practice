@@ -99,6 +99,12 @@ public:
 
   ~graphics() = default;
 
+  gEntity&
+  operator[]( const std::string& idx );
+
+  const gEntity&
+  graphics::operator[]( const std::string& idx ) const;
+
   void
   clearBuffer();
 
